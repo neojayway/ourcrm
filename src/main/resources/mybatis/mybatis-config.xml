@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- <settings>
+		打开二级缓存
+		<setting name="cacheEnabled" value="true"/>
+		
+		开启懒加载
+		<setting name="lazyLoadingEnabled" value="true"/>
+		消极懒加载，true则表示积极懒加载,这样会提前发出sql语句，不妥
+		<setting name="aggressiveLazyLoading" value="false"/>
+	</settings> -->
+	
+	<!-- 别名 -->
+	<typeAliases>
+		<!-- 批量扫描指定包，将会按照他们的类名称生成别名 -->
+		<package name="com.kt.po"/>
+	</typeAliases>
+</configuration> 

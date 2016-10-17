@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- 导入外部properties文件 -->
+	<context:property-placeholder location="classpath:db.properties"/>
+	
+	<!-- 配置C3P0数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="user" value="${mysql.user}"/>
+		<property name="password" value="${mysql.password}"/>
+		<property name="jdbcUrl" value="${mysql.jdbcUrl}"/>
+		<property name="driverClass" value="${mysql.driverClass}"></property>
+		<property name="initialPoolSize" value="${jdbc.initPoolSize}"/>
+		<property name="maxPoolSize" value="${jdbc.maxPoolSize}"/>
+	</bean>
+	
+	
+	<!-- 配置mybatis的sqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 工厂注入数据源 -->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- 指定mybatis主配置文件的位置 -->
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+	</bean>
+	
+	
+	<!-- 
+		配置mapper扫描器，扫描指定包中的mapper,根据mapper接口生成mapper代理对象，相当于dao层实现 
+		但必须要满足三条规范，才能产生正确的代理，正确的代理对象才能调用对应的statement
+			1.mapper接口要与mapper.xml同名称，并且在同一包下
+			2.mapper接口的方法名称要与statement的Id一致
+			3.mapper.xml中的命名空间就是mapper的全限定名称	
+	-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 指定扫描的包 -->
+		<property name="basePackage" value="org/zhiqiang/lzw/mapping"/>
+		<!-- 指定sqlSession工厂，代理对象需要 -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+	</bean>
+	
+	
+</beans>
