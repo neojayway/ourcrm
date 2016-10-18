@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.zhiqiang.lzw.mapping.PrivilegeMapper" >
+  <resultMap id="BaseResultMap" type="org.zhiqiang.lzw.entity.Privilege" >
+    <id column="privilegeId" property="privilegeid" jdbcType="INTEGER" />
+    <result column="privilegeName" property="privilegename" jdbcType="VARCHAR" />
+    <result column="privilegeUrl" property="privilegeurl" jdbcType="VARCHAR" />
+    <result column="privilegeCode" property="privilegecode" jdbcType="BIGINT" />
+    <result column="privilegePos" property="privilegepos" jdbcType="INTEGER" />
+    <result column="privalegeComm" property="privalegecomm" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    privilegeId, privilegeName, privilegeUrl, privilegeCode, privilegePos, privalegeComm
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_privilege
+    where privilegeId = #{privilegeid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_privilege
+    where privilegeId = #{privilegeid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.zhiqiang.lzw.entity.Privilege" >
+    insert into sys_privilege (privilegeId, privilegeName, privilegeUrl, 
+      privilegeCode, privilegePos, privalegeComm
+      )
+    values (#{privilegeid,jdbcType=INTEGER}, #{privilegename,jdbcType=VARCHAR}, #{privilegeurl,jdbcType=VARCHAR}, 
+      #{privilegecode,jdbcType=BIGINT}, #{privilegepos,jdbcType=INTEGER}, #{privalegecomm,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.zhiqiang.lzw.entity.Privilege" >
+    insert into sys_privilege
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="privilegeid != null" >
+        privilegeId,
+      </if>
+      <if test="privilegename != null" >
+        privilegeName,
+      </if>
+      <if test="privilegeurl != null" >
+        privilegeUrl,
+      </if>
+      <if test="privilegecode != null" >
+        privilegeCode,
+      </if>
+      <if test="privilegepos != null" >
+        privilegePos,
+      </if>
+      <if test="privalegecomm != null" >
+        privalegeComm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="privilegeid != null" >
+        #{privilegeid,jdbcType=INTEGER},
+      </if>
+      <if test="privilegename != null" >
+        #{privilegename,jdbcType=VARCHAR},
+      </if>
+      <if test="privilegeurl != null" >
+        #{privilegeurl,jdbcType=VARCHAR},
+      </if>
+      <if test="privilegecode != null" >
+        #{privilegecode,jdbcType=BIGINT},
+      </if>
+      <if test="privilegepos != null" >
+        #{privilegepos,jdbcType=INTEGER},
+      </if>
+      <if test="privalegecomm != null" >
+        #{privalegecomm,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.zhiqiang.lzw.entity.Privilege" >
+    update sys_privilege
+    <set >
+      <if test="privilegename != null" >
+        privilegeName = #{privilegename,jdbcType=VARCHAR},
+      </if>
+      <if test="privilegeurl != null" >
+        privilegeUrl = #{privilegeurl,jdbcType=VARCHAR},
+      </if>
+      <if test="privilegecode != null" >
+        privilegeCode = #{privilegecode,jdbcType=BIGINT},
+      </if>
+      <if test="privilegepos != null" >
+        privilegePos = #{privilegepos,jdbcType=INTEGER},
+      </if>
+      <if test="privalegecomm != null" >
+        privalegeComm = #{privalegecomm,jdbcType=BIT},
+      </if>
+    </set>
+    where privilegeId = #{privilegeid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.zhiqiang.lzw.entity.Privilege" >
+    update sys_privilege
+    set privilegeName = #{privilegename,jdbcType=VARCHAR},
+      privilegeUrl = #{privilegeurl,jdbcType=VARCHAR},
+      privilegeCode = #{privilegecode,jdbcType=BIGINT},
+      privilegePos = #{privilegepos,jdbcType=INTEGER},
+      privalegeComm = #{privalegecomm,jdbcType=BIT}
+    where privilegeId = #{privilegeid,jdbcType=INTEGER}
+  </update>
+</mapper>
