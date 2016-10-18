@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zhiqiang.lzw.mapping.PopedomPrivilegeMapper">
+  <resultMap id="BaseResultMap" type="org.zhiqiang.lzw.entity.PopedomPrivilegeKey">
+    <id column="roleId" jdbcType="VARCHAR" property="roleid" />
+    <id column="popedomModule" jdbcType="VARCHAR" property="popedommodule" />
+    <id column="popedomPrivilege" jdbcType="VARCHAR" property="popedomprivilege" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="org.zhiqiang.lzw.entity.PopedomPrivilegeKey">
+    delete from sys_popedom_privilege
+    where roleId = #{roleid,jdbcType=VARCHAR}
+      and popedomModule = #{popedommodule,jdbcType=VARCHAR}
+      and popedomPrivilege = #{popedomprivilege,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="org.zhiqiang.lzw.entity.PopedomPrivilegeKey">
+    insert into sys_popedom_privilege (roleId, popedomModule, popedomPrivilege
+      )
+    values (#{roleid,jdbcType=VARCHAR}, #{popedommodule,jdbcType=VARCHAR}, #{popedomprivilege,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.zhiqiang.lzw.entity.PopedomPrivilegeKey">
+    insert into sys_popedom_privilege
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleid != null">
+        roleId,
+      </if>
+      <if test="popedommodule != null">
+        popedomModule,
+      </if>
+      <if test="popedomprivilege != null">
+        popedomPrivilege,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleid != null">
+        #{roleid,jdbcType=VARCHAR},
+      </if>
+      <if test="popedommodule != null">
+        #{popedommodule,jdbcType=VARCHAR},
+      </if>
+      <if test="popedomprivilege != null">
+        #{popedomprivilege,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>
