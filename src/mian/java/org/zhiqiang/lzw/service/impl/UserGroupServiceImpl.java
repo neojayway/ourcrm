@@ -12,6 +12,10 @@ public class UserGroupServiceImpl implements UserGroupService{
 	@Autowired
 	private UserGroupMapper userGroupMapper;
 	
+	public void setUserGroupMapper(UserGroupMapper userGroupMapper) {
+		this.userGroupMapper = userGroupMapper;
+	}
+	
 	@Override
 	public int deleteByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub

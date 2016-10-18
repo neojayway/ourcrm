@@ -23,6 +23,7 @@
 			<tx:method name="regist*" propagation="REQUIRED" isolation="READ_COMMITTED"/>
 			<tx:method name="login*" propagation="SUPPORTS" read-only="true"/>
 			<tx:method name="select*" propagation="SUPPORTS" read-only="true"/>
+			<tx:method name="insert*" propagation="REQUIRED" isolation="READ_COMMITTED"/>
 			<tx:method name="*" read-only="true"/>
 		</tx:attributes>
 	</tx:advice>

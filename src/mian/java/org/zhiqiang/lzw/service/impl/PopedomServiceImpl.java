@@ -13,6 +13,10 @@ public class PopedomServiceImpl implements PopedomService{
 	@Autowired
 	private PopedomMapper popedomMapper;
 	
+	public void setPopedomMapper(PopedomMapper popedomMapper) {
+		this.popedomMapper = popedomMapper;
+	}
+	
 	@Override
 	public int deleteByPrimaryKey(PopedomKey key) {
 		// TODO Auto-generated method stub

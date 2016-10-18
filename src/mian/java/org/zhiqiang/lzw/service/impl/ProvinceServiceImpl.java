@@ -12,6 +12,10 @@ public class ProvinceServiceImpl implements ProvinceService{
 	@Autowired
 	private ProvinceMapper provinceMapper;
 	
+	public void setProvinceMapper(ProvinceMapper provinceMapper) {
+		this.provinceMapper = provinceMapper;
+	}
+	
 	@Override
 	public int deleteByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub

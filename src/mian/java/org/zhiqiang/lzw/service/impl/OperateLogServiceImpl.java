@@ -12,6 +12,10 @@ public class OperateLogServiceImpl implements OperateLogService{
 	@Autowired
 	private OperateLogMapper operateLogMapper;
 	
+	public void setOperateLogMapper(OperateLogMapper operateLogMapper) {
+		this.operateLogMapper = operateLogMapper;
+	}
+	
 	@Override
 	public int deleteByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub

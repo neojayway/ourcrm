@@ -13,6 +13,10 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private UserMapper userMapper;
 	
+	public void setUserMapper(UserMapper userMapper) {
+		this.userMapper = userMapper;
+	}
+	
 	@Override
 	public int deleteByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub

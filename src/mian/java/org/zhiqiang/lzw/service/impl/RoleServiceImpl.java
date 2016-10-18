@@ -12,6 +12,10 @@ public class RoleServiceImpl implements RoleService{
 	@Autowired
 	private RoleMapper roleMapper;
 	
+	public void setRoleMapper(RoleMapper roleMapper) {
+		this.roleMapper = roleMapper;
+	}
+	
 	@Override
 	public int deleteByPrimaryKey(String id) {
 		// TODO Auto-generated method stub

@@ -15,7 +15,7 @@ public class CityServiceImplTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		context = new ClassPathXmlApplicationContext("applicationContext-*.xml");
+		context = new ClassPathXmlApplicationContext("spring/applicationContext-*.xml");
 	}
 
 	@After
@@ -30,7 +30,10 @@ public class CityServiceImplTest {
 
 	@Test
 	public void testDeleteByPrimaryKey() {
-		fail("Not yet implemented");
+		CityService cityService = (CityService)
+				context.getBean("cityService");
+		int deleteByPrimaryKey = cityService.deleteByPrimaryKey(2470);
+		System.out.println(deleteByPrimaryKey);
 	}
 
 	@Test

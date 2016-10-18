@@ -13,6 +13,10 @@ public class MenuServiceImpl implements MenuService{
 	@Autowired
 	private MenuMapper menuMapper;
 	
+	public void setMenuMapper(MenuMapper menuMapper) {
+		this.menuMapper = menuMapper;
+	}
+	
 	@Override
 	public int deleteByPrimaryKey(MenuKey key) {
 		// TODO Auto-generated method stub

@@ -12,12 +12,16 @@ public class CodeRuleServiceImpl implements CodeRuleService{
 	@Autowired
 	private CodeRuleMapper codeRuleMapper;
 	
+	public void setCodeRuleMapper(CodeRuleMapper codeRuleMapper) {
+		this.codeRuleMapper = codeRuleMapper;
+	}
+	
 	@Override
 	public int deleteByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub
 		return codeRuleMapper.deleteByPrimaryKey(id);
 	}
-
+	
 	@Override
 	public int insert(CodeRule record) {
 		// TODO Auto-generated method stub

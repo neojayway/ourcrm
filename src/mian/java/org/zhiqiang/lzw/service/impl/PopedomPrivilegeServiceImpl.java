@@ -12,6 +12,11 @@ public class PopedomPrivilegeServiceImpl implements PopedomPrivilegeService{
 	@Autowired
 	private PopedomPrivilegeMapper popedomPrivilegeMapper;
 	
+	public void setPopedomPrivilegeMapper(
+			PopedomPrivilegeMapper popedomPrivilegeMapper) {
+		this.popedomPrivilegeMapper = popedomPrivilegeMapper;
+	}
+	
 	@Override
 	public int deleteByPrimaryKey(PopedomPrivilegeKey key) {
 		// TODO Auto-generated method stub

@@ -12,6 +12,11 @@ public class DictionaryTypeServiceImpl implements DictionaryTypeService{
 	@Autowired
 	private DictionaryTypeMapper dictionaryTypeMapper;
 	
+	public void setDictionaryTypeMapper(
+			DictionaryTypeMapper dictionaryTypeMapper) {
+		this.dictionaryTypeMapper = dictionaryTypeMapper;
+	}
+	
 	@Override
 	public int deleteByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub

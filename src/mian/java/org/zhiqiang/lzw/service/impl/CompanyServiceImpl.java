@@ -12,32 +12,35 @@ public class CompanyServiceImpl implements CompanyService{
 	@Autowired
 	private CompanyMapper companyMapper;
 	
+	public void setCompanyMapper(CompanyMapper companyMapper) {
+		this.companyMapper = companyMapper;
+	}
 	
-	@Override
+	@Override 
 	public int deleteByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub
 		return companyMapper.deleteByPrimaryKey(id);
 	}
 
-	@Override
+	@Override 
 	public int insert(Company record) {
 		// TODO Auto-generated method stub
 		return companyMapper.insert(record);
 	}
 
-	@Override
+	@Override 
 	public int insertSelective(Company record) {
 		// TODO Auto-generated method stub
 		return companyMapper.insertSelective(record);
 	}
 
-	@Override
+	@Override 
 	public Company selectByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub
 		return companyMapper.selectByPrimaryKey(id);
 	}
 
-	@Override
+	@Override 
 	public int updateByPrimaryKeySelective(Company record) {
 		// TODO Auto-generated method stub
 		return companyMapper.updateByPrimaryKeySelective(record);
@@ -49,7 +52,7 @@ public class CompanyServiceImpl implements CompanyService{
 		return companyMapper.updateByPrimaryKeyWithBLOBs(record);
 	}
 
-	@Override
+	@Override 
 	public int updateByPrimaryKey(Company record) {
 		// TODO Auto-generated method stub
 		return companyMapper.updateByPrimaryKey(record);

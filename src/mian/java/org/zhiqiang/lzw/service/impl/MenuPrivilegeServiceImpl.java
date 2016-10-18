@@ -12,6 +12,10 @@ public class MenuPrivilegeServiceImpl implements MenuPrivilegeService{
 	@Autowired
 	private MenuPrivilegeMapper menuPrivilegeMapper;
 	
+	public void setMenuPrivilegeMapper(MenuPrivilegeMapper menuPrivilegeMapper) {
+		this.menuPrivilegeMapper = menuPrivilegeMapper;
+	}
+	
 	@Override
 	public int deleteByPrimaryKey(MenuPrivilegeKey key) {
 		// TODO Auto-generated method stub
