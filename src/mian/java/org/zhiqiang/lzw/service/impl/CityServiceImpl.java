@@ -16,34 +16,37 @@ public class CityServiceImpl implements CityService{
 		this.cityMapper = cityMapper;
 	}
 
+	@Override
 	public int deleteByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
+		return cityMapper.deleteByPrimaryKey(id);
 	}
 
+	@Override
 	public int insert(City record) {
 		return cityMapper.insert(record);
 	}
 
+	@Override
 	public int insertSelective(City record) {
 		// TODO Auto-generated method stub
-		return 0;
+		return cityMapper.insertSelective(record);
 	}
 
+	@Override
 	public City selectByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub
-		return null;
+		return cityMapper.selectByPrimaryKey(id);
 	}
 
+	@Override
 	public int updateByPrimaryKeySelective(City record) {
 		// TODO Auto-generated method stub
-		return 0;
+		return cityMapper.updateByPrimaryKeySelective(record);
 	}
 
+	@Override
 	public int updateByPrimaryKey(City record) {
 		// TODO Auto-generated method stub
-		return 0;
+		return cityMapper.updateByPrimaryKey(record);
 	}
-
-
 }
