@@ -17,8 +17,7 @@ public class CityServiceImpl implements CityService{
 	}
 
 	public int deleteByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
+		return cityMapper.deleteByPrimaryKey(id);
 	}
 
 	public int insert(City record) {
@@ -27,23 +26,21 @@ public class CityServiceImpl implements CityService{
 
 	public int insertSelective(City record) {
 		// TODO Auto-generated method stub
-		return 0;
+		return cityMapper.insertSelective(record);
 	}
 
 	public City selectByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub
-		return null;
+		return cityMapper.selectByPrimaryKey(id);
 	}
 
 	public int updateByPrimaryKeySelective(City record) {
 		// TODO Auto-generated method stub
-		return 0;
+		return cityMapper.updateByPrimaryKeySelective(record);
 	}
 
 	public int updateByPrimaryKey(City record) {
 		// TODO Auto-generated method stub
-		return 0;
+		return cityMapper.updateByPrimaryKey(record);
 	}
-
-
 }
