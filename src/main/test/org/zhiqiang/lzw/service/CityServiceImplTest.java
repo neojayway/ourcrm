@@ -9,13 +9,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.zhiqiang.lzw.entity.City;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+
 public class CityServiceImplTest {
 
 	private ApplicationContext context;
 	
 	@Before
 	public void setUp() throws Exception {
-		context = new ClassPathXmlApplicationContext("applicationContext-*.xml");
+		context = new ClassPathXmlApplicationContext("spring/applicationContext-*.xml");
 	}
 
 	@After
@@ -25,9 +27,10 @@ public class CityServiceImplTest {
 
 	@Test
 	public void testSetCityMapper() {
-		fail("Not yet implemented");
+		ComboPooledDataSource dataSource = (ComboPooledDataSource) context.getBean("dataSource");
+		System.out.println(dataSource);
 	}
-
+	
 	@Test
 	public void testDeleteByPrimaryKey() {
 		fail("Not yet implemented");
