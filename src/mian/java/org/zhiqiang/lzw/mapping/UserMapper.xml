@@ -40,18 +40,6 @@
     <result column="consorttelePhone" property="consorttelephone" jdbcType="VARCHAR" />
     <result column="consortCompany" property="consortcompany" jdbcType="VARCHAR" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="org.zhiqiang.lzw.entity.UserWithBLOBs" extends="BaseResultMap" >
-    <result column="remark" property="remark" jdbcType="LONGVARCHAR" />
-    <result column="avocation" property="avocation" jdbcType="LONGVARCHAR" />
-    <result column="strongSuit" property="strongsuit" jdbcType="LONGVARCHAR" />
-    <result column="commUniCate" property="communicate" jdbcType="LONGVARCHAR" />
-    <result column="bringup" property="bringup" jdbcType="LONGVARCHAR" />
-    <result column="organise" property="organise" jdbcType="LONGVARCHAR" />
-    <result column="analyse" property="analyse" jdbcType="LONGVARCHAR" />
-    <result column="planing" property="planing" jdbcType="LONGVARCHAR" />
-    <result column="empolder" property="empolder" jdbcType="LONGVARCHAR" />
-    <result column="relation" property="relation" jdbcType="LONGVARCHAR" />
-  </resultMap>
   
   <!-- 用户自定义resultMap -->
   <resultMap id="UserCustomResultMap" type="org.zhiqiang.lzw.entity.custom.UserCustom" extends="ResultMapWithBLOBs"> 
@@ -91,7 +79,7 @@
     empolder, relation
   </sql>
   
-  <!-- 根据主键查询User -->
+  <!-- 根据主键查询User --> 
   <select id="selectByPrimaryKey" resultMap="UserCustomResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -100,8 +88,7 @@
     from sys_user
     where id = #{id,jdbcType=INTEGER}
   </select>
-  
-  
+   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sys_user
     where id = #{id,jdbcType=INTEGER}
