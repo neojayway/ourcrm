@@ -16,13 +16,16 @@
 	<table width="100%" height="300" border="0" cellspacing="0"
 		cellpadding="0">
 		<tr>
-			<td align="center"><table width="380" border="0" align="center"
+			<td align="center">
+				<table width="380" border="0" align="center"
 					cellpadding="0" cellspacing="0" class="error">
 					<tr>
 						<th align="left">出错提示</th>
 					</tr>
 					<tr>
-						<td height="60"><font color="#FF0000"> ${errorInfo}</font></td>
+						<td height="60">
+							<font color="#FF0000"> ${errorInfo}</font>
+						</td>
 					</tr>
 					<tr>
 						<td style="text-align: center">
@@ -30,13 +33,14 @@
 								onMouseOver="this.className='button_over';"
 								onMouseOut="this.className='button';"
 								onClick="javascript:history.go(-1)">
-								<img
-									src="${pageContext.request.contextPath}/ui/images/button/fanhui.png"
-									border='0' align='absmiddle'> &nbsp;返回
+								<img src="${pageContext.request.contextPath}/ui/images/button/fanhui.png"
+									border='0' align='absmiddle'> 
+								&nbsp;返回
 							</button>
 						</td>
 					</tr>
-				</table></td>
+				</table>
+			</td>
 		</tr>
 	</table>
 </body>

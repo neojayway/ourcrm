@@ -51,34 +51,45 @@ function goCancel(){
 </head>
 
 <body>
-<form name="ActionForm" method="post" action="#" >
-<input type="hidden" name="id" id="id" value="${company.id}">
-<div class="mtitle">
-	<div class="mtitle-row">&nbsp;</div>
-		<span onClick="goSet();" class="menu_noselect">共享设置</span>
-		<span onClick="goCancel();" class="menu_noselect">取消共享</span>
-		<span onClick="" class="menu_selected">共享查看</span>
-</div>
-<br/>
-<div class="control">
-	<button type='button' class='button' onMouseOver="this.className='button_over';" onMouseOut="this.className='button';"  onClick="self.close();"><img src="${pageContext.request.contextPath}/ui/images/button/guanbi.png" border='0' align='absmiddle'>&nbsp;关闭</button>
-	<font color="red"></font>
-</div>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td align="center" height="25"><span class="Tabfont">${company.name}(客户)共享情况</span></td>
-	</tr>
-</table>
-<div class="border" style="padding:3px">
-<fieldset style='padding:5px;clear:left;'>
-<legend>
-客户资料
-</legend>
-         <div><input type='checkbox' class='checkbox' name='user' value='12' id='7'  disabled checked>潘金莲</div>
-         <div><input type='checkbox' class='checkbox' name='user' value='13' id='7'  disabled checked>吴春梅</div>
-&nbsp;</fieldset>
-</div>
-<br>
-</form>
+	<form name="ActionForm" method="post" action="#" >
+		<input type="hidden" name="id" id="id" value="${company.id}">
+		<div class="mtitle">
+			<div class="mtitle-row">&nbsp;</div>
+				<span onClick="goSet();" class="menu_noselect">共享设置</span>
+				<span onClick="goCancel();" class="menu_noselect">取消共享</span>
+				<span onClick="" class="menu_selected">共享查看</span>
+		</div>
+		<br/>
+		<div class="control">
+			<button type='button' class='button' onMouseOver="this.className='button_over';" onMouseOut="this.className='button';"  onClick="self.close();">
+				<img src="${pageContext.request.contextPath}/ui/images/button/guanbi.png" border='0' align='absmiddle'>
+				&nbsp;关闭
+			</button>
+			<font color="red"></font>
+		</div>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td align="center" height="25">
+					<span class="Tabfont">${company.name}(客户)共享情况</span>
+				</td>
+			</tr>
+		</table>
+		<div class="border" style="padding:3px">
+			<fieldset style='padding:5px;clear:left;'>
+			<legend>
+			客户资料
+			</legend>
+	        <div>
+	        	<input type='checkbox' class='checkbox' name='user' value='12' id='7'  disabled checked>
+	        	潘金莲
+	        </div>
+	        <div>
+	        	<input type='checkbox' class='checkbox' name='user' value='13' id='7'  disabled checked>
+	        	吴春梅
+	        </div>
+			&nbsp;</fieldset>
+		</div>
+		<br>
+	</form>
 </body>
 </html>

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8"
 	contentType="text/html; charset=utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -45,16 +46,18 @@
 	<button type='button' class='button'
 		onMouseOver="this.className='button_over';"
 		onMouseOut="this.className='button';" onClick="do_update();">
-		<img
-			src="${pageContext.request.contextPath}/ui/images/button/baocun.png"
-			border='0' align='absmiddle'>&nbsp;保存
+		<img src="${pageContext.request.contextPath}/ui/images/button/baocun.png"
+			border='0' align='absmiddle'>
+		&nbsp;保存
 	</button>
 	<span id="msg" style="display: null">请修改密码</span>
 	<table width="100%" border="0" cellspacing="0" class="tabForm">
 		<tr>
 			<td colspan="4" class="th_head">
 				<div id="menuArrow1"
-					style="background:url(${pageContext.request.contextPath}/ui/images/down.gif) no-repeat center;float:left;">&nbsp;</div>
+					style="background:url(${pageContext.request.contextPath}/ui/images/down.gif) no-repeat center;float:left;">
+					&nbsp;
+				</div>
 				<div id="menuTitle1" style="font-weight: bold">基本信息</div>
 			</td>
 		</tr>
@@ -63,22 +66,30 @@
 				<div id="menu1">
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
-							<td width="18%" height="19" class="tabDetailViewDL">用 户 名：</td>
-							<td width="29%" class="tabDetailViewDF"><s:property
-									value="#parameters.name[0]" />&nbsp;</td>
+							<td width="18%" height="19" class="tabDetailViewDL">
+								用 户 名：
+							</td>
+							<td width="29%" class="tabDetailViewDF">
+								<s:property value="#parameters.name[0]" />
+								&nbsp;
+							</td>
 							<td width="17%" class="tabDetailViewDL">中 文 名：</td>
-							<td width="36%" class="tabDetailViewDF"><s:property
-									value="#parameters.cnname[0]" />&nbsp;</td>
+							<td width="36%" class="tabDetailViewDF">
+								<s:property value="#parameters.cnname[0]" />
+								&nbsp;
+							</td>
 						</tr>
 						<tr>
 							<td class="tabDetailViewDL">新 密 码：</td>
-							<td class="tabDetailViewDF" colspan="3"><s:password
-									id="password" name="password" /></td>
+							<td class="tabDetailViewDF" colspan="3">
+								<s:passwordid="password" name="password" />
+							</td>
 						</tr>
 						<tr>
 							<td class="tabDetailViewDL">重复新密码：</td>
-							<td class="tabDetailViewDF" colspan="3"><s:password
-									id="password1" name="password1" /></td>
+							<td class="tabDetailViewDF" colspan="3">
+								<input type="password"	id="password1" name="password1" />
+							</td>
 						</tr>
 					</table>
 				</div>

@@ -27,46 +27,44 @@
 <script type="text/javascript">
 	function name2pinyin() {
 		var nameValue = $("#name").val();
-		$
-				.post(
-						"${pageContext.request.contextPath}/crm/companyAction_pinyin.do",
-						{
-							name : nameValue
-						}, function(data, textStatuts) {
-							$("#pycode").val(data);
-						});
+		$.post(
+			"${pageContext.request.contextPath}/crm/companyAction_pinyin.do",
+			{
+				name : nameValue
+			}, function(data, textStatuts) {
+				$("#pycode").val(data);
+			});
 	}
 
 	function showCity(value) {
-		$
-				.post(
-						"${pageContext.request.contextPath}/crm/companyAction_showCity.do",
-						{
-							name : value
-						},
-						function(data, textStatuts) {
-							//alert(data);
-							var dataObj = eval("(" + data + ")");
-							//alert(dataObj);
-
-							//删除城市
-							$("select[name='city'] option[value!='']").remove();
-
-							// <select name="city" style="width:90%">
-							//<option value="">--------</option>
-							//</select>
-							for (var i = 0; i < dataObj.length; i++) {
-								var $option = $("<option></option>");
-								$option.attr("value", dataObj[i].name);
-								$option.text(dataObj[i].name);
-								$("select[name='city']").append($option);
-							}
-						});
+		$.post(
+			"${pageContext.request.contextPath}/crm/companyAction_showCity.do",
+			{
+				name : value
+			},
+			function(data, textStatuts) {
+				//alert(data);
+				var dataObj = eval("(" + data + ")");
+				//alert(dataObj);
+	
+				//删除城市
+				$("select[name='city'] option[value!='']").remove();
+	
+				// <select name="city" style="width:90%">
+				//<option value="">--------</option>
+				//</select>
+				for (var i = 0; i < dataObj.length; i++) {
+					var $option = $("<option></option>");
+					$option.attr("value", dataObj[i].name);
+					$option.text(dataObj[i].name);
+					$("select[name='city']").append($option);
+				}
+			});
 	}
 </script>
 </head>
 <body>
-	<s:form name="companyForm" method="post" action="companyAction_save.do"
+	<form name="companyForm" method="post" action="companyAction_save.do"
 		namespace="/crm">
 		<div class="mtitle">
 			<div class="mtitle-row">&nbsp;</div>
@@ -78,16 +76,16 @@
 				onMouseOver="this.className='button_over';"
 				onMouseOut="this.className='button';"
 				onClick="document.forms[0].submit()">
-				<img
-					src="${pageContext.request.contextPath}/ui/images/button/baocun.png"
-					border='0' align='absmiddle'>&nbsp;保存
+				<img src="${pageContext.request.contextPath}/ui/images/button/baocun.png"
+					border='0' align='absmiddle'/>
+					&nbsp;保存
 			</button>
 			<button type='button' class='button'
 				onMouseOver="this.className='button_over';"
 				onMouseOut="this.className='button';" onClick="">
-				<img
-					src="${pageContext.request.contextPath}/ui/images/button/fanhui.png"
-					border='0' align='absmiddle'>&nbsp;返回
+				<img src="${pageContext.request.contextPath}/ui/images/button/fanhui.png"
+					border='0' align='absmiddle'/>
+					&nbsp;返回
 			</button>
 			<span class="remarkText"></span>
 		</div>
@@ -105,32 +103,54 @@
 						<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							<tr>
 								<td width="16%" class="red">客户编码：</td>
-								<td width="34%"><s:textfield id="code" name="code"
-										value="%{#request.code}" cssStyle="width:90%" /></td>
+								
+								<td width="34%">
+									<input id="code" name="code" 
+									value="%{#request.code}" cssStyle="width:90%" 
+									type="text"/>
+								</td>
+								
 								<td width="16%" class="red">客户名称：</td>
-								<td width="34%"><s:textfield id="name" name="name" value=""
-										cssStyle="width:90%" onblur="name2pinyin()" /></td>
+								
+								<td width="34%">
+									<input id="name" name="name" value=""
+										cssStyle="width:90%" onblur="name2pinyin()" 
+										type="text"/>
+								</td>
+								
 							</tr>
 							<tr>
 								<td>拼音码：</td>
-								<td><s:textfield id="pycode" name="pycode" value=""
-										cssStyle="width:90%" readonly="true" cssClass="disabled" /></td>
+								<td>
+									<input id="pycode" name="pycode" value=""
+									cssStyle="width:90%" readonly="true" 
+									cssClass="disabled" type="text"/>
+								</td>
 								<td>客户等级：</td>
-								<td><s:if test="#request.gradesSelect!=null">
-										<s:select list="#request.gradesSelect" name="grade" id="grade"
-											listKey="value" listValue="value" headerKey=""
-											headerValue="--------" cssStyle="width:90%"></s:select>
-									</s:if></td>
+								<td>
+									<c:if test="#request.gradesSelect!=null">
+										<select list="#request.gradesSelect" 
+										name="grade" id="grade" listKey="value" 
+										listValue="value" headerKey=""
+										headerValue="--------" cssStyle="width:90%">
+										</select>
+									</c:if></td>
 							</tr>
 							<tr>
 								<td>区域名称：</td>
-								<td><s:if test="#request.regionNamesSelect!=null">
-										<s:select list="#request.regionNamesSelect" name="regionName"
-											id="regionName" listKey="value" listValue="value"
-											headerKey="" headerValue="--------" cssStyle="width:90%"></s:select>
-									</s:if></td>
+								<td>
+									<c:if test="#request.regionNamesSelect!=null">
+										<select list="#request.regionNamesSelect" 
+										name="regionName" id="regionName" 
+										listKey="value" listValue="value"
+										headerKey="" headerValue="--------" 
+										cssStyle="width:90%">
+										</select>
+									</c:if>
+								</td>
 								<td>客户来源：</td>
-								<td><select name="source" style="width: 90%">
+								<td>
+									<select name="source" style="width: 90%">
 										<option value="">--------</option>
 										<option value="招标投标">招标投标</option>
 										<option value="展销会议">展销会议</option>
@@ -142,79 +162,113 @@
 										<option value="代理渠道">代理渠道</option>
 										<option value="促销活动">促销活动</option>
 										<option value="电话联系">电话联系</option>
-								</select></td>
+									</select>
+								</td>
 							</tr>
 							<tr>
 								<td>所属行业：</td>
-								<td><select id='trade' name='trade' style='width: 90%'>
+								<td>
+									<select id='trade' name='trade' style='width: 90%'>
 										<option value=''>------</option>
 										<option value='政府机构'>政府机构</option>
 										<option value='玩具'>玩具</option>
 										<option value='服饰'>服饰</option>
 										<option value='化工'>化工</option>
 										<option value='机械及工业制品'>机械及工业制品</option>
-								</select></td>
+									</select>
+								</td>
 								<td>公司规模：</td>
-								<td><select id='scale' name='scale' style='width: 90%'>
+								<td>
+									<select id='scale' name='scale' style='width: 90%'>
 										<option value=''>------</option>
 										<option value='300人以上'>300人以上</option>
 										<option value='100至300人'>100至300人</option>
 										<option value='50至100人'>50至100人</option>
 										<option value='少于50人'>少于50人</option>
-								</select></td>
+									</select>
+								</td>
 							</tr>
 							<tr>
 								<td>省份：</td>
-								<td><s:if test="#request.provincesSelect!=null">
-										<s:select list="#request.provincesSelect" name="province"
-											id="province" listKey="name" listValue="name" headerKey=""
-											headerValue="--------" onchange="showCity(this.value)"
-											cssStyle="width:90%"></s:select>
-									</s:if></td>
+								<td>
+									<c:if test="#request.provincesSelect!=null">
+										<select list="#request.provincesSelect" 
+										name="province" id="province" 
+										listKey="name" listValue="name" 
+										headerKey="" headerValue="--------" 
+										onchange="showCity(this.value)"
+										cssStyle="width:90%">
+										</select>
+									</c:if>
+								</td>
 								<td>城市：</td>
-								<td><s:select list="{}" name="city" id="city" headerKey=""
-										headerValue="--------" cssStyle="width:90%"></s:select></td>
+								<td>
+									<select list="{}" name="city" id="city" 
+									headerKey="" headerValue="--------" 
+									cssStyle="width:90%">
+									</select>
+								</td>
 							</tr>
 							<tr>
 								<td>邮政编码：</td>
-								<td><s:textfield name="postcode" value="" id="postcode"
-										cssStyle="width:90%" /></td>
+								<td>
+									<input name="postcode" value="" id="postcode"
+										cssStyle="width:90%" type="text"/>
+								</td>
 							</tr>
 							<tr>
 								<td>联系地址：</td>
-								<td colspan="3"><s:textfield name="address" value=""
-										id="address" cssStyle="width:96%" /></td>
+								<td colspan="3">
+									<input name="address" value="" id="address" 
+									cssStyle="width:96%" type="text"/>
+								</td>
 							</tr>
 							<tr>
 								<td>电子邮件：</td>
-								<td><s:textfield name="email" id="email"
-										cssStyle="width:96%" value="" /></td>
+								<td>
+									<input name="email" id="email" 
+									cssStyle="width:96%" value="" type="text"/>
+								</td>
 								<td>公司网站：</td>
-								<td><s:textfield name="web" id="web" cssStyle="width:90%"
-										value="" /></td>
+								<td>
+									<input name="web" id="web" cssStyle="width:90%"
+										value="" type="text"/>
+								</td>
 							</tr>
 							<tr>
 								<td>电话一：</td>
-								<td><s:textfield name="tel1" id="tel1" cssStyle="width:90%"
-										value="" /></td>
+								<td>
+									<input name="tel1" id="tel1" 
+									cssStyle="width:90%" value="" type="text"/>
+								</td>
 								<td>传真：</td>
-								<td><s:textfield name="fax" id="fax" cssStyle="width:90%"
-										value="" /></td>
+								<td>
+									<input name="fax" id="fax" cssStyle="width:90%"
+										value="" type="text"/>
+								</td>
 							</tr>
 							<tr>
 								<td>手机：</td>
-								<td><s:textfield name="mobile" id="mobile"
-										cssStyle="width:90%" value="" /></td>
+								<td>
+									<input name="mobile" id="mobile"
+										cssStyle="width:90%" value="" type="text"/>
+								</td>
 								<td>电话二：</td>
-								<td><s:textfield name="tel2" id="tel2" cssStyle="width:90%"
-										value="" /></td>
+								<td>
+									<input name="tel2" id="tel2" cssStyle="width:90%"
+										value="" type="text"/>
+								</td>
 							</tr>
 							<tr>
 								<td>下次联系时间:</td>
-								<td><s:textfield name="nextTouchDate" id="nextTouchDate"
-										cssStyle="width:90%" cssClass="dateClassStyle" value="" /></td>
+								<td>
+									<input name="nextTouchDate" id="nextTouchDate"
+										cssStyle="width:90%" cssClass="dateClassStyle" 
+										value="" type="text"/>
+								</td>
 								<td>客户性质：</td>
-								<td><select id='quality' name='quality' style='width: 90%'>
+								<td>
+									<select id='quality' name='quality' style='width: 90%'>
 										<option value=''>------</option>
 										<option value='下属子公司'>下属子公司</option>
 										<option value='上级主管单位'>上级主管单位</option>
@@ -223,12 +277,15 @@
 										<option value='代理商'>代理商</option>
 										<option value='供应商'>供应商</option>
 										<option value='客户' selected>客户</option>
-								</select></td>
+									</select>
+								</td>
 							</tr>
 							<tr>
 								<td valign="top">备注：</td>
-								<td colspan="3"><s:textarea name="remark" rows="4"
-										id="remark" cssStyle="width:96%"></s:textarea></td>
+								<td colspan="3">
+									<textarea rows="" cols="" name="remark" rows="4"
+										id="remark" cssStyle="width:96%" ></textarea>
+								</td>
 							</tr>
 						</table>
 					</div>
@@ -250,44 +307,57 @@
 						<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							<tr>
 								<td width="16%">经营范围：</td>
-								<td width="34%"><select id='dealin' name='dealin'
-									style='width: 90%'>
+								<td width="34%">
+									<select id='dealin' name='dealin' style='width: 90%'>
 										<option value=''>------</option>
 										<option value='证券/金融/投资'>证券/金融/投资</option>
 										<option value='电子/电器/半导体/仪器仪表'>电子/电器/半导体/仪器仪表</option>
 										<option value='计算机软件'>计算机软件</option>
 										<option value='计算机硬件'>计算机硬件</option>
-								</select></td>
+									</select>
+								</td>
 								<td width="16%">企业性质：</td>
-								<td width="34%"><select id='kind' name='kind'
-									style='width: 90%'>
+								<td width="34%">
+									<select id='kind' name='kind' style='width: 90%'>
 										<option value=''>------</option>
 										<option value='合资企业'>合资企业</option>
 										<option value='外资企业'>外资企业</option>
 										<option value='民营企业'>民营企业</option>
 										<option value='国有企业'>国有企业</option>
-								</select></td>
+									</select>
+								</td>
 							</tr>
 							<tr>
 								<td>法人代表：</td>
-								<td><s:textfield name="artificialPerson"
-										id="artificialPerson" cssStyle="width:90%" value="" /></td>
+								<td>
+									<input name="artificialPerson"
+										id="artificialPerson" cssStyle="width:90%" 
+										value="" type="text"/>
+								</td>
 								<td>注册资金：</td>
-								<td><s:textfield name="registeMoney" id="registeMoney"
-										cssStyle="width:90%" value="" /></td>
+								<td>
+									<input name="registeMoney" id="registeMoney"
+										cssStyle="width:90%" value="" type="text"/>
+								</td>
 							</tr>
 							<tr>
 								<td>开户银行：</td>
-								<td><s:textfield name="bank" id="bank" cssStyle="width:90%"
-										value="" /></td>
+								<td>
+									<input name="bank" id="bank" cssStyle="width:90%"
+										value="" type="text"/>
+								</td>
 								<td>银行账户：</td>
-								<td><s:textfield name="account" id="account"
-										cssStyle="width:90%" value="" /></td>
+								<td>
+									<input name="account" id="account"
+										cssStyle="width:90%" value="" type="text"/>
+								</td>
 							</tr>
 							<tr>
 								<td>公司税号：</td>
-								<td><s:textfield name="taxCode" id="taxCode"
-										cssStyle="width:90%" value="" /></td>
+								<td>
+									<input name="taxCode" id="taxCode"
+										cssStyle="width:90%" value="" type="text"/>
+								</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
 							</tr>
@@ -311,26 +381,41 @@
 						<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							<tr>
 								<td width="16%">创建人：</td>
-								<td width="34%"><s:textfield name="creater" id="creater"
-										cssStyle="width:90%" cssClass="disabled" /></td>
+								<td width="34%">
+									<input name="creater" id="creater"
+										cssStyle="width:90%" cssClass="disabled" 
+										type="text"/>
+								</td>
 								<td width="16%">创建日期：</td>
-								<td width="34%"><s:textfield name="createTime"
-										id="createTime" cssStyle="width:90%" cssClass="disabled" /></td>
+								<td width="34%">
+									<input name="createTime"
+										id="createTime" cssStyle="width:90%" 
+										cssClass="disabled" type="text"/>
+								</td>
 							</tr>
 							<tr>
 								<td>修改人：</td>
-								<td><s:textfield name="updater" id="updater"
-										cssStyle="width:90%" cssClass="disabled" /></td>
+								<td>
+									<input name="updater" id="updater"
+										cssStyle="width:90%" cssClass="disabled"
+										type="text"/>
+								</td>
 								<td>修改日期：</td>
-								<td><s:textfield name="updateTime" id="updateTime"
-										cssStyle="width:90%" cssClass="disabled" /></td>
+								<td>
+									<input name="updateTime" id="updateTime"
+										cssStyle="width:90%" cssClass="disabled" 
+										type="text"/>
+								</td>
 							</tr>
 							<tr>
 								<td>所属人：</td>
 								<td>
-									<!-- 保存所有人的姓名 --> <s:textfield name="dispensePerson"
-										id="dispensePerson" cssStyle="width:90%" cssClass="disabled" />
-									<!-- 保存所属人的id --> <s:hidden name="ownerUser" />
+									<!-- 保存所有人的姓名 --> 
+									<input name="dispensePerson"
+										id="dispensePerson" cssStyle="width:90%" 
+										cssClass="disabled" type="text"/>
+									<!-- 保存所属人的id --> 
+									<input type="hidden" name="ownerUser" />
 								</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
@@ -340,7 +425,7 @@
 				</td>
 			</tr>
 		</table>
-	</s:form>
+	</form>
 	<script src="${pageContext.request.contextPath}/ui/js/menu.js"
 		type="text/javascript"></script>
 </body>
