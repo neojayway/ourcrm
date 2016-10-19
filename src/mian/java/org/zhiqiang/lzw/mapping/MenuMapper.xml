@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.zhiqiang.lzw.mapping.MenuMapper" >
+ 
   <resultMap id="BaseResultMap" type="org.zhiqiang.lzw.entity.Menu" >
-    <id column="menuId" property="menuid" jdbcType="INTEGER" />
-    <result column="menuLevel" property="menulevel" jdbcType="TINYINT" />
-    <result column="parentLevel" property="parentlevel" jdbcType="TINYINT" />
+    <id column="menuId" property="menuid" jdbcType="VARCHAR" />
+    <result column="parentMenuId" property="parentmenuid" jdbcType="VARCHAR" />
     <result column="menuName" property="menuname" jdbcType="VARCHAR" />
     <result column="sort" property="sort" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
@@ -12,36 +12,35 @@
     <result column="target" property="target" jdbcType="VARCHAR" />
     <result column="icon" property="icon" jdbcType="VARCHAR" />
   </resultMap>
+  
   <resultMap id="ResultMapWithBLOBs" type="org.zhiqiang.lzw.entity.Menu" extends="BaseResultMap" >
     <result column="remark" property="remark" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    menuId, menuLevel, parentLevel, menuName, sort, title, url, target, icon
+    menuId, parentMenuId, menuName, sort, title, url, target, icon
   </sql>
   <sql id="Blob_Column_List" >
     remark
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from sys_menu
-    where menuId = #{menuid,jdbcType=INTEGER}
+    where menuId = #{menuid,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from sys_menu
-    where menuId = #{menuid,jdbcType=INTEGER}
+    where menuId = #{menuid,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="org.zhiqiang.lzw.entity.Menu" >
-    insert into sys_menu (menuId, menuLevel, parentLevel, 
-      menuName, sort, title, 
-      url, target, icon, 
-      remark)
-    values (#{menuid,jdbcType=INTEGER}, #{menulevel,jdbcType=TINYINT}, #{parentlevel,jdbcType=TINYINT}, 
-      #{menuname,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
-      #{url,jdbcType=VARCHAR}, #{target,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=LONGVARCHAR})
+    insert into sys_menu (menuId, parentMenuId, menuName, 
+      sort, title, url, target, 
+      icon, remark)
+    values (#{menuid,jdbcType=VARCHAR}, #{parentmenuid,jdbcType=VARCHAR}, #{menuname,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{target,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{remark,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="org.zhiqiang.lzw.entity.Menu" >
     insert into sys_menu
@@ -49,11 +48,8 @@
       <if test="menuid != null" >
         menuId,
       </if>
-      <if test="menulevel != null" >
-        menuLevel,
-      </if>
-      <if test="parentlevel != null" >
-        parentLevel,
+      <if test="parentmenuid != null" >
+        parentMenuId,
       </if>
       <if test="menuname != null" >
         menuName,
@@ -79,13 +75,10 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="menuid != null" >
-        #{menuid,jdbcType=INTEGER},
+        #{menuid,jdbcType=VARCHAR},
       </if>
-      <if test="menulevel != null" >
-        #{menulevel,jdbcType=TINYINT},
-      </if>
-      <if test="parentlevel != null" >
-        #{parentlevel,jdbcType=TINYINT},
+      <if test="parentmenuid != null" >
+        #{parentmenuid,jdbcType=VARCHAR},
       </if>
       <if test="menuname != null" >
         #{menuname,jdbcType=VARCHAR},
@@ -113,11 +106,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="org.zhiqiang.lzw.entity.Menu" >
     update sys_menu
     <set >
-      <if test="menulevel != null" >
-        menuLevel = #{menulevel,jdbcType=TINYINT},
-      </if>
-      <if test="parentlevel != null" >
-        parentLevel = #{parentlevel,jdbcType=TINYINT},
+      <if test="parentmenuid != null" >
+        parentMenuId = #{parentmenuid,jdbcType=VARCHAR},
       </if>
       <if test="menuname != null" >
         menuName = #{menuname,jdbcType=VARCHAR},
@@ -141,12 +131,11 @@
         remark = #{remark,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where menuId = #{menuid,jdbcType=INTEGER}
+    where menuId = #{menuid,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.zhiqiang.lzw.entity.Menu" >
     update sys_menu
-    set menuLevel = #{menulevel,jdbcType=TINYINT},
-      parentLevel = #{parentlevel,jdbcType=TINYINT},
+    set parentMenuId = #{parentmenuid,jdbcType=VARCHAR},
       menuName = #{menuname,jdbcType=VARCHAR},
       sort = #{sort,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},
@@ -154,18 +143,17 @@
       target = #{target,jdbcType=VARCHAR},
       icon = #{icon,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=LONGVARCHAR}
-    where menuId = #{menuid,jdbcType=INTEGER}
+    where menuId = #{menuid,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="org.zhiqiang.lzw.entity.Menu" >
     update sys_menu
-    set menuLevel = #{menulevel,jdbcType=TINYINT},
-      parentLevel = #{parentlevel,jdbcType=TINYINT},
+    set parentMenuId = #{parentmenuid,jdbcType=VARCHAR},
       menuName = #{menuname,jdbcType=VARCHAR},
       sort = #{sort,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
       target = #{target,jdbcType=VARCHAR},
       icon = #{icon,jdbcType=VARCHAR}
-    where menuId = #{menuid,jdbcType=INTEGER}
+    where menuId = #{menuid,jdbcType=VARCHAR}
   </update>
 </mapper>

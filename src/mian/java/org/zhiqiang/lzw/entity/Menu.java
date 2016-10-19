@@ -1,11 +1,9 @@
 package org.zhiqiang.lzw.entity;
 
 public class Menu {
-    private Integer menuid;
+    private String menuid;
 
-    private Byte menulevel;
-
-    private Byte parentlevel;
+    private String parentmenuid;
 
     private String menuname;
 
@@ -21,28 +19,20 @@ public class Menu {
 
     private String remark;
 
-    public Integer getMenuid() {
+    public String getMenuid() {
         return menuid;
     }
 
-    public void setMenuid(Integer menuid) {
-        this.menuid = menuid;
+    public void setMenuid(String menuid) {
+        this.menuid = menuid == null ? null : menuid.trim();
     }
 
-    public Byte getMenulevel() {
-        return menulevel;
+    public String getParentmenuid() {
+        return parentmenuid;
     }
 
-    public void setMenulevel(Byte menulevel) {
-        this.menulevel = menulevel;
-    }
-
-    public Byte getParentlevel() {
-        return parentlevel;
-    }
-
-    public void setParentlevel(Byte parentlevel) {
-        this.parentlevel = parentlevel;
+    public void setParentmenuid(String parentmenuid) {
+        this.parentmenuid = parentmenuid == null ? null : parentmenuid.trim();
     }
 
     public String getMenuname() {
