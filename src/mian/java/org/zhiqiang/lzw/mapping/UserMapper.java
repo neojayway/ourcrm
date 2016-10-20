@@ -17,6 +17,9 @@ public interface UserMapper {
     
     //根据主键查询，关联查询角色，权限
     UserCustom selectByPrimaryKey(Integer id);
+    
+    //根据用户名和密码进行登录查询
+    UserCustom selectByNameAndPassword(String name,String password);
 
     int updateByPrimaryKeySelective(User record);
 

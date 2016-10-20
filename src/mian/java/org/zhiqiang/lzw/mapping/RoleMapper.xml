@@ -1,19 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.zhiqiang.lzw.mapping.RoleMapper" >
+
   <resultMap id="BaseResultMap" type="org.zhiqiang.lzw.entity.Role" >
     <id column="roleId" property="roleid" jdbcType="INTEGER" />
     <result column="roleName" property="rolename" jdbcType="VARCHAR" />
   </resultMap>
+  
+  <resultMap type="org.zhiqiang.lzw.entity.custom.RoleCustom" id="RoleCustomResultMap" extends="BaseResultMap">
+	<!-- 角色与权限的多对多关系 -->
+	<collection property="privileges" ofType="org.zhiqiang.lzw.entity.Privilege">
+		<id column="privilegeid" property="privilegeid"/>
+		<result column="privilegename" property="privilegename"/>
+		<result column="privilegeurl" property="privilegeurl"/>
+		<result column="privilegecode" property="privilegecode"/>
+		<result column="privilegepos" property="privilegepos"/>
+		<result column="privalegecomm" property="privalegecomm"/>
+		<result column="menuId" property="menuId"/>
+	</collection>
+  </resultMap>
+  
   <sql id="Base_Column_List" >
     roleId, roleName
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  
+  <!-- 根据角色编号查询指定角色 -->
+  <select id="selectByPrimaryKey" resultMap="RoleCustomResultMap" parameterType="java.lang.Integer">
     select 
     <include refid="Base_Column_List" />
-    from sys_role
+    ,p.*
+    from sys_role_privilege rp
+    INNER JOIN sys_role r ON r.roleId=rp.roleId
+	INNER JOIN sys_privilege p ON rp.privilegeId=p.privilegeId
     where roleId = #{roleid,jdbcType=INTEGER}
   </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sys_role
     where roleId = #{roleid,jdbcType=INTEGER}

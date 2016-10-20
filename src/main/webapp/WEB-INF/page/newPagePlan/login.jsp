@@ -152,7 +152,7 @@ body {
 												src="${pageContext.request.contextPath}/ui/images/login.png"
 												id="login" onClick="checkSubmit();" style="cursor: hand">
 											&nbsp;
-											<a href="${pageContext.request.contextPath}/page/newPagePlan/menu/main.jsp">
+											<a href="${pageContext.request.contextPath}/user/login.do">
 												登录
 											</a>
 											&nbsp;

@@ -50,8 +50,9 @@
   		<result column="remark" property="remark"/>
   	</association>
   	<!-- 用户与角色的多对多关系 -->
-  	<collection property="roleCustoms" ofType="org.zhiqiang.lzw.entity.custom.RoleCustom">
-  		<id column="roleid" property="roleid"/>
+  	<collection property="roleCustoms" ofType="org.zhiqiang.lzw.entity.custom.RoleCustom" 
+  		select="org.zhiqiang.lzw.mapping.RoleMapper.selectByPrimaryKey" column="roleId">
+  		<id column="roleId" property="roleid"/>
   		<result column="rolename" property="rolename"/>
   		<!-- 角色与权限的多对多关系 -->
   		<collection property="privileges" ofType="org.zhiqiang.lzw.entity.Privilege">
@@ -85,9 +86,28 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from sys_user
+    ,r.*
+    from sys_user_role ur
+    INNER JOIN sys_role r ON ur.roleId=r.roleId
+	INNER JOIN sys_user u ON ur.userId=u.id;
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
+  <!-- 根据用户名和密码登录查询用户，并且关联查询角色，权限 -->
+  <select id="selectByNameAndPassword" resultMap="UserCustomResultMap" parameterMap="Map" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    ,r.*
+    from sys_user_role ur
+    INNER JOIN sys_role r ON ur.roleId=r.roleId
+	INNER JOIN sys_user u ON ur.userId=u.id;
+    where name = #{name,jdbcType=VARCHAR}
+    AND password = #{password,jdbcType=VARCHAR}
+  </select>
+  
+  
    
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sys_user
