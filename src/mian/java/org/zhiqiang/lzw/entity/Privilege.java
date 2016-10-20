@@ -13,6 +13,8 @@ public class Privilege {
 
     private Boolean privalegecomm;
 
+    private String menuid;
+
     public Integer getPrivilegeid() {
         return privilegeid;
     }
@@ -59,5 +61,13 @@ public class Privilege {
 
     public void setPrivalegecomm(Boolean privalegecomm) {
         this.privalegecomm = privalegecomm;
+    }
+
+    public String getMenuid() {
+        return menuid;
+    }
+
+    public void setMenuid(String menuid) {
+        this.menuid = menuid == null ? null : menuid.trim();
     }
 }

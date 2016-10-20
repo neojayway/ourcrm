@@ -178,7 +178,7 @@ function  disable(){
 				<!-- data -->
 
 				<c:if test="#request.sysUserList!=null">
-					<c:forEach value="#request.sysUserList" var="sysUser">
+					<c:forEach items="">
 						<tr>
 							<td>
 								<input type="checkbox" name="ids" fieldValue="%{#sysUser.id}"

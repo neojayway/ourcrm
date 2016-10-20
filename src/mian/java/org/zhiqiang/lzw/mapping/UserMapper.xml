@@ -41,6 +41,32 @@
     <result column="consortCompany" property="consortcompany" jdbcType="VARCHAR" />
   </resultMap>
   
+  <!-- 用户自定义resultMap -->
+  <resultMap id="UserCustomResultMap" type="org.zhiqiang.lzw.entity.custom.UserCustom" extends="ResultMapWithBLOBs"> 
+    <!-- 用户与部门的一对一关系 -->
+  	<association property="group" javaType="org.zhiqiang.lzw.entity.Group">
+  		<id column="groupid" property="groupid"/>
+  		<result column="groupname" property="groupname"/>
+  		<result column="remark" property="remark"/>
+  	</association>
+  	<!-- 用户与角色的多对多关系 -->
+  	<collection property="roleCustoms" ofType="org.zhiqiang.lzw.entity.custom.RoleCustom">
+  		<id column="roleid" property="roleid"/>
+  		<result column="rolename" property="rolename"/>
+  		<!-- 角色与权限的多对多关系 -->
+  		<collection property="privileges" ofType="org.zhiqiang.lzw.entity.Privilege">
+  			<id column="privilegeid" property="privilegeid"/>
+  			<result column="privilegename" property="privilegename"/>
+  			<result column="privilegeurl" property="privilegeurl"/>
+  			<result column="privilegecode" property="privilegecode"/>
+  			<result column="privilegepos" property="privilegepos"/>
+  			<result column="privalegecomm" property="privalegecomm"/>
+  			<result column="menuId" property="menuId"/>
+  		</collection>
+  	</collection>
+  </resultMap>
+  
+  
   <sql id="Base_Column_List" >
     id, creator, createTime, updater, updateTime, name, cnname, password, address, telephone, 
     email, beginDate, endDate, groupId, accessFileLevel, status, commendMan, movetelePhone, 
@@ -52,7 +78,9 @@
     remark, avocation, strongSuit, commUniCate, bringup, organise, analyse, planing, 
     empolder, relation
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  
+  <!-- 根据主键查询User --> 
+  <select id="selectByPrimaryKey" resultMap="UserCustomResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     ,
@@ -60,11 +88,12 @@
     from sys_user
     where id = #{id,jdbcType=INTEGER}
   </select>
+   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sys_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="org.zhiqiang.lzw.entity.User" >
+  <insert id="insert" parameterType="org.zhiqiang.lzw.entity.UserWithBLOBs" >
     insert into sys_user (id, creator, createTime, 
       updater, updateTime, name, 
       cnname, password, address, 
@@ -98,7 +127,7 @@
       #{organise,jdbcType=LONGVARCHAR}, #{analyse,jdbcType=LONGVARCHAR}, #{planing,jdbcType=LONGVARCHAR}, 
       #{empolder,jdbcType=LONGVARCHAR}, #{relation,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="org.zhiqiang.lzw.entity.User" >
+  <insert id="insertSelective" parameterType="org.zhiqiang.lzw.entity.UserWithBLOBs" >
     insert into sys_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -387,7 +416,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="org.zhiqiang.lzw.entity.User" >
+  <update id="updateByPrimaryKeySelective" parameterType="org.zhiqiang.lzw.entity.UserWithBLOBs" >
     update sys_user
     <set >
       <if test="creator != null" >
@@ -531,7 +560,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.zhiqiang.lzw.entity.User" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.zhiqiang.lzw.entity.UserWithBLOBs" >
     update sys_user
     set creator = #{creator,jdbcType=VARCHAR},
       createTime = #{createtime,jdbcType=VARCHAR},

@@ -8,9 +8,11 @@
     <result column="privilegeCode" property="privilegecode" jdbcType="BIGINT" />
     <result column="privilegePos" property="privilegepos" jdbcType="INTEGER" />
     <result column="privalegeComm" property="privalegecomm" jdbcType="BIT" />
+    <result column="menuId" property="menuid" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    privilegeId, privilegeName, privilegeUrl, privilegeCode, privilegePos, privalegeComm
+    privilegeId, privilegeName, privilegeUrl, privilegeCode, privilegePos, privalegeComm, 
+    menuId
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -24,11 +26,11 @@
   </delete>
   <insert id="insert" parameterType="org.zhiqiang.lzw.entity.Privilege" >
     insert into sys_privilege (privilegeId, privilegeName, privilegeUrl, 
-      privilegeCode, privilegePos, privalegeComm
-      )
+      privilegeCode, privilegePos, privalegeComm, 
+      menuId)
     values (#{privilegeid,jdbcType=INTEGER}, #{privilegename,jdbcType=VARCHAR}, #{privilegeurl,jdbcType=VARCHAR}, 
-      #{privilegecode,jdbcType=BIGINT}, #{privilegepos,jdbcType=INTEGER}, #{privalegecomm,jdbcType=BIT}
-      )
+      #{privilegecode,jdbcType=BIGINT}, #{privilegepos,jdbcType=INTEGER}, #{privalegecomm,jdbcType=BIT}, 
+      #{menuid,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="org.zhiqiang.lzw.entity.Privilege" >
     insert into sys_privilege
@@ -51,6 +53,9 @@
       <if test="privalegecomm != null" >
         privalegeComm,
       </if>
+      <if test="menuid != null" >
+        menuId,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="privilegeid != null" >
@@ -70,6 +75,9 @@
       </if>
       <if test="privalegecomm != null" >
         #{privalegecomm,jdbcType=BIT},
+      </if>
+      <if test="menuid != null" >
+        #{menuid,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -91,6 +99,9 @@
       <if test="privalegecomm != null" >
         privalegeComm = #{privalegecomm,jdbcType=BIT},
       </if>
+      <if test="menuid != null" >
+        menuId = #{menuid,jdbcType=VARCHAR},
+      </if>
     </set>
     where privilegeId = #{privilegeid,jdbcType=INTEGER}
   </update>
@@ -100,7 +111,8 @@
       privilegeUrl = #{privilegeurl,jdbcType=VARCHAR},
       privilegeCode = #{privilegecode,jdbcType=BIGINT},
       privilegePos = #{privilegepos,jdbcType=INTEGER},
-      privalegeComm = #{privalegecomm,jdbcType=BIT}
+      privalegeComm = #{privalegecomm,jdbcType=BIT},
+      menuId = #{menuid,jdbcType=VARCHAR}
     where privilegeId = #{privilegeid,jdbcType=INTEGER}
   </update>
 </mapper>

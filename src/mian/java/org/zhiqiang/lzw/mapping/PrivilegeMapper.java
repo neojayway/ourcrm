@@ -8,7 +8,10 @@ public interface PrivilegeMapper {
     int insert(Privilege record);
 
     int insertSelective(Privilege record);
-
+    
+    //根据菜单编号查询权限
+    Privilege selectByMunuId(String menuId);
+    
     Privilege selectByPrimaryKey(Integer privilegeid);
 
     int updateByPrimaryKeySelective(Privilege record);

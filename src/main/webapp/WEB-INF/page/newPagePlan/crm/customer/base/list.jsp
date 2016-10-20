@@ -251,7 +251,7 @@
 				
 				<!-- data -->
 				<c:if test="#request.companyList!=null">
-					<c:forEach value="#request.companyList" var="company">
+					<c:forEach begin="" end="" var=""> 
 						<tr>
 							<td>
 								<input type="text" name="ids" fieldValue="%{#company.id}"

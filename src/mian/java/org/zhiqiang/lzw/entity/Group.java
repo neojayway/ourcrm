@@ -1,46 +1,26 @@
 package org.zhiqiang.lzw.entity;
 
 public class Group {
-    private Integer id;
+    private Integer groupid;
 
-    private String name;
-
-    private String principal;
-
-    private String incumbent;
+    private String groupname;
 
     private String remark;
 
-    public Integer getId() {
-        return id;
+    public Integer getGroupid() {
+        return groupid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setGroupid(Integer groupid) {
+        this.groupid = groupid;
     }
 
-    public String getName() {
-        return name;
+    public String getGroupname() {
+        return groupname;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getPrincipal() {
-        return principal;
-    }
-
-    public void setPrincipal(String principal) {
-        this.principal = principal == null ? null : principal.trim();
-    }
-
-    public String getIncumbent() {
-        return incumbent;
-    }
-
-    public void setIncumbent(String incumbent) {
-        this.incumbent = incumbent == null ? null : incumbent.trim();
+    public void setGroupname(String groupname) {
+        this.groupname = groupname == null ? null : groupname.trim();
     }
 
     public String getRemark() {
