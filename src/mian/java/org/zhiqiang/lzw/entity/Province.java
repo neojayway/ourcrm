@@ -1,13 +1,33 @@
 package org.zhiqiang.lzw.entity;
 
+/**
+ * 省份实体类
+ * @author Administrator
+ *
+ */
 public class Province {
+	
+	//主键ID
     private Integer id;
 
+    //省份名称
     private String name;
 
+    //省份拼音码
     private String pycode;
 
-    public Integer getId() {
+    public Province() {
+		super();
+	}
+
+	public Province(Integer id, String name, String pycode) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.pycode = pycode;
+	}
+
+	public Integer getId() {
         return id;
     }
 

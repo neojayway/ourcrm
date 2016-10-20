@@ -2,84 +2,184 @@ package org.zhiqiang.lzw.entity;
 
 import java.util.Date;
 
+/**
+ * 客户实体类
+ * @author Administrator
+ *
+ */
 public class Company {
+	
+	//客户编号
     private Integer id;
 
+    //客户编码
     private String code;
 
+    //客户名称
     private String name;
 
+    //客户名称拼音
     private String pycode;
 
+    //客户等级
     private String grade;
 
+    //区域名称
     private String regionname;
 
+    //客户的来源
     private String source;
 
+    //客户所属行业
     private String trade;
 
+    //客户公司规模
     private String scale;
 
+    //所在省份
     private String province;
 
+    //所在城市
     private String city;
 
+    //邮编
     private String postcode;
 
+    //详细地址
     private String address;
 
+    //邮箱
     private String email;
 
+    //网站
     private String web;
 
+    //电话
     private String tel1;
 
+    //传真
     private String fax;
 
+    //手机
     private String mobile;
 
+    //第二电话
     private String tel2;
 
+    //下次的联系时间
     private Date nexttouchdate;
 
+    //客户性质
     private String quality;
 
+    //经营范围
     private String dealin;
 
+    //企业性质
     private String kind;
 
+    //法人代表
     private String artificialperson;
 
+    //注册资金
     private String registemoney;
 
+    //开户银行
     private String bank;
 
+    //银行账号
     private String account;
 
+    //公司税号
     private String taxcode;
 
+    //创建人
     private String creater;
 
+    //创建时间
     private String createtime;
 
+    //修改人
     private String updater;
 
+    //修改时间
     private String updatetime;
 
+    //所属人
     private Integer owneruser;
 
+    //所属人名称
     private String dispenseperson;
 
+    //分配日期
     private String dispensedate;
 
+    //是否共享
     private String shareflag;
 
+    //共享ID
     private String shareids;
 
+    //备注
     private String remark;
 
-    public Integer getId() {
+    public Company() {
+		super();
+	}
+
+	public Company(Integer id, String code, String name, String pycode,
+			String grade, String regionname, String source, String trade,
+			String scale, String province, String city, String postcode,
+			String address, String email, String web, String tel1, String fax,
+			String mobile, String tel2, Date nexttouchdate, String quality,
+			String dealin, String kind, String artificialperson,
+			String registemoney, String bank, String account, String taxcode,
+			String creater, String createtime, String updater,
+			String updatetime, Integer owneruser, String dispenseperson,
+			String dispensedate, String shareflag, String shareids,
+			String remark) {
+		super();
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.pycode = pycode;
+		this.grade = grade;
+		this.regionname = regionname;
+		this.source = source;
+		this.trade = trade;
+		this.scale = scale;
+		this.province = province;
+		this.city = city;
+		this.postcode = postcode;
+		this.address = address;
+		this.email = email;
+		this.web = web;
+		this.tel1 = tel1;
+		this.fax = fax;
+		this.mobile = mobile;
+		this.tel2 = tel2;
+		this.nexttouchdate = nexttouchdate;
+		this.quality = quality;
+		this.dealin = dealin;
+		this.kind = kind;
+		this.artificialperson = artificialperson;
+		this.registemoney = registemoney;
+		this.bank = bank;
+		this.account = account;
+		this.taxcode = taxcode;
+		this.creater = creater;
+		this.createtime = createtime;
+		this.updater = updater;
+		this.updatetime = updatetime;
+		this.owneruser = owneruser;
+		this.dispenseperson = dispenseperson;
+		this.dispensedate = dispensedate;
+		this.shareflag = shareflag;
+		this.shareids = shareids;
+		this.remark = remark;
+	}
+
+	public Integer getId() {
         return id;
     }
 

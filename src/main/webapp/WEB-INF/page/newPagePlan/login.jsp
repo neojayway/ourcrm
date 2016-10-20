@@ -63,8 +63,8 @@ body {
 
 <BODY topmargin="0" leftmargin="0"
 	onLoad="if (window.location != window.top.location) window.top.location.href=window.location.href; document.all.userName.focus();setUserName();">
-	<%-- <form name="form1" method="post" action="${pageContext.request.contextPath}/sys/loginAction.do?method=isLogin"> --%>
-	<form name="form1" method="post" action="">
+	<form name="form1" method="post" action="${pageContext.request.contextPath}/sys/loginAction.do?method=isLogin">
+	<!-- <form name="form1" method="post" action=""> -->
 		<TABLE width="100%" cellpadding="0" cellspacing="0" id="header">
 			<TR>
 				<TD>
@@ -95,7 +95,7 @@ body {
 					<TABLE width="100%" cellpadding="0" cellspacing="0">
 						<TR>
 							<TD valign="top" align="center">
-								<img src="${pageContext.request.contextPath}/ui/images/login.jpg">
+								<img src="${pageContext.request.contextPath}/ui/images/6de23acd08b3d569c38beade29c3293e.jpg">
 							</TD>
 							<TD width="44" height="200"
 								background="${pageContext.request.contextPath}/ui/images/line.png">
