@@ -1,27 +1,63 @@
 package org.zhiqiang.lzw.entity;
 
+/**
+ * 编码规则实体类
+ * @author Administrator
+ *
+ */
 public class CodeRule {
+	
+	//主键ID
     private Integer id;
 
+    //模块名称
     private String module;
 
+    //生成的编码的前缀
     private String areaprefix;
 
+    //生成的编码的日期位
     private String areatime;
 
+    //生成的编码的后缀序号
     private Integer glidebit;
 
+    //提供预览的编码
     private String currentcode;
 
+    //对应数据表名
     private String tabname;
 
+    //是否有效
     private String available;
 
+    //下次产生的序号
     private String nextseq;
 
+    //序号对应的日期
     private String curdate;
 
-    public Integer getId() {
+    public CodeRule() {
+		super();
+	}
+
+	public CodeRule(Integer id, String module, String areaprefix,
+			String areatime, Integer glidebit, String currentcode,
+			String tabname, String available, String nextseq, String curdate) {
+		super();
+		this.id = id;
+		this.module = module;
+		this.areaprefix = areaprefix;
+		this.areatime = areatime;
+		this.glidebit = glidebit;
+		this.currentcode = currentcode;
+		this.tabname = tabname;
+		this.available = available;
+		this.nextseq = nextseq;
+		this.curdate = curdate;
+	}
+
+	public Integer getId() {
         return id;
     }
 

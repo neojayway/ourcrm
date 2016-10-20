@@ -1,19 +1,46 @@
 package org.zhiqiang.lzw.entity;
 
+/**
+ * 字典类型的实体类
+ * @author Administrator
+ *
+ */
 public class DictionaryType {
+	
+	//主键ID
     private Integer id;
 
+    //用来排序的序号
     private Integer sort;
 
+    //用来区分各个类型的标识
     private String code;
 
+    //字典类型的细节值
     private String value;
 
+    //是否有效
     private String sysflag;
 
+    //备注
     private String remark;
+    
+    public DictionaryType() {
+		super();
+	}
 
-    public Integer getId() {
+	public DictionaryType(Integer id, Integer sort, String code, String value,
+			String sysflag, String remark) {
+		super();
+		this.id = id;
+		this.sort = sort;
+		this.code = code;
+		this.value = value;
+		this.sysflag = sysflag;
+		this.remark = remark;
+	}
+
+	public Integer getId() {
         return id;
     }
 

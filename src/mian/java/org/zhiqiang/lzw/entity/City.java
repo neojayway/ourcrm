@@ -1,19 +1,41 @@
 package org.zhiqiang.lzw.entity;
 
+/**
+ * 城市实体类
+ * @author Administrator
+ *
+ */
 public class City {
-    private Integer id;
+	
+    private Integer id;//主键ID
 
-    private String name;
+    private String name;//城市名
 
-    private String pycode;
+    private String pycode;//城市拼音码
 
-    private Integer pid;
+    private Integer pid;//对应省份ID
 
-    private String postcode;
+    private String postcode;//城市邮编
 
-    private String areacode;
+    private String areacode;//城市区号
 
-    public Integer getId() {
+    //构造方法(无参)
+    public City() {
+		super();
+	}
+
+	public City(Integer id, String name, String pycode, Integer pid,
+			String postcode, String areacode) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.pycode = pycode;
+		this.pid = pid;
+		this.postcode = postcode;
+		this.areacode = areacode;
+	}
+
+	public Integer getId() {
         return id;
     }
 
