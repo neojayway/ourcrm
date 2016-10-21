@@ -1,9 +1,11 @@
 package org.zhiqiang.lzw.web;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.zhiqiang.lzw.entity.custom.UserCustom;
@@ -23,7 +25,9 @@ public class UserController {
 	private IUserService userService;
 
 	@RequestMapping("/login")
-	public String login(String name,String password,HttpSession session){
+	public String login(String name,String password,HttpServletRequest request,HttpSession session){
+		System.out.println(request.getParameter("name"));
+		System.out.println(name+"\t"+password);
 		UserCustom userCustom =null;
 		if (name!=null && !name.trim().isEmpty() 
 			&& password!=null && !password.trim().isEmpty()) {
@@ -32,8 +36,9 @@ public class UserController {
 		if (userCustom!=null) {
 			//登录成功，将用户信息保存至session域中
 			session.setAttribute("userCustom", userCustom);
-			return "page/newPagePlan/menu/main";
+			return "WEB-INF/page/newPagePlan/menu/main";
 		}
+		System.out.println(userCustom+"---------------");
 		return "index";
 	}
 	

@@ -44,18 +44,8 @@ body {
 	}
 
 	function checkSubmit() {
-		if ($("#name").val().length <= 0) {
-			alert("登陆的用户名不能为空");
-			return false;
-		}
-		if ($("#password").val().length <= 0) {
-			alert("登陆的密码不能为空");
-			return false;
-		}
-		if ($("#checkNum").val().length <= 0) {
-			alert("验证码不能为空");
-			return false;
-		}
+		
+		alert(111);
 		document.forms[0].submit();
 	}
 </script>
@@ -63,7 +53,7 @@ body {
 
 <BODY topmargin="0" leftmargin="0"
 	onLoad="if (window.location != window.top.location) window.top.location.href=window.location.href; document.all.userName.focus();setUserName();">
-	<form name="form1" method="post" action="${pageContext.request.contextPath}/sys/loginAction.do?method=isLogin">
+	<form name="form1" method="post" action="${pageContext.request.contextPath}/user/login.do">
 	<!-- <form name="form1" method="post" action=""> -->
 		<TABLE width="100%" cellpadding="0" cellspacing="0" id="header">
 			<TR>
@@ -150,11 +140,11 @@ body {
 										<TD>
 											<img
 												src="${pageContext.request.contextPath}/ui/images/login.png"
-												id="login" onClick="checkSubmit();" style="cursor: hand">
+												id="login" onClick="checkSubmit();" style="cursor: pointer;">
 											&nbsp;
-											<a href="${pageContext.request.contextPath}/user/login.do">
+											<%-- <a href="${pageContext.request.contextPath}/user/login.do">
 												登录
-											</a>
+											</a> --%>
 											&nbsp;
 											<img src="${pageContext.request.contextPath}/ui/images/reset.png"
 												id="reset" onClick="" style="cursor: hand">
