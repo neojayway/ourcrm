@@ -50,4 +50,11 @@ public class Province {
     public void setPycode(String pycode) {
         this.pycode = pycode == null ? null : pycode.trim();
     }
+
+	@Override
+	public String toString() {
+		return "Province [id=" + id + ", name=" + name + ", pycode=" + pycode
+				+ "]";
+	}
+    
 }

@@ -17,6 +17,27 @@
     id, name, pycode, pid, postcode, areacode
   </sql>
   
+  <!-- 获取所有记录数 -->
+  <select id="getCounts" resultType="int">
+  	select count(1) from b_city
+  </select>
+  
+  <!-- 分页获取记录 -->
+  <select id="getByPage" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+	<!-- 导入sql片段 -->
+    <include refid="Base_Column_List" />
+	from b_city limit #{offset} , #{pageSize}
+  </select>
+  
+  <!-- 获取所有记录 -->
+  <select id="getAll" resultMap="BaseResultMap">
+  	select 
+	<!-- 导入sql片段 -->
+    <include refid="Base_Column_List" />
+	from b_city
+  </select>
+  
   <!-- 根据主键ID查询 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -24,6 +45,15 @@
     <include refid="Base_Column_List" />
     from b_city
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 根据省份ID查询对应城市列表 -->
+  <select id="getCitysByPid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select 
+    <!-- 导入sql片段 -->
+    <include refid="Base_Column_List" />
+    from b_city
+    where pid=#{pid,jdbcType=INTEGER}
   </select>
   
   <!-- 根据主键ID删除 -->
