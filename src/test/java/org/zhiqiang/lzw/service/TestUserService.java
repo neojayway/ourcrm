@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.zhiqiang.lzw.entity.custom.UserCustom;
 
 public class TestUserService {
 	
@@ -16,7 +17,8 @@ public class TestUserService {
 	@Test
 	public void testUserLogin() {
 		IUserService userService = (IUserService) context.getBean("userService");
-		userService.login("RedMushroom", "123");
+		UserCustom userCustom = userService.login("RedMushroom", "123");
+		System.out.println(userCustom.getName()+"\t"+userCustom.getGroup().getGroupname());
 	}
 
 }

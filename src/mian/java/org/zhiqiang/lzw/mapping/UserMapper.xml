@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.zhiqiang.lzw.mapping.UserMapper" >
+  
   <resultMap id="BaseResultMap" type="org.zhiqiang.lzw.entity.User" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -41,30 +42,44 @@
     <result column="consortCompany" property="consortcompany" jdbcType="VARCHAR" />
   </resultMap>
   
+  <resultMap id="ResultMapWithBLOBs" type="org.zhiqiang.lzw.entity.UserWithBLOBs" extends="BaseResultMap" >
+    <result column="remark" property="remark" jdbcType="LONGVARCHAR" />
+    <result column="avocation" property="avocation" jdbcType="LONGVARCHAR" />
+    <result column="strongSuit" property="strongsuit" jdbcType="LONGVARCHAR" />
+    <result column="commUniCate" property="communicate" jdbcType="LONGVARCHAR" />
+    <result column="bringup" property="bringup" jdbcType="LONGVARCHAR" />
+    <result column="organise" property="organise" jdbcType="LONGVARCHAR" />
+    <result column="analyse" property="analyse" jdbcType="LONGVARCHAR" />
+    <result column="planing" property="planing" jdbcType="LONGVARCHAR" />
+    <result column="empolder" property="empolder" jdbcType="LONGVARCHAR" />
+    <result column="relation" property="relation" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
   <!-- 用户自定义resultMap -->
   <resultMap id="UserCustomResultMap" type="org.zhiqiang.lzw.entity.custom.UserCustom" extends="ResultMapWithBLOBs"> 
     <!-- 用户与部门的一对一关系 -->
   	<association property="group" javaType="org.zhiqiang.lzw.entity.Group">
-  		<id column="groupid" property="groupid"/>
+  		<id column="groupId" property="groupid"/>
   		<result column="groupname" property="groupname"/>
-  		<result column="remark" property="remark"/>
+  		<result column="groupRemark" property="remark"/>
   	</association>
   	<!-- 用户与角色的多对多关系 -->
-  	<collection property="roleCustoms" ofType="org.zhiqiang.lzw.entity.custom.RoleCustom" 
+  	<collection property="roleCustoms" ofType="org.zhiqiang.lzw.entity.custom.RoleCustom"
   		select="org.zhiqiang.lzw.mapping.RoleMapper.selectByPrimaryKey" column="roleId">
   		<id column="roleId" property="roleid"/>
   		<result column="rolename" property="rolename"/>
   		<!-- 角色与权限的多对多关系 -->
-  		<collection property="privileges" ofType="org.zhiqiang.lzw.entity.Privilege">
-  			<id column="privilegeid" property="privilegeid"/>
-  			<result column="privilegename" property="privilegename"/>
-  			<result column="privilegeurl" property="privilegeurl"/>
-  			<result column="privilegecode" property="privilegecode"/>
-  			<result column="privilegepos" property="privilegepos"/>
-  			<result column="privalegecomm" property="privalegecomm"/>
-  			<result column="menuId" property="menuId"/>
-  		</collection>
+		<collection property="privileges" ofType="org.zhiqiang.lzw.entity.Privilege">
+		<id column="privilegeid" property="privilegeid"/>
+		<result column="privilegename" property="privilegename"/>
+		<result column="privilegeurl" property="privilegeurl"/>
+		<result column="privilegecode" property="privilegecode"/>
+		<result column="privilegepos" property="privilegepos"/>
+		<result column="privalegecomm" property="privalegecomm"/>
+		<result column="menuId" property="menuId"/>
+	</collection>
   	</collection>
+  	
   </resultMap>
   
   
@@ -93,16 +108,25 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   
-  <!-- 根据用户名和密码登录查询用户，并且关联查询角色，权限 -->
-  <select id="selectByNameAndPassword" resultMap="UserCustomResultMap" parameterMap="Map" >
+  <!-- 
+  	根据用户名和密码登录查询用户，并且关联查询角色，权限
+  	注意:这些字段如果用sql片段的方式去引用的话，就不能指定到底是哪个表的字段，在多表连接查询时，如果有重名字段，就会出现冲突 
+  -->
+  <select id="selectByNameAndPassword" resultMap="UserCustomResultMap" parameterType="java.util.Map" >
     select 
-    <include refid="Base_Column_List" />
+    id, creator, createTime, updater, updateTime, name, cnname, password, address, telephone, 
+    email, beginDate, endDate, u.groupId, accessFileLevel, status, commendMan, movetelePhone, 
+    nowAddress, nowtelePhone, identityCode, insuranceCode, instancyLinkman, instancytelePhone, 
+    sex, birthday, personnelType, duty, workDate, highSchool, finishSchool, finishSchoolDate, 
+    consortName, youngoneName, officetelePhone, consorttelePhone, consortCompany
     ,
-    <include refid="Blob_Column_List" />
-    ,r.*
+    u.remark, avocation, strongSuit, commUniCate, bringup, organise, analyse, planing, 
+    empolder, relation
+    ,r.*,groupName,g.remark groupRemark
     from sys_user_role ur
     INNER JOIN sys_role r ON ur.roleId=r.roleId
-	INNER JOIN sys_user u ON ur.userId=u.id;
+	INNER JOIN sys_user u ON ur.userId=u.id
+	INNER JOIN sys_group g ON u.groupId=g.groupId
     where name = #{name,jdbcType=VARCHAR}
     AND password = #{password,jdbcType=VARCHAR}
   </select>

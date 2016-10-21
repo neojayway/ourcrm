@@ -1,5 +1,7 @@
 package org.zhiqiang.lzw.mapping;
 
+import java.util.Map;
+
 import org.zhiqiang.lzw.entity.User;
 import org.zhiqiang.lzw.entity.custom.UserCustom;
 
@@ -19,7 +21,7 @@ public interface UserMapper {
     UserCustom selectByPrimaryKey(Integer id);
     
     //根据用户名和密码进行登录查询
-    UserCustom selectByNameAndPassword(String name,String password);
+    UserCustom selectByNameAndPassword(Map<String, String> map);
 
     int updateByPrimaryKeySelective(User record);
 
