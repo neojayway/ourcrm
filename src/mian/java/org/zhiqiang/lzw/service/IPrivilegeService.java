@@ -11,6 +11,14 @@ import org.zhiqiang.lzw.entity.Privilege;
  */
 public interface IPrivilegeService {
 	
-	//查询所有权限
+	/**
+	 * 查询所有权限
+	 * @return
+	 */
 	public List<Privilege> selectAll();
+	
+	/**
+	 * 新增权限
+	 */
+	public void addPrivilege(Privilege privilege);
 }

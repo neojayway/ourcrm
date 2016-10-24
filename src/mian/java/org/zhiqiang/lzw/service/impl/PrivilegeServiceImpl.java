@@ -21,15 +21,28 @@ public class PrivilegeServiceImpl implements IPrivilegeService{
 	@Autowired
 	@Qualifier("privilegeMapper")
 	private PrivilegeMapper privilegeMapper;
-
+	
+	/**
+	 * 查询所有权限
+	 */
 	@Override
 	public List<Privilege> selectAll() {
 		return privilegeMapper.selectAll();
 	}
 	
+	/**
+	 * 新增权限
+	 */
+	@Override
+	public void addPrivilege(Privilege privilege) {
+		privilegeMapper.insertSelective(privilege);
+	}
+	
 	public void setPrivilegeMapper(PrivilegeMapper privilegeMapper) {
 		this.privilegeMapper = privilegeMapper;
 	}
+	
+	
 
 
 

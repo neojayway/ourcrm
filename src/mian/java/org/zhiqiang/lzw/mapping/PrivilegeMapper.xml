@@ -92,6 +92,7 @@
       </if>
     </trim>
   </insert>
+  
   <update id="updateByPrimaryKeySelective" parameterType="org.zhiqiang.lzw.entity.Privilege" >
     update sys_privilege
     <set >
