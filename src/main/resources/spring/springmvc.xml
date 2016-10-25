@@ -22,7 +22,7 @@
 	<mvc:resources location="/ui/" mapping="/ui/**"/> -->
 	
 	<!-- 注解驱动 ,代替两个注解映射器和适配器-->
-	<mvc:annotation-driven/>
+	<mvc:annotation-driven conversion-service="conversionService"/>
 	
 	<!-- 配置视图解析器 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -45,4 +45,33 @@
 		</mvc:interceptor>
 	</mvc:interceptors> -->
 	
+	<mvc:interceptors>
+		<!-- 权限拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/*/*.do" />
+			<bean class="org.zhiqiang.lzw.interceptor.CheckPrivilegeInterceptor"/>
+		</mvc:interceptor> 
+	</mvc:interceptors>
+	
+	
+	<!-- 
+		自定义参数绑定
+		这个bean需要注册到处理器适配器中，因为是适配器完成controller的参数绑定 
+	-->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<!-- 转换器 -->
+		<property name="converters">
+			<list>
+				<!-- 日期类型转换 -->
+				<bean class="org.zhiqiang.lzw.converter.DateConverter"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 
+		全局异常处理器 
+		只要配置一个bean并且这个bean实现了HandlerExceptionResolver接口，
+		就能被识别为全局异常处理器，全局异常处理器只能有一个
+	-->
+	<bean class="org.zhiqiang.lzw.exception.CustomExceptionResolver"/>
 </beans>
