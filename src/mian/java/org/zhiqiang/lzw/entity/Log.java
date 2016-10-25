@@ -1,22 +1,19 @@
 package org.zhiqiang.lzw.entity;
 
-/**
- * 日志实体
- * @author LZW
- *
- */
 public class Log {
-    private Integer id;				//编号
+    private Integer id;
 
-    private String username;		//登录用户的名称
+    private String username;
 
-    private String cnname;			//登录用户的中文名称
+    private String cnname;
 
-    private String actiontype;		//操作类型
+    private String actiontype;
 
-    private String actiondate;		//操作的日期
+    private String result;
 
-    private String actioncontent;	//操作的内容（json格式的字符串）
+    private String actiondate;
+
+    private String actioncontent;
 
     public Integer getId() {
         return id;
@@ -48,6 +45,14 @@ public class Log {
 
     public void setActiontype(String actiontype) {
         this.actiontype = actiontype == null ? null : actiontype.trim();
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result == null ? null : result.trim();
     }
 
     public String getActiondate() {

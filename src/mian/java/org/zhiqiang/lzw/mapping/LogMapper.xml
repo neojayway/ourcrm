@@ -6,13 +6,14 @@
     <result column="userName" property="username" jdbcType="VARCHAR" />
     <result column="cnname" property="cnname" jdbcType="VARCHAR" />
     <result column="actionType" property="actiontype" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
     <result column="actionDate" property="actiondate" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="org.zhiqiang.lzw.entity.Log" extends="BaseResultMap" >
     <result column="actionContent" property="actioncontent" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, userName, cnname, actionType, actionDate
+    id, userName, cnname, actionType, result, actionDate
   </sql>
   <sql id="Blob_Column_List" >
     actionContent
@@ -31,11 +32,11 @@
   </delete>
   <insert id="insert" parameterType="org.zhiqiang.lzw.entity.Log" >
     insert into sys_log (id, userName, cnname, 
-      actionType, actionDate, actionContent
-      )
+      actionType, result, actionDate, 
+      actionContent)
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{cnname,jdbcType=VARCHAR}, 
-      #{actiontype,jdbcType=VARCHAR}, #{actiondate,jdbcType=VARCHAR}, #{actioncontent,jdbcType=LONGVARCHAR}
-      )
+      #{actiontype,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, #{actiondate,jdbcType=VARCHAR}, 
+      #{actioncontent,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="org.zhiqiang.lzw.entity.Log" >
     insert into sys_log
@@ -51,6 +52,9 @@
       </if>
       <if test="actiontype != null" >
         actionType,
+      </if>
+      <if test="result != null" >
+        result,
       </if>
       <if test="actiondate != null" >
         actionDate,
@@ -72,6 +76,9 @@
       <if test="actiontype != null" >
         #{actiontype,jdbcType=VARCHAR},
       </if>
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
+      </if>
       <if test="actiondate != null" >
         #{actiondate,jdbcType=VARCHAR},
       </if>
@@ -92,6 +99,9 @@
       <if test="actiontype != null" >
         actionType = #{actiontype,jdbcType=VARCHAR},
       </if>
+      <if test="result != null" >
+        result = #{result,jdbcType=VARCHAR},
+      </if>
       <if test="actiondate != null" >
         actionDate = #{actiondate,jdbcType=VARCHAR},
       </if>
@@ -106,6 +116,7 @@
     set userName = #{username,jdbcType=VARCHAR},
       cnname = #{cnname,jdbcType=VARCHAR},
       actionType = #{actiontype,jdbcType=VARCHAR},
+      result = #{result,jdbcType=VARCHAR},
       actionDate = #{actiondate,jdbcType=VARCHAR},
       actionContent = #{actioncontent,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
@@ -115,6 +126,7 @@
     set userName = #{username,jdbcType=VARCHAR},
       cnname = #{cnname,jdbcType=VARCHAR},
       actionType = #{actiontype,jdbcType=VARCHAR},
+      result = #{result,jdbcType=VARCHAR},
       actionDate = #{actiondate,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

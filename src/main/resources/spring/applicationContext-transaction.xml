@@ -21,6 +21,7 @@
 			<tx:method name="delete*" propagation="REQUIRED" isolation="READ_COMMITTED"/>
 			<tx:method name="updata*" propagation="REQUIRED" isolation="READ_COMMITTED"/>
 			<tx:method name="regist*" propagation="REQUIRED" isolation="READ_COMMITTED"/>
+			<tx:method name="record*" propagation="REQUIRED" isolation="READ_COMMITTED"/>
 			<tx:method name="login*" propagation="SUPPORTS" read-only="true"/>
 			<tx:method name="select*" propagation="SUPPORTS" read-only="true"/>
 			<tx:method name="insert*" propagation="REQUIRED" isolation="READ_COMMITTED"/>
@@ -28,10 +29,25 @@
 		</tx:attributes>
 	</tx:advice>
 	
+	<!-- 定义切面bean -->
+	<bean id="logger" class="org.zhiqiang.lzw.aspect.LoggerAspect"/>
+	
+	
 	<!-- 将切点与通知整合 -->
 	<aop:config>
 		<aop:pointcut expression="execution(* org.zhiqiang.lzw.service..*.*(..))" id="pointcut"/>
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut"/>
+		<!-- 定义切面 -->
+		<aop:aspect id="loggerAspect" ref="logger">
+			<!-- 环绕通知 -->
+			<aop:around method="record" pointcut="(execution(* org.zhiqiang.lzw.service..*.save*(..))
+											   or execution(* org.zhiqiang.lzw.service..*.update*(..))
+											   or execution(* org.zhiqiang.lzw.service..*.insert*(..))
+											   or execution(* org.zhiqiang.lzw.service..*.add*(..))
+											   or execution(* org.zhiqiang.lzw.service..*.login*(..)))
+											   and !bean(logService)
+											"/>
+		</aop:aspect>
 	</aop:config>
 	
 </beans>
