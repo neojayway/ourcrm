@@ -142,7 +142,8 @@
 										value='Y' class='radio'>
 										是
 									<input type='radio'
-										name='main_flag' id='main_flag' value='N' class='radio' checked>
+										name='main_flag' id='main_flag' 
+										value='N' class='radio' checked>
 										否
 								</td>
 							</tr>
@@ -188,21 +189,24 @@
 								<td valign="top">爱好：</td>
 								<td colspan="3">
 									<textarea name="hobby" rows="4" id="hobby"
-										style="width: 96%"></textarea>
+										style="width: 96%">
+									</textarea>
 								</td>
 							</tr>
 							<tr>
 								<td valign="top">忌讳：</td>
 								<td colspan="3">
 									<textarea name="taboo" rows="4" id="taboo"
-										style="width: 96%"></textarea>
+										style="width: 96%">
+									</textarea>
 								</td>
 							</tr>
 							<tr>
 								<td valign="top">备注：</td>
 								<td colspan="3">
 									<textarea name="remark" rows="4"
-										id="remark" style="width: 96%"></textarea>
+										id="remark" style="width: 96%">
+									</textarea>
 								</td>
 							</tr>
 						</table>
@@ -218,7 +222,9 @@
 						style="background:url(${pageContext.request.contextPath}/ui/images/down.gif) no-repeat center;float:left;">
 						&nbsp;
 					</div>
-					<div id="menuTitle2" style="font-weight: bold">其他信息</div>
+					<div id="menuTitle2" style="font-weight: bold">
+						其他信息
+					</div>
 				</td>
 			</tr>
 			<tr>

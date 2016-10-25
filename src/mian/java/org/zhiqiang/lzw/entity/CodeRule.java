@@ -136,4 +136,15 @@ public class CodeRule {
     public void setCurdate(String curdate) {
         this.curdate = curdate == null ? null : curdate.trim();
     }
+
+	@Override
+	public String toString() {
+		return "CodeRule [id=" + id + ", module=" + module + ", areaprefix="
+				+ areaprefix + ", areatime=" + areatime + ", glidebit="
+				+ glidebit + ", currentcode=" + currentcode + ", tabname="
+				+ tabname + ", available=" + available + ", nextseq=" + nextseq
+				+ ", curdate=" + curdate + "]";
+	}
+    
+    
 }

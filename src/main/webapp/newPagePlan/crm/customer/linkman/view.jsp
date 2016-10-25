@@ -46,7 +46,7 @@
 				<form name="form1" method="post" action="linkmanlist.do">
 					<input type="hidden" name="method" value="searchAll"> 
 					<input type="hidden" name="mtype" value="customer"> 
-					<input type="hidden" id="isAdvanced0" name="isAdvanced" value="">
+					<input type="hidden" id="isAdvanced0" name="isAdvanced">
 					<table width="100%" border="0" cellspacing="0" cellpadding="0"
 						name="base" id="base">
 						<tr>
