@@ -1,4 +1,4 @@
-package org.zhiqiang.lzw.statreport.manager;
+package org.zhiqiang.lzw.statreport;
 
 import java.util.Map;
 

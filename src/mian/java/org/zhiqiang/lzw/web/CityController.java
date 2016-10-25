@@ -1,6 +1,9 @@
 package org.zhiqiang.lzw.web;
 
 import java.util.List;
+
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -8,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.zhiqiang.lzw.entity.City;
 import org.zhiqiang.lzw.service.ICityService;
 
@@ -45,6 +49,21 @@ public class CityController {
 	protected String getCityByPage() throws Exception {
 		
 		return null;
+	}
+	
+	/**
+	 * 根据省份获取对应的城市
+	 * @param model
+	 * @param pid
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/getCitysByProvince/{pid}",method=RequestMethod.GET)
+	protected @ResponseBody List<City> getCitysByProvince(Model model,@PathVariable("pid")Integer pid) throws Exception{
+		List<City> list = cityService.getCitysByPid(pid);
+		//model.addAttribute("citys",list);
+		if(list.size()>0) return list;
+		else throw new RuntimeException("未查询到值");
 	}
 	
 	

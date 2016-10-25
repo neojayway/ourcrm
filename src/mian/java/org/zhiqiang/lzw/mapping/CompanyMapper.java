@@ -1,19 +1,38 @@
 package org.zhiqiang.lzw.mapping;
 
+import java.util.List;
+import java.util.Map;
+
 import org.zhiqiang.lzw.entity.Company;
 
+/**
+ * 客户Mapper
+ * @author Administrator
+ *
+ */
 public interface CompanyMapper {
-    int deleteByPrimaryKey(Integer id);
+	
+	int getCounts() throws Exception;
+	
+	List<Company> getAllCompany() throws Exception;
+	
+	List<Company> getCompanyByPage(Map map) throws Exception;
+	
+    int deleteByPrimaryKey(Integer id) throws Exception;
 
-    int insert(Company record);
+    int insert(Company record) throws Exception;
 
-    int insertSelective(Company record);
+    int insertSelective(Company record) throws Exception;
 
-    Company selectByPrimaryKey(Integer id);
+    Company selectByPrimaryKey(Integer id) throws Exception;
 
-    int updateByPrimaryKeySelective(Company record);
+    int updateByPrimaryKeySelective(Company record) throws Exception;
 
-    int updateByPrimaryKeyWithBLOBs(Company record);
+    int updateByPrimaryKeyWithBLOBs(Company record) throws Exception;
 
-    int updateByPrimaryKey(Company record);
+    int updateByPrimaryKey(Company record) throws Exception;
+    
+    
+    
+    
 }

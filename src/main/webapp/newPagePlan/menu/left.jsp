@@ -43,7 +43,7 @@
 						<li>
 							<img src="${pageContext.request.contextPath}/ui/images/menu/khbf.png"
 								width="17" height="17"> 
-							<a href="${pageContext.request.contextPath}/page/newPagePlan/crm/customer/base/list.jsp"
+							<a href="${pageContext.request.contextPath}/company/getAllCompany"
 								target="rightFrame">
 								客户拜访
 							</a>

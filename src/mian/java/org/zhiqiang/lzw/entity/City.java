@@ -82,4 +82,13 @@ public class City {
     public void setAreacode(String areacode) {
         this.areacode = areacode == null ? null : areacode.trim();
     }
+
+	@Override
+	public String toString() {
+		return "City [id=" + id + ", name=" + name + ", pycode=" + pycode
+				+ ", pid=" + pid + ", postcode=" + postcode + ", areacode="
+				+ areacode + "]";
+	}
+    
+    
 }

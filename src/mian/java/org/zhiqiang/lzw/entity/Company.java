@@ -482,4 +482,27 @@ public class Company {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+	@Override
+	public String toString() {
+		return "Company [id=" + id + ", code=" + code + ", name=" + name
+				+ ", pycode=" + pycode + ", grade=" + grade + ", regionname="
+				+ regionname + ", source=" + source + ", trade=" + trade
+				+ ", scale=" + scale + ", province=" + province + ", city="
+				+ city + ", postcode=" + postcode + ", address=" + address
+				+ ", email=" + email + ", web=" + web + ", tel1=" + tel1
+				+ ", fax=" + fax + ", mobile=" + mobile + ", tel2=" + tel2
+				+ ", nexttouchdate=" + nexttouchdate + ", quality=" + quality
+				+ ", dealin=" + dealin + ", kind=" + kind
+				+ ", artificialperson=" + artificialperson + ", registemoney="
+				+ registemoney + ", bank=" + bank + ", account=" + account
+				+ ", taxcode=" + taxcode + ", creater=" + creater
+				+ ", createtime=" + createtime + ", updater=" + updater
+				+ ", updatetime=" + updatetime + ", owneruser=" + owneruser
+				+ ", dispenseperson=" + dispenseperson + ", dispensedate="
+				+ dispensedate + ", shareflag=" + shareflag + ", shareids="
+				+ shareids + ", remark=" + remark + "]";
+	}
+    
+    
 }

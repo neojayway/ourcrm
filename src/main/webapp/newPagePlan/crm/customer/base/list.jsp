@@ -25,6 +25,18 @@
 <!--处理日期结束  -->
 </head>
 <script type="text/javascript">
+
+	function searchDate(){
+			var val = $(this).val();
+			$.ajax({
+				url:"/company/getAllCompany/"+val,
+				type:'get',
+				success:function(data){
+					
+				}
+			});
+	}
+
 	function forward(strURL) {
 		window.location = strURL;
 	}
@@ -96,89 +108,8 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<!-- 基本查询的表单--> 
-				<form name="form1" method="post"
-					action="companyAction_list.do" namespace="/crm">
-					<table width="100%" border="0" cellspacing="0" cellpadding="0"
-						name="base" id="base">
-						<tr>
-							<td width="15%" nowrap>客户编码：</td>
-							<td width="12%" nowrap>
-								<input name="code" type="text"
-									id="code" value="" style="width: 110px">
-							</td>
-							<td width="15%" nowrap>客户名称：</td>
-							<td width="12%" nowrap>
-								<input name="name" type="text"
-									id="name" value="" style="width: 110px">
-							</td>
-							<td width="15%" nowrap>拼音码：</td>
-							<td width="12%" nowrap>
-								<input name="pycode" type="text"
-									id="pycode" value="" style="width: 110px">
-							</td>
-							<td width="19%" align="center">
-								<div class="control">
-									<button type='button' class='button'
-										onMouseOver="this.className='button_over';"
-										onMouseOut="this.className='button';"
-										onClick="document.forms[0].submit();">
-										<img src="${pageContext.request.contextPath}/ui/images/button/sousuo.png"
-											border='0' align='absmiddle'>
-										&nbsp;搜索
-									</button>
-
-									<button type='button' class='button'
-										onMouseOver="this.className='button_over';"
-										onMouseOut="this.className='button';"
-										onClick="forward('${pageContext.request.contextPath}/crm/customer/base/view.jsp')">
-										<img src="${pageContext.request.contextPath}/ui/images/button/qingkong.png"
-											border='0' align='absmiddle'>
-										&nbsp;清空
-									</button>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>电话一：</td>
-							<td>
-								<input name="tel1" type="text" id="tel1" value=""
-									style="width: 110px">
-							</td>
-							<td>客户等级：</td>
-							<td>
-								<c:if test="%{#request.gradesSelect!=null}">
-									<select list="%{#request.gradesSelect}" id='grade'
-										name='grade' cssStyle="width:110px" listKey="value"
-										listValue="value" headerKey="" headerValue="-------">
-									</select>
-								</c:if>
-							</td>
-
-							<td>客户来源：</td>
-							<td>
-								<c:if test="%{#request.sourcesSelect!=null}">
-									<select list="%{#request.sourcesSelect}" id='source'
-										name='source' cssStyle="width:110px" listKey="value"
-										listValue="value" headerKey="" headerValue="-------">
-									</select>
-								</c:if>
-							</td>
-						</tr>
-						<tr>
-							<td>客户性质：</td>
-							<td>
-								<c:if test="%{#request.qualitySelect!=null}">
-									<select list="%{#request.qualitySelect}" id='quality'
-										name='quality' cssStyle="width:110px" listKey="value"
-										listValue="value" headerKey="" headerValue="-------">
-									</select>
-								</c:if>
-							</td>
-						</tr>
-					</table>
-				</form> 
-				<!-- 基本查询的表单结束 -->
+				<!-- 模糊查询 -->
+				<input type="text" id="searchData" onchange="searchDate()"/>
 			</td>
 		</tr>
 	</table>

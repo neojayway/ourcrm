@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.zhiqiang.lzw.mapping.CompanyMapper">
+  
   <resultMap id="BaseResultMap" type="org.zhiqiang.lzw.entity.Company">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="code" jdbcType="VARCHAR" property="code" />
@@ -40,18 +41,46 @@
     <result column="shareFlag" jdbcType="CHAR" property="shareflag" />
     <result column="shareIds" jdbcType="VARCHAR" property="shareids" />
   </resultMap>
+  
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.zhiqiang.lzw.entity.Company">
     <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
   </resultMap>
+  
   <sql id="Base_Column_List">
     id, code, name, pycode, grade, regionName, source, trade, scale, province, city, 
     postcode, address, email, web, tel1, fax, mobile, tel2, nextTouchDate, quality, dealin, 
     kind, artificialPerson, registeMoney, bank, account, taxCode, creater, createTime, 
     updater, updateTime, ownerUser, dispensePerson, dispenseDate, shareFlag, shareIds
   </sql>
+  
   <sql id="Blob_Column_List">
     remark
   </sql>
+  
+  <!-- 查询所有记录数 -->
+  <select id="getCounts" resultType="int">
+  	select count(1) from c_company
+  </select>
+  
+  <!-- 查询所有记录 -->
+  <select id="getAllCompany" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from c_company
+  </select>
+  
+  <!-- 分页查询 -->
+  <select id="getCompanyByPage" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from c_company limit #{offset} , #{pageSize}
+  </select>
+ 
+  <!-- 根据主键查询 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
@@ -60,10 +89,14 @@
     from c_company
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
+  <!-- 根据主键删除 -->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from c_company
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  
+  <!-- 新增 -->
   <insert id="insert" parameterType="org.zhiqiang.lzw.entity.Company">
     insert into c_company (id, code, name, 
       pycode, grade, regionName, 
@@ -92,6 +125,7 @@
       #{dispenseperson,jdbcType=VARCHAR}, #{dispensedate,jdbcType=VARCHAR}, #{shareflag,jdbcType=CHAR}, 
       #{shareids,jdbcType=VARCHAR}, #{remark,jdbcType=LONGVARCHAR})
   </insert>
+  
   <insert id="insertSelective" parameterType="org.zhiqiang.lzw.entity.Company">
     insert into c_company
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -327,6 +361,7 @@
       </if>
     </trim>
   </insert>
+  
   <update id="updateByPrimaryKeySelective" parameterType="org.zhiqiang.lzw.entity.Company">
     update c_company
     <set>
@@ -444,6 +479,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.zhiqiang.lzw.entity.Company">
     update c_company
     set code = #{code,jdbcType=VARCHAR},
@@ -485,6 +521,7 @@
       remark = #{remark,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
   <update id="updateByPrimaryKey" parameterType="org.zhiqiang.lzw.entity.Company">
     update c_company
     set code = #{code,jdbcType=VARCHAR},
@@ -525,4 +562,5 @@
       shareIds = #{shareids,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
 </mapper>

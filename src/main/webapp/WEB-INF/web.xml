@@ -17,6 +17,33 @@
 		<!-- 请求url满足*.do的交给分发配置器处理 -->
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>restDispatcherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring/springmvc.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>restDispatcherServlet</servlet-name>
+		<!-- 请求url满足*.do的交给分发配置器处理 -->
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- JFreeChart报表配置 -->
+	<servlet>
+		<servlet-name>DisplayChart</servlet-name>
+		<servlet-class>org.jfree.chart.servlet.DisplayChart</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+        <servlet-name>DisplayChart</servlet-name>
+        <url-pattern>/chart</url-pattern>
+    </servlet-mapping>  
  	
  	<!-- 为初始化IOC容器提供spring配置文件位置 -->
 	<context-param>

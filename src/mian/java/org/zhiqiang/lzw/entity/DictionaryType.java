@@ -87,4 +87,13 @@ public class DictionaryType {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+	@Override
+	public String toString() {
+		return "DictionaryType [id=" + id + ", sort=" + sort + ", code=" + code
+				+ ", value=" + value + ", sysflag=" + sysflag + ", remark="
+				+ remark + "]";
+	}
+    
+    
 }
