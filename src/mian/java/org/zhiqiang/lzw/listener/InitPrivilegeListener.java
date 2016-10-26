@@ -42,11 +42,8 @@ public class InitPrivilegeListener implements ApplicationListener<ContextRefresh
 	 */
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-<<<<<<< HEAD
-=======
 		logger.info("InitPrivilegeListener...监听器监听到IOC容器初始化完毕");
 		application.setAttribute("user", "张三");
->>>>>>> branch 'master' of git@github.com:redmushroom1/ourcrm.git
 		/*//得到IOC容器
 		ApplicationContext context = event.getApplicationContext();
 		List<Privilege> privilegeList = privilegeService.selectAll();
