@@ -30,7 +30,6 @@
 		<property name="suffix" value=".jsp"/>
 	</bean>
 	
-	
 	<!-- 定义拦截器 -->
 	<!-- <bean id="myInterceptor" class="com.kt.intercepter.MyIntercepter">
 		<property name="startHour" value="9"/>

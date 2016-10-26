@@ -9,7 +9,14 @@
 <body>
 	jfreechart 演示
 	<br> 请访问
-	<a href="${pageContext.request.contextPath }/chart/getMajorChart.do">生成柱状图</a>
+	<a href="${pageContext.request.contextPath }/chart/getBarChart.do">生成柱状图表</a>
+	
+	<br>
+	<br> 请访问
+	<a href="${pageContext.request.contextPath }/chart/getPieChart.do">生成饼状图表</a>
+	<br>
+	<br> 请访问
+	<a href="${pageContext.request.contextPath }/chart/getLineChart.do">生成折线图表</a>
 	<br>
 	<img src="${chartURL}">
 </body>
