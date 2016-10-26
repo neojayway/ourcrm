@@ -161,11 +161,11 @@
 	    <version>3.1.10</version>
 	</dependency>
 	<!-- C3P0连接池 -->
-	<dependency>
+	<!-- <dependency>
 	    <groupId>com.mchange</groupId>
 	    <artifactId>c3p0</artifactId>
 	    <version>0.9.2.1</version>
-	</dependency>
+	</dependency> --> 
 	<dependency>
 	    <groupId>com.mchange</groupId>
 	    <artifactId>mchange-commons-java</artifactId>
@@ -220,7 +220,7 @@
 	    <groupId>org.jfree</groupId>
 	    <artifactId>jfreechart</artifactId>
 	    <version>1.0.19</version>
-	</dependency>
+	</dependency> 
 	<dependency>
 	    <groupId>org.jfree</groupId>
 	    <artifactId>jcommon</artifactId>

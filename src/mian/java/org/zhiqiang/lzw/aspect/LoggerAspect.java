@@ -33,8 +33,9 @@ public class LoggerAspect {
 	 * 记录
 	 * @param joinPoint
 	 * @return
+	 * @throws Exception 
 	 */
-	public Object record(ProceedingJoinPoint joinPoint){
+	public Object record(ProceedingJoinPoint joinPoint) throws Exception{
 		logger.info("进入日志环绕通知...");
 		//得到request对象
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
@@ -88,7 +89,8 @@ public class LoggerAspect {
 			try {
 				logService.recordLog(log);
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error(e.getMessage());
+				throw e;
 			}
 		}
 		return null;

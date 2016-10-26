@@ -30,6 +30,13 @@
     delete from sys_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  
+  <!-- 创建日志表 Mybatis如何执行DDL操作？？？？-->
+  <!-- <update id="createLogTable" parameterType="String">
+  	create table if not exists #{tableName,jdbcType=VARCHAR} like sys_log;	
+  </update> -->
+  
+  
   <insert id="insert" parameterType="org.zhiqiang.lzw.entity.Log" >
     insert into sys_log (id, userName, cnname, 
       actionType, result, actionDate, 

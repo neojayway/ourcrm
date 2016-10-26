@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- 组件扫描 -->
+	<context:component-scan base-package="org.zhiqiang.lzw.service,org.zhiqiang.lzw.scheduler"/>
+	
+	<!-- 配置任务明细bean -->
+	<bean id="logTableJobDetailBean" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<!-- 注入任务bean -->
+		<property name="jobClass" value="org.zhiqiang.lzw.scheduler.CreateLogTableJob"/>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="logService" value-ref="logService"/>
+			</map>
+		</property>
+	</bean>
+	
+	<!-- 定义cron任务触发器 -->
+	<bean id="cronTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<!-- 指定任务详情bean -->
+		<property name="jobDetail" ref="logTableJobDetailBean"/>
+		<!-- cron表达式（秒、分、时、天、月、星期、年） -->
+		<property name="cronExpression" value="0 29 14 ? * *"/>
+	</bean>
+	
+	<!-- 任务调度 -->
+	<bean id="" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<!-- 指定任务触发器 -->
+		<property name="triggers">
+			<list>
+				<ref bean="cronTriggerBean"/>
+			</list>
+		</property>
+	</bean>
+</beans>

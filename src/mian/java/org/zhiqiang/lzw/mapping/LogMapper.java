@@ -16,4 +16,10 @@ public interface LogMapper {
     int updateByPrimaryKeyWithBLOBs(Log record);
 
     int updateByPrimaryKey(Log record);
+    
+    /**
+     * 创建日志表
+     * @param tableName
+     */
+    void createLogTable(String tableName);
 }

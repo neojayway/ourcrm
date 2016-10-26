@@ -22,7 +22,7 @@
 	<mvc:resources location="/ui/" mapping="/ui/**"/> -->
 	
 	<!-- 注解驱动 ,代替两个注解映射器和适配器-->
-	<mvc:annotation-driven conversion-service="conversionService"/>
+	<mvc:annotation-driven conversion-service="MyConversionService"/>
 	
 	<!-- 配置视图解析器 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -58,7 +58,7 @@
 		自定义参数绑定
 		这个bean需要注册到处理器适配器中，因为是适配器完成controller的参数绑定 
 	-->
-	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+	<bean id="MyConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<!-- 转换器 -->
 		<property name="converters">
 			<list>
