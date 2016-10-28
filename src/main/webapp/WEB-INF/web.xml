@@ -2,24 +2,8 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
  
   <!-- springmvc前端控制器 -->
-	<servlet>
-		<servlet-name>springDispatcherServlet</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:spring/springmvc.xml</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>springDispatcherServlet</servlet-name>
-		<!-- 请求url满足*.do的交给分发配置器处理 -->
-		<url-pattern>*.do</url-pattern>
-	</servlet-mapping>
-	
 	<!-- <servlet>
-		<servlet-name>restDispatcherServlet</servlet-name>
+		<servlet-name>springDispatcherServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
@@ -29,10 +13,32 @@
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>restDispatcherServlet</servlet-name>
+		<servlet-name>springDispatcherServlet</servlet-name>
 		请求url满足*.do的交给分发配置器处理
-		<url-pattern>/*</url-pattern>
+		<url-pattern>*.do</url-pattern>
 	</servlet-mapping> -->
+	
+	<!-- springmvc前端控制器，rest配置 --> 
+	<servlet>
+		<servlet-name>restDispatcherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		 <!-- 
+		 	contextConfigLocation配置springmvc加载的配置文件（配置处理器映射器、适配器等等） 
+		 	如果不配置contextConfigLocation，默认加载的是/WEB-INF/servlet名称-serlvet.xml
+		 	springmvc-servlet.xml） 
+		 --> 
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring/springmvc.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>restDispatcherServlet</servlet-name>
+		<!-- 请求url满足*.do的交给分发配置器处理 -->
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
 	
 	<!-- JFreeChart报表配置 -->
 	<servlet>

@@ -64,8 +64,7 @@
 </script>
 </head>
 <body>
-	<form name="companyForm" method="post" action="companyAction_save.do"
-		namespace="/crm">
+	<form name="companyForm" method="post" action="">
 		<div class="mtitle">
 			<div class="mtitle-row">&nbsp;</div>
 			客户-新建
@@ -93,8 +92,12 @@
 			<tr>
 				<th colspan="4" class="th_head">
 					<div id="menuArrow1"
-						style="background:url(${pageContext.request.contextPath}/ui/images/down.gif) no-repeat center;float:left;">&nbsp;</div>
-					<div id="menuTitle1" style="font-weight: bold">基本信息</div>
+						style="background:url(${pageContext.request.contextPath}/ui/images/down.gif) no-repeat center;float:left;">
+						&nbsp;
+					</div>
+					<div id="menuTitle1" style="font-weight: bold">
+						基本信息
+					</div>
 				</th>
 			</tr>
 			<tr>

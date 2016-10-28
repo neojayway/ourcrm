@@ -1,6 +1,8 @@
 <%@ page language="java" pageEncoding="UTF-8"
 	contentType="text/html;charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -24,7 +26,106 @@
 	type="text/css">
 <!--处理日期结束  -->
 </head>
+
+<style>
+	.hover
+	{
+	  background-color: #cccc00;
+	}
+</style>
+
 <script type="text/javascript">
+
+	/* $(function(){
+		$("#PowerTable tr:gt(0)").hover(
+			 function () { $(this).addClass("hover") },
+			 function () { $(this).removeClass("hover") })
+		});
+	}); */
+
+	function getData(){
+		
+		var str = $("[name='data']").val();
+
+		//判断文本框是否输入值，没输入就查所有
+		if(str == null || str=="" || $.trim(str).length==0) str = -1;
+
+		$.ajax({
+			url:'${pageContext.request.contextPath}/company/fuzzySearchCompany/'+str,
+			type:'get',
+			dataType:'json',
+			success:function(data){
+
+				//移除之前的表格
+				$("#PowerTable").remove();
+				//使用JQuery创建表格   定义一个表格的开头
+				var table=$("<table width='100%' border='0' cellspacing='0' cellpadding='0' id='PowerTable' class='PowerTable'>"); 
+				//定义表格的第一行
+				var tr11=$("<tr></tr>");
+				tr11.appendTo(table);
+				
+				//定义表格的头部样式及属性
+				var th11=$("<td width='7%' class='listViewThS1'><input type='checkbox' name='checkall' id='checkall' cssClass='checkbox' onclick='checkAll()'/>全选</td>");
+				var th12 = $("<td width=26%' class='listViewThS1'>客户名称</td>");
+				var th13 = $("<td width='10%' class='listViewThS1'>客户性质</td>");
+				var th14 = $("<td width='10%' class='listViewThS1'>客户等级</td>");
+				var th15 = $("<td width='10%' class='listViewThS1'>电话一</td>");
+				var th16 = $("<td width='10%' class='listViewThS1'>电子邮件</td>");
+				var th17 = $("<td width='12%' class='listViewThS1'>下次联系时间</td>");
+				var th18 = $("<td width='7%' class='listViewThS1'>创建人</td>");
+				var th19 = $("<td width='8%' class='listViewThS1'>省份城市</td>");
+				//把表格的头部拼接到表格中
+				th11.appendTo(tr11);
+				th12.appendTo(tr11);
+				th13.appendTo(tr11);
+				th14.appendTo(tr11);
+				th15.appendTo(tr11);
+				th16.appendTo(tr11);
+				th17.appendTo(tr11);
+				th18.appendTo(tr11);
+				th19.appendTo(tr11);
+	
+				for (var i = 0; i < data.length; i++) {
+					var companyId = data[i].id;
+					var companyName = data[i].name;
+					var companyTrade = data[i].trade;
+					var companyGrade = data[i].grade;
+					var companyTel1 = data[i].tel1;
+					var companyEmail = data[i].email;
+					var companyNextTouchDate = data[i].nexttouchdate;
+					var companyCreater = data[i].creater;
+					var companyProvince = data[i].province;
+					var companyCity = data[i].city;
+					var tr21 = $("<tr>");
+					tr21.appendTo(table);
+					var td21 = $("<td><input type='checkbox' name='ids' cssClass='checkbox' onclick='changeCheckCount();' /></td>");
+					td21.appendTo(tr21);
+					var td22 = $("<td><a href='${pageContext.request.contextPath}/company/getCompantById/"+companyId+"'>"+companyName+"</a></td>");
+					td22.appendTo(tr21);
+					var td23 = $("<td>"+companyTrade+"</td>");
+					td23.appendTo(tr21);
+					var td24 = $("<td>"+companyGrade+"</td>");
+					td24.appendTo(tr21);
+					var td25 = $("<td>"+companyTel1+"</td>");
+					td25.appendTo(tr21);
+					var td26 = $("<td>"+companyEmail+"</td>");
+					td26.appendTo(tr21);
+					var td27 = $("<td>"+companyNextTouchDate+"</td>");
+					td27.appendTo(tr21);
+					var td28 = $("<td><a href=''>"+companyCreater+"</a></td>");
+					td28.appendTo(tr21);
+					var td29 = $("<td><a href=''>"+companyProvince+companyCity+"</a></td>");
+					td29.appendTo(tr21);
+					var tr22 = $("</tr>");
+					tr22.appendTo(table);
+					
+				}
+				table.appendTo("#createTable");
+				$("#createtable").append("</table>");
+			}
+		});
+	}
+
 	function forward(strURL) {
 		window.location = strURL;
 	}
@@ -51,13 +152,11 @@
 		}
 
 		if (count == 1) { //选中一个客户的情况下
-			//alert("${pageContext.request.contextPath}/crm/companyAction_other.do?method=showshareSetOne&id="+ids);
 			OpenWin(
-					"${pageContext.request.contextPath}/crm//companyAction_showShareSetOne.do?id="
+					"${pageContext.request.contextPath}/crm/companyAction_showShareSetOne.do?id="
 							+ ids, '', 500, 400)
-			//OpenWin("${pageContext.request.contextPath}/crm/customer/base/shareSetOne.jsp",'',500,400);
-		} else { //选中多个的情况下
-			//OpenWin("${pageContext.request.contextPath}/crm/customer/base/shareSetMany.jsp",'',500,400);
+		} else {
+			//选中多个的情况下
 		}
 	}
 </script>
@@ -69,17 +168,17 @@
 	<div class="link_title">
 		<br>&nbsp;&nbsp; 
 		<a
-			href="${pageContext.request.contextPath}/newPagePlan/crm/customer/base/list.jsp">
+			href="${pageContext.request.contextPath}/page/newPagePlan/crm/customer/base/list.jsp">
 			今天需要联系的客户
 		</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<a
-			href="${pageContext.request.contextPath}/newPagePlan/crm/customer/base/list.jsp">
+			href="${pageContext.request.contextPath}/page/newPagePlan/crm/customer/base/list.jsp">
 			已过期未联系的客户
 		</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<a
-			href="${pageContext.request.contextPath}/newPagePlan/crm/customer/base/list.jsp">
+			href="${pageContext.request.contextPath}/page/newPagePlan/crm/customer/base/list.jsp">
 			全部
 		</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -91,93 +190,38 @@
 			<th class="th_head">
 				<div id="menuArrow1"
 					style="background:url(${pageContext.request.contextPath}/ui/images/down.gif) no-repeat center;float:left;">&nbsp;</div>
-				<div id="menuTitle1" style="font-weight: bold">客户搜索</div>
+				<div id="menuTitle1" style="font-weight: bold">
+					客户搜索
+				</div>
 			</th>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<!-- 基本查询的表单--> 
-				<form name="form1" method="post"
-					action="companyAction_list.do" namespace="/crm">
-					<table width="100%" border="0" cellspacing="0" cellpadding="0"
-						name="base" id="base">
-						<tr>
-							<td width="15%" nowrap>客户编码：</td>
-							<td width="12%" nowrap>
-								<input name="code" type="text"
-									id="code" value="" style="width: 110px">
-							</td>
-							<td width="15%" nowrap>客户名称：</td>
-							<td width="12%" nowrap>
-								<input name="name" type="text"
-									id="name" value="" style="width: 110px">
-							</td>
-							<td width="15%" nowrap>拼音码：</td>
-							<td width="12%" nowrap>
-								<input name="pycode" type="text"
-									id="pycode" value="" style="width: 110px">
-							</td>
-							<td width="19%" align="center">
-								<div class="control">
-									<button type='button' class='button'
-										onMouseOver="this.className='button_over';"
-										onMouseOut="this.className='button';"
-										onClick="document.forms[0].submit();">
-										<img src="${pageContext.request.contextPath}/ui/images/button/sousuo.png"
-											border='0' align='absmiddle'>
-										&nbsp;搜索
-									</button>
+				<form name="form1" method="get"
+					action="/company/getAllCompany.do">
+					<div class="control" align="center">
+						搜索客户: <input type="text" name="data" onchange="getData(this)"/>
+						&nbsp;&nbsp;&nbsp;
+						<button type='button' class='button'
+							onMouseOver="this.className='button_over';"
+							onMouseOut="this.className='button';"
+							onClick="document.forms[0].submit();">
+							<img src="${pageContext.request.contextPath}/ui/images/button/sousuo.png"
+								border='0' align='absmiddle'>
+							&nbsp;搜索所有
+						</button>
 
-									<button type='button' class='button'
-										onMouseOver="this.className='button_over';"
-										onMouseOut="this.className='button';"
-										onClick="forward('${pageContext.request.contextPath}/crm/customer/base/view.jsp')">
-										<img src="${pageContext.request.contextPath}/ui/images/button/qingkong.png"
-											border='0' align='absmiddle'>
-										&nbsp;清空
-									</button>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>电话一：</td>
-							<td>
-								<input name="tel1" type="text" id="tel1" value=""
-									style="width: 110px">
-							</td>
-							<td>客户等级：</td>
-							<td>
-								<c:if test="%{#request.gradesSelect!=null}">
-									<select list="%{#request.gradesSelect}" id='grade'
-										name='grade' cssStyle="width:110px" listKey="value"
-										listValue="value" headerKey="" headerValue="-------">
-									</select>
-								</c:if>
-							</td>
-
-							<td>客户来源：</td>
-							<td>
-								<c:if test="%{#request.sourcesSelect!=null}">
-									<select list="%{#request.sourcesSelect}" id='source'
-										name='source' cssStyle="width:110px" listKey="value"
-										listValue="value" headerKey="" headerValue="-------">
-									</select>
-								</c:if>
-							</td>
-						</tr>
-						<tr>
-							<td>客户性质：</td>
-							<td>
-								<c:if test="%{#request.qualitySelect!=null}">
-									<select list="%{#request.qualitySelect}" id='quality'
-										name='quality' cssStyle="width:110px" listKey="value"
-										listValue="value" headerKey="" headerValue="-------">
-									</select>
-								</c:if>
-							</td>
-						</tr>
-					</table>
-				</form> 
+						<button type='button' class='button'
+							onMouseOver="this.className='button_over';"
+							onMouseOut="this.className='button';"
+							onClick="forward('${pageContext.request.contextPath}/crm/customer/base/view.jsp')">
+							<img src="${pageContext.request.contextPath}/ui/images/button/qingkong.png"
+								border='0' align='absmiddle'>
+							&nbsp;清空
+						</button>
+					</div>
+				</form>
 				<!-- 基本查询的表单结束 -->
 			</td>
 		</tr>
@@ -193,7 +237,7 @@
 		<button type='button' class='button'
 			onMouseOver="this.className='button_over';"
 			onMouseOut="this.className='button';"
-			onClick="forward('${pageContext.request.contextPath}/crm/companyAction_add.do')">
+			onClick="forward('${pageContext.request.contextPath}/company/addBefore.do')">
 			<img src="${pageContext.request.contextPath}/ui/images/button/xinjian.png"
 				border='0' align='absmiddle'>
 			&nbsp;新建
@@ -204,13 +248,6 @@
 			<img src="${pageContext.request.contextPath}/ui/images/button/xiacilxsj.png"
 				border='0' align='absmiddle'>
 			&nbsp;下次联系时间
-		</button>
-		<button type='button' class='button'
-			onMouseOver="this.className='button_over';"
-			onMouseOut="this.className='button';" onClick="do_share()">
-			<img src="${pageContext.request.contextPath}/ui/images/button/gongxiang.png"
-				border='0' align='absmiddle'>
-			&nbsp;共享
 		</button>
 
 		<button type='button' class='button'
@@ -230,13 +267,13 @@
 		</button>
 	</div>
 	<div class="border">
-		<form method="post" action="companyAction_delete.do"
-			namespace="/sys">
+		<form method="post" action="/company/deleteCompanysByIds" id="deleteForm">
+			<p id="createTable"></p>
 			<table width="100%" border="0" cellspacing="0" cellpadding="0"
 				id="PowerTable" class="PowerTable">
 				<tr>
 					<td width="3%" class="listViewThS1">
-						<input type="text" name="checkall" id="checkall" value="" 
+						<input type="checkbox" name="checkall" id="checkall" 
 							cssClass="checkbox" onclick="checkAll()" />
 					</td>
 					<td width="30%" class="listViewThS1">客户名称</td>
@@ -250,29 +287,28 @@
 				</tr>
 				
 				<!-- data -->
-				<c:if test="#request.companyList!=null">
-					<c:forEach begin="" end="" var=""> 
+				<%-- <c:if test="${requestScope.companys}!=null"> --%>
+					<c:forEach var="company" varStatus="s" items="${requestScope.companys}"> 
 						<tr>
 							<td>
-								<input type="text" name="ids" fieldValue="%{#company.id}"
-									cssClass="checkbox" onclick="changeCheckCount();" />
+								<input type="checkbox" name="ids" cssClass="checkbox" value="${company.id }" 
+									onclick="changeCheckCount();" />
 							</td>
 							<td>
-								<a
-									href="${pageContext.request.contextPath}/crm/companyAction_edit.do?id=<s:property value="#company.id"/>">
-									<!-- <s:property value="#company.name" /> -->
+								<a href="${pageContext.request.contextPath}/company/getCompantById/${company.id}">
+									${company.name}
 								</a>
 							</td>
-							<td><!-- <s:property value="#company.quality" /> --></td>
-							<td><!-- <s:property value="#company.grade" /> --></td>
-							<td><!-- <s:property value="#company.tel1" /> --></td>
-							<td><!-- <s:property value="#company.email" /> --></td>
-							<td><!-- <s:property value="#company.nextTouchDate" /> --></td>
+							<td>${company.quality}</td>
+							<td>${company.grade}</td>
+							<td>${company.tel1}</td>
+							<td>${company.email}</td>
+							<td>${company.nexttouchdate}</td>
 							<td><a href="">查看</a></td>
 							<td><a href="">查看</a></td>
 						</tr>
 					</c:forEach>
-				</c:if>
+				<%-- </c:if> --%>
 			</table>
 		</form>
 	</div>
@@ -295,7 +331,7 @@
 				return false;
 			}
 
-			var url = "${pageContext.request.contextPath}/crm/companyAction_showChangePerson.do?ids="
+			var url = "${pageContext.request.contextPath}/page/newPagePlan/crm/customer/base/changePerson.jsp?ids="
 					+ ids;
 			//var url = "${pageContext.request.contextPath}/crm/customer/base/changePerson.jsp";
 			OpenWin(url, '', 480, 140);
@@ -325,7 +361,7 @@
 				return false;
 			}
 			OpenWin(
-					"${pageContext.request.contextPath}/crm/customer/base/nextTouchTime.jsp?ids="
+					"${pageContext.request.contextPath}/page/newPagePlan/crm/customer/base/nextTouchTime.jsp?ids="
 							+ ids, '', 420, 300);
 		}
 
