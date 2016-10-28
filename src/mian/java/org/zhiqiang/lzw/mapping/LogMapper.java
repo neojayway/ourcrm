@@ -1,11 +1,19 @@
 package org.zhiqiang.lzw.mapping;
 
+import java.util.Map;
+
 import org.zhiqiang.lzw.entity.Log;
 
 public interface LogMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(Log record);
+    
+    /**
+     * 插入日志到当前月对应的表中
+     * @param map
+     */
+    void insertToMonthTable(Map<String, Object> map);
 
     int insertSelective(Log record);
 
