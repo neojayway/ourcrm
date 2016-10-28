@@ -234,7 +234,7 @@
 			<artifactId>cxf-rt-ws-security</artifactId>
 			<version>3.1.7</version>
 		</dependency> -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http</artifactId>
 			<version>3.1.7</version>
@@ -243,7 +243,7 @@
 		    <groupId>org.apache.cxf</groupId>
 		    <artifactId>cxf-rt-frontend-jaxws</artifactId>
 		    <version>3.1.7</version>
-		</dependency>
+		</dependency> -->
 
 	</dependencies>
 	<build>
