@@ -14,4 +14,11 @@ public interface ILogService {
 	 * @param log
 	 */
 	public void recordLog(Log log) throws Exception;
+	
+	/**
+	 * 通过表名创建日志表
+	 * @param tableName
+	 * @throws Exception
+	 */
+	public void createLogTable(String tableName) throws Exception;
 }
