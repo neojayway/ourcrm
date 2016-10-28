@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.zhiqiang.lzw.mapping.MenuMapper" >
+ 
+  <resultMap id="BaseResultMap" type="org.zhiqiang.lzw.entity.Menu" >
+    <id column="menuId" property="menuid" jdbcType="VARCHAR" />
+    <result column="parentMenuId" property="parentmenuid" jdbcType="VARCHAR" />
+    <result column="menuName" property="menuname" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="target" property="target" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="ResultMapWithBLOBs" type="org.zhiqiang.lzw.entity.Menu" extends="BaseResultMap" >
+    <result column="remark" property="remark" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    menuId, parentMenuId, menuName, sort, title, url, target, icon
+  </sql>
+  <sql id="Blob_Column_List" >
+    remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sys_menu
+    where menuId = #{menuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_menu
+    where menuId = #{menuid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="org.zhiqiang.lzw.entity.Menu" >
+    insert into sys_menu (menuId, parentMenuId, menuName, 
+      sort, title, url, target, 
+      icon, remark)
+    values (#{menuid,jdbcType=VARCHAR}, #{parentmenuid,jdbcType=VARCHAR}, #{menuname,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{target,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{remark,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.zhiqiang.lzw.entity.Menu" >
+    insert into sys_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="menuid != null" >
+        menuId,
+      </if>
+      <if test="parentmenuid != null" >
+        parentMenuId,
+      </if>
+      <if test="menuname != null" >
+        menuName,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="target != null" >
+        target,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="menuid != null" >
+        #{menuid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentmenuid != null" >
+        #{parentmenuid,jdbcType=VARCHAR},
+      </if>
+      <if test="menuname != null" >
+        #{menuname,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null" >
+        #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.zhiqiang.lzw.entity.Menu" >
+    update sys_menu
+    <set >
+      <if test="parentmenuid != null" >
+        parentMenuId = #{parentmenuid,jdbcType=VARCHAR},
+      </if>
+      <if test="menuname != null" >
+        menuName = #{menuname,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null" >
+        target = #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where menuId = #{menuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.zhiqiang.lzw.entity.Menu" >
+    update sys_menu
+    set parentMenuId = #{parentmenuid,jdbcType=VARCHAR},
+      menuName = #{menuname,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      target = #{target,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=LONGVARCHAR}
+    where menuId = #{menuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.zhiqiang.lzw.entity.Menu" >
+    update sys_menu
+    set parentMenuId = #{parentmenuid,jdbcType=VARCHAR},
+      menuName = #{menuname,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      target = #{target,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR}
+    where menuId = #{menuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

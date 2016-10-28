@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zhiqiang.lzw.mapping.CompanyMapper">
+  
+  <resultMap id="BaseResultMap" type="org.zhiqiang.lzw.entity.Company">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="pycode" jdbcType="VARCHAR" property="pycode" />
+    <result column="grade" jdbcType="VARCHAR" property="grade" />
+    <result column="regionName" jdbcType="VARCHAR" property="regionname" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+    <result column="trade" jdbcType="VARCHAR" property="trade" />
+    <result column="scale" jdbcType="VARCHAR" property="scale" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="postcode" jdbcType="VARCHAR" property="postcode" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="web" jdbcType="VARCHAR" property="web" />
+    <result column="tel1" jdbcType="VARCHAR" property="tel1" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="tel2" jdbcType="VARCHAR" property="tel2" />
+    <result column="nextTouchDate" jdbcType="DATE" property="nexttouchdate" />
+    <result column="quality" jdbcType="VARCHAR" property="quality" />
+    <result column="dealin" jdbcType="VARCHAR" property="dealin" />
+    <result column="kind" jdbcType="VARCHAR" property="kind" />
+    <result column="artificialPerson" jdbcType="VARCHAR" property="artificialperson" />
+    <result column="registeMoney" jdbcType="VARCHAR" property="registemoney" />
+    <result column="bank" jdbcType="VARCHAR" property="bank" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="taxCode" jdbcType="VARCHAR" property="taxcode" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="createTime" jdbcType="VARCHAR" property="createtime" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="updateTime" jdbcType="VARCHAR" property="updatetime" />
+    <result column="ownerUser" jdbcType="INTEGER" property="owneruser" />
+    <result column="dispensePerson" jdbcType="VARCHAR" property="dispenseperson" />
+    <result column="dispenseDate" jdbcType="VARCHAR" property="dispensedate" />
+    <result column="shareFlag" jdbcType="CHAR" property="shareflag" />
+    <result column="shareIds" jdbcType="VARCHAR" property="shareids" />
+  </resultMap>
+  
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.zhiqiang.lzw.entity.Company">
+    <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, code, name, pycode, grade, regionName, source, trade, scale, province, city, 
+    postcode, address, email, web, tel1, fax, mobile, tel2, nextTouchDate, quality, dealin, 
+    kind, artificialPerson, registeMoney, bank, account, taxCode, creater, createTime, 
+    updater, updateTime, ownerUser, dispensePerson, dispenseDate, shareFlag, shareIds
+  </sql>
+  
+  <sql id="Blob_Column_List">
+    remark
+  </sql>
+  
+  <!-- 查询所有记录数 -->
+  <select id="getCounts" resultType="int">
+  	select count(1) from c_company
+  </select>
+  
+  <!-- 查询所有记录 -->
+  <select id="getAllCompany" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from c_company
+  </select>
+  
+  <!-- 分页查询 -->
+  <select id="getCompanyByPage" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from c_company limit #{offset} , #{pageSize}
+  </select>
+ 
+  <!-- 根据主键查询 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from c_company
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 根据主键删除 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from c_company
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <!-- 新增 -->
+  <insert id="insert" parameterType="org.zhiqiang.lzw.entity.Company">
+    insert into c_company (id, code, name, 
+      pycode, grade, regionName, 
+      source, trade, scale, 
+      province, city, postcode, 
+      address, email, web, 
+      tel1, fax, mobile, 
+      tel2, nextTouchDate, quality, 
+      dealin, kind, artificialPerson, 
+      registeMoney, bank, account, 
+      taxCode, creater, createTime, 
+      updater, updateTime, ownerUser, 
+      dispensePerson, dispenseDate, shareFlag, 
+      shareIds, remark)
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{pycode,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, #{regionname,jdbcType=VARCHAR}, 
+      #{source,jdbcType=VARCHAR}, #{trade,jdbcType=VARCHAR}, #{scale,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{postcode,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{web,jdbcType=VARCHAR}, 
+      #{tel1,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{tel2,jdbcType=VARCHAR}, #{nexttouchdate,jdbcType=DATE}, #{quality,jdbcType=VARCHAR}, 
+      #{dealin,jdbcType=VARCHAR}, #{kind,jdbcType=VARCHAR}, #{artificialperson,jdbcType=VARCHAR}, 
+      #{registemoney,jdbcType=VARCHAR}, #{bank,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
+      #{taxcode,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, 
+      #{updater,jdbcType=VARCHAR}, #{updatetime,jdbcType=VARCHAR}, #{owneruser,jdbcType=INTEGER}, 
+      #{dispenseperson,jdbcType=VARCHAR}, #{dispensedate,jdbcType=VARCHAR}, #{shareflag,jdbcType=CHAR}, 
+      #{shareids,jdbcType=VARCHAR}, #{remark,jdbcType=LONGVARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="org.zhiqiang.lzw.entity.Company">
+    insert into c_company
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="pycode != null">
+        pycode,
+      </if>
+      <if test="grade != null">
+        grade,
+      </if>
+      <if test="regionname != null">
+        regionName,
+      </if>
+      <if test="source != null">
+        source,
+      </if>
+      <if test="trade != null">
+        trade,
+      </if>
+      <if test="scale != null">
+        scale,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="postcode != null">
+        postcode,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="web != null">
+        web,
+      </if>
+      <if test="tel1 != null">
+        tel1,
+      </if>
+      <if test="fax != null">
+        fax,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="tel2 != null">
+        tel2,
+      </if>
+      <if test="nexttouchdate != null">
+        nextTouchDate,
+      </if>
+      <if test="quality != null">
+        quality,
+      </if>
+      <if test="dealin != null">
+        dealin,
+      </if>
+      <if test="kind != null">
+        kind,
+      </if>
+      <if test="artificialperson != null">
+        artificialPerson,
+      </if>
+      <if test="registemoney != null">
+        registeMoney,
+      </if>
+      <if test="bank != null">
+        bank,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="taxcode != null">
+        taxCode,
+      </if>
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="owneruser != null">
+        ownerUser,
+      </if>
+      <if test="dispenseperson != null">
+        dispensePerson,
+      </if>
+      <if test="dispensedate != null">
+        dispenseDate,
+      </if>
+      <if test="shareflag != null">
+        shareFlag,
+      </if>
+      <if test="shareids != null">
+        shareIds,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pycode != null">
+        #{pycode,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null">
+        #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="regionname != null">
+        #{regionname,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="trade != null">
+        #{trade,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null">
+        #{scale,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null">
+        #{postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="web != null">
+        #{web,jdbcType=VARCHAR},
+      </if>
+      <if test="tel1 != null">
+        #{tel1,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="tel2 != null">
+        #{tel2,jdbcType=VARCHAR},
+      </if>
+      <if test="nexttouchdate != null">
+        #{nexttouchdate,jdbcType=DATE},
+      </if>
+      <if test="quality != null">
+        #{quality,jdbcType=VARCHAR},
+      </if>
+      <if test="dealin != null">
+        #{dealin,jdbcType=VARCHAR},
+      </if>
+      <if test="kind != null">
+        #{kind,jdbcType=VARCHAR},
+      </if>
+      <if test="artificialperson != null">
+        #{artificialperson,jdbcType=VARCHAR},
+      </if>
+      <if test="registemoney != null">
+        #{registemoney,jdbcType=VARCHAR},
+      </if>
+      <if test="bank != null">
+        #{bank,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="taxcode != null">
+        #{taxcode,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="owneruser != null">
+        #{owneruser,jdbcType=INTEGER},
+      </if>
+      <if test="dispenseperson != null">
+        #{dispenseperson,jdbcType=VARCHAR},
+      </if>
+      <if test="dispensedate != null">
+        #{dispensedate,jdbcType=VARCHAR},
+      </if>
+      <if test="shareflag != null">
+        #{shareflag,jdbcType=CHAR},
+      </if>
+      <if test="shareids != null">
+        #{shareids,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="org.zhiqiang.lzw.entity.Company">
+    update c_company
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pycode != null">
+        pycode = #{pycode,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null">
+        grade = #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="regionname != null">
+        regionName = #{regionname,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="trade != null">
+        trade = #{trade,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null">
+        scale = #{scale,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null">
+        postcode = #{postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="web != null">
+        web = #{web,jdbcType=VARCHAR},
+      </if>
+      <if test="tel1 != null">
+        tel1 = #{tel1,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        fax = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="tel2 != null">
+        tel2 = #{tel2,jdbcType=VARCHAR},
+      </if>
+      <if test="nexttouchdate != null">
+        nextTouchDate = #{nexttouchdate,jdbcType=DATE},
+      </if>
+      <if test="quality != null">
+        quality = #{quality,jdbcType=VARCHAR},
+      </if>
+      <if test="dealin != null">
+        dealin = #{dealin,jdbcType=VARCHAR},
+      </if>
+      <if test="kind != null">
+        kind = #{kind,jdbcType=VARCHAR},
+      </if>
+      <if test="artificialperson != null">
+        artificialPerson = #{artificialperson,jdbcType=VARCHAR},
+      </if>
+      <if test="registemoney != null">
+        registeMoney = #{registemoney,jdbcType=VARCHAR},
+      </if>
+      <if test="bank != null">
+        bank = #{bank,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="taxcode != null">
+        taxCode = #{taxcode,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null">
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null">
+        updater = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="owneruser != null">
+        ownerUser = #{owneruser,jdbcType=INTEGER},
+      </if>
+      <if test="dispenseperson != null">
+        dispensePerson = #{dispenseperson,jdbcType=VARCHAR},
+      </if>
+      <if test="dispensedate != null">
+        dispenseDate = #{dispensedate,jdbcType=VARCHAR},
+      </if>
+      <if test="shareflag != null">
+        shareFlag = #{shareflag,jdbcType=CHAR},
+      </if>
+      <if test="shareids != null">
+        shareIds = #{shareids,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.zhiqiang.lzw.entity.Company">
+    update c_company
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      pycode = #{pycode,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=VARCHAR},
+      regionName = #{regionname,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      trade = #{trade,jdbcType=VARCHAR},
+      scale = #{scale,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      postcode = #{postcode,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      web = #{web,jdbcType=VARCHAR},
+      tel1 = #{tel1,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      tel2 = #{tel2,jdbcType=VARCHAR},
+      nextTouchDate = #{nexttouchdate,jdbcType=DATE},
+      quality = #{quality,jdbcType=VARCHAR},
+      dealin = #{dealin,jdbcType=VARCHAR},
+      kind = #{kind,jdbcType=VARCHAR},
+      artificialPerson = #{artificialperson,jdbcType=VARCHAR},
+      registeMoney = #{registemoney,jdbcType=VARCHAR},
+      bank = #{bank,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      taxCode = #{taxcode,jdbcType=VARCHAR},
+      creater = #{creater,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=VARCHAR},
+      updater = #{updater,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=VARCHAR},
+      ownerUser = #{owneruser,jdbcType=INTEGER},
+      dispensePerson = #{dispenseperson,jdbcType=VARCHAR},
+      dispenseDate = #{dispensedate,jdbcType=VARCHAR},
+      shareFlag = #{shareflag,jdbcType=CHAR},
+      shareIds = #{shareids,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="org.zhiqiang.lzw.entity.Company">
+    update c_company
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      pycode = #{pycode,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=VARCHAR},
+      regionName = #{regionname,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      trade = #{trade,jdbcType=VARCHAR},
+      scale = #{scale,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      postcode = #{postcode,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      web = #{web,jdbcType=VARCHAR},
+      tel1 = #{tel1,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      tel2 = #{tel2,jdbcType=VARCHAR},
+      nextTouchDate = #{nexttouchdate,jdbcType=DATE},
+      quality = #{quality,jdbcType=VARCHAR},
+      dealin = #{dealin,jdbcType=VARCHAR},
+      kind = #{kind,jdbcType=VARCHAR},
+      artificialPerson = #{artificialperson,jdbcType=VARCHAR},
+      registeMoney = #{registemoney,jdbcType=VARCHAR},
+      bank = #{bank,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      taxCode = #{taxcode,jdbcType=VARCHAR},
+      creater = #{creater,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=VARCHAR},
+      updater = #{updater,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=VARCHAR},
+      ownerUser = #{owneruser,jdbcType=INTEGER},
+      dispensePerson = #{dispenseperson,jdbcType=VARCHAR},
+      dispenseDate = #{dispensedate,jdbcType=VARCHAR},
+      shareFlag = #{shareflag,jdbcType=CHAR},
+      shareIds = #{shareids,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>
