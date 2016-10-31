@@ -16,6 +16,13 @@ public interface ILogService {
 	public void recordLog(Log log) throws Exception;
 	
 	/**
+	 * 记录日志到指定日志表
+	 * @param tableName
+	 * @param log
+	 */
+	public void recordLogToSpecifiedLogTable(String tableName,Log log);
+	
+	/**
 	 * 通过表名创建日志表
 	 * @param tableName
 	 * @throws Exception

@@ -16,7 +16,7 @@
 	<servlet-mapping>
 		<servlet-name>springDispatcherServlet</servlet-name>
 		<!-- 请求url满足*.do的交给分发配置器处理 -->
-		<url-pattern>/</url-pattern>
+		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 
 	<!-- springmvc前端控制器，rest配置 --> 

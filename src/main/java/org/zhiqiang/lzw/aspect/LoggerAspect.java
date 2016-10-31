@@ -17,6 +17,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.zhiqiang.lzw.entity.Log;
 import org.zhiqiang.lzw.entity.custom.UserCustom;
 import org.zhiqiang.lzw.service.ILogService;
+import org.zhiqiang.lzw.util.LogUtil;
 
 /**
  * 日志切面（定义了一个记录日志的环绕通知）
@@ -52,16 +53,16 @@ public class LoggerAspect {
 					//设置登录用户名称
 					log.setUsername("用户编号："+userCustom.getId()+"用户登录名:"+userCustom.getName());
 					//设置用户中文名称
-					log.setCnname(userCustom.getCnname());
+					log.setCnname("'"+userCustom.getCnname()+"'");
 				}
 			}
 			//操作名称（切点方法名称即可）
 			String mname = joinPoint.getSignature().getName();
-			log.setActiontype(mname);
+			log.setActiontype("'"+mname+"'");
 			//设置操作日期
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String dateStr = dateFormat.format(new Date());
-			log.setActiondate(dateStr);
+			log.setActiondate("'"+dateStr+"'");
 			
 			
 			//设置操作内容
@@ -71,23 +72,23 @@ public class LoggerAspect {
 				sb.append(args[i].toString());
 				logger.info("操作参数..."+args[i].toString());
 			}
-			log.setActioncontent(sb.toString());
+			log.setActioncontent("'"+sb.toString()+"'");
 			
 			//调用切点目标方法
 			Object ret = joinPoint.proceed();
 			//设置操作结果
-			log.setResult("success");
-			logger.info("日志切面记录日志成功！");
+			log.setResult("'success'");
 			return ret;//环绕通知返回切点结果
 			
 		} catch (Throwable e) {
 			logger.info("日志切面记录日志失败！！！");
-			log.setResult("failure");
+			log.setResult("'failure'");
 			logger.error(e.getMessage());
 		}finally{
 			//无论失败与成功都要保存日志
 			try {
-				logService.recordLog(log);
+				logService.recordLogToSpecifiedLogTable(LogUtil.generateLogTableName(0), log);
+				logger.info("日志切面记录日志成功！");
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 				throw e;

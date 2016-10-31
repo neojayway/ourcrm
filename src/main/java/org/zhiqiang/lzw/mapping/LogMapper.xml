@@ -36,7 +36,7 @@
   	create table if not exists #{tableName,jdbcType=VARCHAR} like sys_log;	
   </update> -->
   
-  
+  <!-- 插入日志到固定日志表 -->
   <insert id="insert" parameterType="org.zhiqiang.lzw.entity.Log" >
     insert into sys_log (id, userName, cnname, 
       actionType, result, actionDate, 
@@ -45,6 +45,58 @@
       #{actiontype,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, #{actiondate,jdbcType=VARCHAR}, 
       #{actioncontent,jdbcType=LONGVARCHAR})
   </insert>
+  
+  <!-- 
+  	插入日志到指定日志表 
+  	注意：使用${}需要设置statementType="STATEMENT"，非预编译状态
+  		#{}将传入的参数当成一个字符串，会给传入的参数加一个双引号
+  		${}将传入的参数直接显示生成在sql中，不会添加引号，如果是动态调用表名，需要手动加入单引号，也会有sql注入的风险
+  -->
+  <insert id="insertToSpecifiedLogTable" parameterType="map" statementType="STATEMENT">
+    insert into ${tableName} 
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+      	<if test="log.username!=null">   
+      		userName,    
+      	</if>  
+      	<if test="log.cnname!=null">    
+      		cnname,
+      	</if>
+      	<if test="log.actiontype!=null">
+      		actionType,
+      	</if>
+      	<if test="log.result!=null">
+      		result,
+      	</if>
+      	<if test="log.actiondate!=null">
+      		actionDate,
+      	</if>
+      	<if test="log.actioncontent!=null">
+      		actionContent
+      	</if>
+      </trim>
+      <trim prefix="values(" suffix=")" suffixOverrides=",">
+      	<if test="log.username!=null">
+      		${log.username},
+      	</if>
+      	<if test="log.cnname!=null">
+      		${log.cnname},
+      	</if>
+      	<if test="log.actiontype!=null">
+      		${log.actionType},
+      	</if>
+      	<if test="log.result!=null">
+      		${log.result},
+      	</if>
+      	<if test="log.actiondate!=null">
+      		${log.actionDate},
+      	</if>
+      	<if test="log.actioncontent!=null">
+      		${log.actionContent}
+      	</if>
+      </trim>
+  </insert>
+  
+  
   <insert id="insertSelective" parameterType="org.zhiqiang.lzw.entity.Log" >
     insert into sys_log
     <trim prefix="(" suffix=")" suffixOverrides="," >

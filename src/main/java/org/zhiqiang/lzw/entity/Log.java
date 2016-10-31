@@ -70,4 +70,13 @@ public class Log {
     public void setActioncontent(String actioncontent) {
         this.actioncontent = actioncontent == null ? null : actioncontent.trim();
     }
+
+	@Override
+	public String toString() {
+		return "Log [id=" + id + ", username=" + username + ", cnname="
+				+ cnname + ", actiontype=" + actiontype + ", result=" + result
+				+ ", actiondate=" + actiondate + ", actioncontent="
+				+ actioncontent + "]";
+	}
+    
 }
