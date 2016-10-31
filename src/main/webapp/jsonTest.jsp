@@ -43,10 +43,23 @@
 		});
 	};
 </script>
+<style type="text/css">
+	body{
+		margin: 100px;
+	}
+	div{
+		border: 10px solid red;
+		border-radius:10px;
+		width: 100px;
+		height:200px;
+		transform:scale(1.5);
+	}
+</style>
 </head>
 
 <body>
 	<input type="button" onclick="requestJson()" value="请求json，响应json"/>
 	<input type="button" onclick="requestKey()" value="请求key/value，响应json"/>
+	<div></div>
 </body>
 </html>
