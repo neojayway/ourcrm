@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.zhiqiang.lzw.entity.Province;
 import org.zhiqiang.lzw.service.IProvinceService;
 
@@ -36,11 +37,10 @@ public class ProvinceController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/getAllProvince",method=RequestMethod.GET)
-	protected String getAllProvince(Model model) throws Exception{
+	protected @ResponseBody List<Province> getAllProvince() throws Exception{
 		List<Province> list = provinceService.getAllProvince();
-		model.addAttribute("list", list);
-		if(list.size()>0) return "ok";
-		else return "error";
+		if(list.size()>0) return list;
+		else throw new RuntimeException("没有数据");
 	}
 	
 	/**

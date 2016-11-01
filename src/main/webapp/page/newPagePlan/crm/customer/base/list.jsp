@@ -36,13 +36,6 @@
 
 <script type="text/javascript">
 
-	/* $(function(){
-		$("#PowerTable tr:gt(0)").hover(
-			 function () { $(this).addClass("hover") },
-			 function () { $(this).removeClass("hover") })
-		});
-	}); */
-
 	function getData(){
 		
 		var str = $("[name='data']").val();
@@ -59,31 +52,31 @@
 				//移除之前的表格
 				$("#PowerTable").remove();
 				//使用JQuery创建表格   定义一个表格的开头
-				var table=$("<table width='100%' border='0' cellspacing='0' cellpadding='0' id='PowerTable' class='PowerTable'>"); 
+				var $table=$("<table width='100%' border='0' cellspacing='0' cellpadding='0' id='PowerTable' class='PowerTable'>"); 
 				//定义表格的第一行
-				var tr11=$("<tr></tr>");
-				tr11.appendTo(table);
+				var $tr11=$("<tr></tr>");
+				$tr11.appendTo($table);
 				
 				//定义表格的头部样式及属性
-				var th11=$("<td width='7%' class='listViewThS1'><input type='checkbox' name='checkall' id='checkall' cssClass='checkbox' onclick='checkAll()'/>全选</td>");
-				var th12 = $("<td width=26%' class='listViewThS1'>客户名称</td>");
-				var th13 = $("<td width='10%' class='listViewThS1'>客户性质</td>");
-				var th14 = $("<td width='10%' class='listViewThS1'>客户等级</td>");
-				var th15 = $("<td width='10%' class='listViewThS1'>电话一</td>");
-				var th16 = $("<td width='10%' class='listViewThS1'>电子邮件</td>");
-				var th17 = $("<td width='12%' class='listViewThS1'>下次联系时间</td>");
-				var th18 = $("<td width='7%' class='listViewThS1'>创建人</td>");
-				var th19 = $("<td width='8%' class='listViewThS1'>省份城市</td>");
+				var $th11=$("<td width='7%' class='listViewThS1'><input type='checkbox' name='checkall' id='checkall' cssClass='checkbox' onclick='checkAll()'/>全选</td>");
+				var $th12 = $("<td width=26%' class='listViewThS1'>客户名称</td>");
+				var $th13 = $("<td width='10%' class='listViewThS1'>客户性质</td>");
+				var $th14 = $("<td width='10%' class='listViewThS1'>客户等级</td>");
+				var $th15 = $("<td width='10%' class='listViewThS1'>电话一</td>");
+				var $th16 = $("<td width='10%' class='listViewThS1'>电子邮件</td>");
+				var $th17 = $("<td width='12%' class='listViewThS1'>下次联系时间</td>");
+				var $th18 = $("<td width='7%' class='listViewThS1'>创建人</td>");
+				var $th19 = $("<td width='8%' class='listViewThS1'>省份城市</td>");
 				//把表格的头部拼接到表格中
-				th11.appendTo(tr11);
-				th12.appendTo(tr11);
-				th13.appendTo(tr11);
-				th14.appendTo(tr11);
-				th15.appendTo(tr11);
-				th16.appendTo(tr11);
-				th17.appendTo(tr11);
-				th18.appendTo(tr11);
-				th19.appendTo(tr11);
+				$th11.appendTo($tr11);
+				$th12.appendTo($tr11);
+				$th13.appendTo($tr11);
+				$th14.appendTo($tr11);
+				$th15.appendTo($tr11);
+				$th16.appendTo($tr11);
+				$th17.appendTo($tr11);
+				$th18.appendTo($tr11);
+				$th19.appendTo($tr11);
 	
 				for (var i = 0; i < data.length; i++) {
 					var companyId = data[i].id;
@@ -96,31 +89,31 @@
 					var companyCreater = data[i].creater;
 					var companyProvince = data[i].province;
 					var companyCity = data[i].city;
-					var tr21 = $("<tr>");
-					tr21.appendTo(table);
-					var td21 = $("<td><input type='checkbox' name='ids' cssClass='checkbox' onclick='changeCheckCount();' /></td>");
-					td21.appendTo(tr21);
-					var td22 = $("<td><a href='${pageContext.request.contextPath}/company/getCompantById/"+companyId+"'>"+companyName+"</a></td>");
-					td22.appendTo(tr21);
-					var td23 = $("<td>"+companyTrade+"</td>");
-					td23.appendTo(tr21);
-					var td24 = $("<td>"+companyGrade+"</td>");
-					td24.appendTo(tr21);
-					var td25 = $("<td>"+companyTel1+"</td>");
-					td25.appendTo(tr21);
-					var td26 = $("<td>"+companyEmail+"</td>");
-					td26.appendTo(tr21);
-					var td27 = $("<td>"+companyNextTouchDate+"</td>");
-					td27.appendTo(tr21);
-					var td28 = $("<td><a href=''>"+companyCreater+"</a></td>");
-					td28.appendTo(tr21);
-					var td29 = $("<td><a href=''>"+companyProvince+companyCity+"</a></td>");
-					td29.appendTo(tr21);
-					var tr22 = $("</tr>");
-					tr22.appendTo(table);
+					var $tr21 = $("<tr>");
+					$tr21.appendTo($table);
+					var $td21 = $("<td><input type='checkbox' name='ids' cssClass='checkbox' onclick='changeCheckCount();' /></td>");
+					$td21.appendTo($tr21);
+					var $td22 = $("<td><a href='${pageContext.request.contextPath}/company/getCompantById/"+companyId+"'>"+companyName+"</a></td>");
+					$td22.appendTo($tr21);
+					var $td23 = $("<td>"+companyTrade+"</td>");
+					$td23.appendTo($tr21);
+					var $td24 = $("<td>"+companyGrade+"</td>");
+					$td24.appendTo($tr21);
+					var $td25 = $("<td>"+companyTel1+"</td>");
+					$td25.appendTo($tr21);
+					var $td26 = $("<td>"+companyEmail+"</td>");
+					$td26.appendTo($tr21);
+					var $td27 = $("<td>"+companyNextTouchDate+"</td>");
+					$td27.appendTo($tr21);
+					var $td28 = $("<td><a href=''>"+companyCreater+"</a></td>");
+					$td28.appendTo($tr21);
+					var $td29 = $("<td><a href=''>"+companyProvince+"省"+companyCity+"市"+"</a></td>");
+					$td29.appendTo($tr21);
+					var $tr22 = $("</tr>");
+					$tr22.appendTo($table);
 					
 				}
-				table.appendTo("#createTable");
+				$table.appendTo("#createTable");
 				$("#createtable").append("</table>");
 			}
 		});
