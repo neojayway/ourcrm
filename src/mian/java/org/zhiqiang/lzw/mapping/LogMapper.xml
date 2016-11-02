@@ -45,6 +45,17 @@
       #{actiontype,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, #{actiondate,jdbcType=VARCHAR}, 
       #{actioncontent,jdbcType=LONGVARCHAR})
   </insert>
+  
+  <!-- 插入日志到月表 -->
+  <insert id="insertToMonthTable" parameterType="map" >
+    insert into #{tableName} (id, userName, cnname, 
+      actionType, result, actionDate, 
+      actionContent)
+    values (#{id,jdbcType=INTEGER}, #{log.username,jdbcType=VARCHAR}, #{log.cnname,jdbcType=VARCHAR}, 
+      #{log.actiontype,jdbcType=VARCHAR}, #{log.result,jdbcType=VARCHAR}, #{log.actiondate,jdbcType=VARCHAR}, 
+      #{log.actioncontent,jdbcType=LONGVARCHAR})
+  </insert>
+  
   <insert id="insertSelective" parameterType="org.zhiqiang.lzw.entity.Log" >
     insert into sys_log
     <trim prefix="(" suffix=")" suffixOverrides="," >

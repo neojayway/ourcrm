@@ -36,7 +36,8 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.8.1</version>
 		</dependency>
-
+	
+		<!-- servletApi -->
 		<dependency>
 			<groupId>servletapi</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -217,52 +218,74 @@
 			<version>1.0.23</version>
 		</dependency>
 		
-	
-	
-  </dependencies>
-  <build>
-    <finalName>mycrm</finalName>
-    <plugins> 
-      <!-- 打war包插件 -->
-      <plugin>  
-        <groupId>org.apache.maven.plugins</groupId>  
-        <artifactId>maven-war-plugin</artifactId>  
-        <configuration>  
-          <failOnMissingWebXml>false</failOnMissingWebXml>  
-        </configuration>  
-      </plugin>
-      
-      <plugin>
-        <groupId>org.mortbay.jetty</groupId>
-        <!-- 使用的是jetty-maven-plugin的插件 -->
-        <artifactId>jetty-maven-plugin</artifactId>
-        <configuration>
-          <scanIntervalSeconds>2000</scanIntervalSeconds>
-          <webApp>
-          <!-- 上下文路径 -->
-            <contextPath>/stu</contextPath>
-          </webApp>
-          <connectors>
-            <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-            <!-- 端口号 -->
-              <port>8787</port>
-              <maxIdleTime>500000</maxIdleTime>
-            </connector>
-          </connectors>
-        </configuration>
-      </plugin>
-      <!-- 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>tomcat-maven-plugin</artifactId>
-        <version>1.1</version>
-        <configuration>
-            
-          <port>8080</port>
-          <contextFile>src/main/resources/context.xml</contextFile>
-          
-        </configuration>
-      </plugin> -->	 
-    </plugins> 
-  </build>
+		<!-- CXF框架依赖 -->
+		<!-- <dependency>
+		    <groupId>org.apache.cxf</groupId>
+		    <artifactId>cxf-api</artifactId>
+		    <version>2.7.18</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-bindings-soap</artifactId>
+			<version>3.1.7</version>
+		</dependency> 
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-ws-security</artifactId>
+			<version>3.1.7</version>
+		</dependency> -->
+		<!-- <dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http</artifactId>
+			<version>3.1.7</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.cxf</groupId>
+		    <artifactId>cxf-rt-frontend-jaxws</artifactId>
+		    <version>3.1.7</version>
+		</dependency> -->
+		
+		<!-- 拼音转换 -->
+		<dependency>
+		    <groupId>com.belerweb</groupId>
+		    <artifactId>pinyin4j</artifactId>
+		    <version>2.5.1</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>mycrm</finalName>
+		<plugins>
+			<!-- 打war包插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<!-- 使用的是jetty-maven-plugin的插件 -->
+				<artifactId>jetty-maven-plugin</artifactId>
+				<configuration>
+					<scanIntervalSeconds>2000</scanIntervalSeconds>
+					<webApp>
+						<!-- 上下文路径 -->
+						<contextPath>/stu</contextPath>
+					</webApp>
+					<connectors>
+						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+							<!-- 端口号 -->
+							<port>8787</port>
+							<maxIdleTime>500000</maxIdleTime>
+						</connector>
+					</connectors>
+				</configuration>
+			</plugin>
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>tomcat-maven-plugin</artifactId> 
+				<version>1.1</version> <configuration> <port>8080</port> <contextFile>src/main/resources/context.xml</contextFile> 
+				</configuration> </plugin> -->
+		</plugins>
+	</build>
 </project>

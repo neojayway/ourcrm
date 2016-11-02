@@ -1,5 +1,7 @@
 package org.zhiqiang.lzw.service;
 
+import java.util.Map;
+
 import org.zhiqiang.lzw.entity.Log;
 
 /**
@@ -21,4 +23,10 @@ public interface ILogService {
 	 * @throws Exception
 	 */
 	public void createLogTable(String tableName) throws Exception;
+	
+	/**
+     * 插入日志到当前月对应的表中
+     * @param map
+     */
+    void insertToMonthTable(Log log);
 }

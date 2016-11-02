@@ -87,7 +87,8 @@ public class LoggerAspect {
 		}finally{
 			//无论失败与成功都要保存日志
 			try {
-				logService.recordLog(log);
+				//logService.recordLog(log);
+				logService.insertToMonthTable(log);
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 				throw e;

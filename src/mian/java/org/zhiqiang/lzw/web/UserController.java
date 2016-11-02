@@ -42,7 +42,7 @@ public class UserController {
 			return "page/newPagePlan/menu/main";
 		}
 		System.out.println("userCustom"+userCustom);
-		return "index";
+		return "page/newPagePlan/index";
 	}
 	
 	public void setUserService(IUserService userService) {

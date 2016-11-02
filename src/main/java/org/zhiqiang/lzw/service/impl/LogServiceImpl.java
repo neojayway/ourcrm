@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,6 +35,22 @@ public class LogServiceImpl implements ILogService{
 	}
 	
 	/**
+	 * 记录日志到指定日志表
+	 */
+	@Override
+	public void recordLogToSpecifiedLogTable(String tableName, Log log) {
+		Map<String, Object> map = new HashMap<String,Object>();
+		if (tableName!=null && log!=null) {
+			map.put("tableName", tableName);
+			System.out.println(log);
+			map.put("log", log);
+		}
+		logMapper.insertToSpecifiedLogTable(map);
+	}
+	
+	
+	
+	/**
 	 * 生成日志表
 	 */
 	@Override
@@ -57,6 +75,8 @@ public class LogServiceImpl implements ILogService{
 	public void setLogMapper(LogMapper logMapper) {
 		this.logMapper = logMapper;
 	}
+
+	
 
 
 

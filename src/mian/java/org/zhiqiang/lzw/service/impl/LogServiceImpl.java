@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.zhiqiang.lzw.entity.Log;
 import org.zhiqiang.lzw.mapping.LogMapper;
 import org.zhiqiang.lzw.service.ILogService;
+import org.zhiqiang.lzw.util.LogUtil;
 
 /**
  * 日志业务实现
@@ -31,6 +34,19 @@ public class LogServiceImpl implements ILogService{
 	public void recordLog(Log log) throws Exception {
 		logMapper.insert(log);
 	}
+	
+	/**
+     * 插入日志到当前月对应的表中
+     * @param map
+     */
+	@Override
+	public void insertToMonthTable(Log log) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("tableName",LogUtil.generateLogTableName(0));
+		map.put("log", log);
+		logMapper.insertToMonthTable(map);
+	}
+	
 	
 	/**
 	 * 生成日志表
@@ -57,6 +73,8 @@ public class LogServiceImpl implements ILogService{
 	public void setLogMapper(LogMapper logMapper) {
 		this.logMapper = logMapper;
 	}
+
+	
 
 
 
