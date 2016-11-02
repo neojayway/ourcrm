@@ -31,7 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  */
 @Controller
-@RequestMapping("chart")
+@RequestMapping("/chart")
 public class ChartController {
 
 	/**
