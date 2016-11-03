@@ -17,6 +17,14 @@
     id, module, areaPrefix, areaTime, glideBit, currentCode, tabName, available, nextseq, 
     curDate
   </sql>
+  
+  <select id="selectCodeRuleByTable" parameterType="string" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from sys_code_rule
+    where tabName = #{tabName,jdbcType=VARCHAR} 
+  </select>
+  
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

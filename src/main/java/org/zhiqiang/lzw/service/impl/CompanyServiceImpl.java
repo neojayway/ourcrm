@@ -2,7 +2,6 @@ package org.zhiqiang.lzw.service.impl;
 
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -48,6 +47,24 @@ public class CompanyServiceImpl implements ICompanyService{
 	@Override
 	public List<Company> getCompanyByPage(Map map)  throws Exception{
 		return companyMapper.getCompanyByPage(map);
+	}
+	
+	/**
+	 * 查询 今天需要联系的客户  
+	 */
+	@Override
+	public List<Company> getCompanyWhereTodayNeedTouch(String date)
+		throws Exception {
+		return companyMapper.getCompanyWhereTodayNeedTouch(date);
+	}
+	
+	/**
+	 * 查询 已过期未联系的客户
+	 */
+	@Override
+	public List<Company> getCompanyWhereForgetTouch(String date) 
+		throws Exception {
+		return companyMapper.getCompanyWhereForgetTouch(date);
 	}
 
 	/**

@@ -62,9 +62,8 @@ public class CityController {
 	protected @ResponseBody List<City> getCitysByProvince(Model model,
 		@PathVariable("pid")Integer pid) throws Exception{
 		List<City> list = cityService.getCitysByPid(pid);
-		//model.addAttribute("citys",list);
 		if(list.size()>0) return list;
-		else throw new RuntimeException("未查询到值");
+		else return null;
 	}
 	
 	

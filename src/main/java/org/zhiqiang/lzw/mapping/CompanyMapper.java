@@ -1,5 +1,6 @@
 package org.zhiqiang.lzw.mapping;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,10 @@ public interface CompanyMapper {
 	List<Company> getAllCompany() throws Exception;
 	
 	List<Company> getCompanyByPage(Map map) throws Exception;
+	
+	List<Company> getCompanyWhereTodayNeedTouch(String date) throws Exception;
+	
+	List<Company> getCompanyWhereForgetTouch(String date) throws Exception;
 	
     int deleteByPrimaryKey(Integer id) throws Exception;
 
