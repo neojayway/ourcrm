@@ -113,8 +113,8 @@
   	注意:这些字段如果用sql片段的方式去引用的话，就不能指定到底是哪个表的字段，在多表连接查询时，如果有重名字段，就会出现冲突 
   -->
   <select id="selectByNameAndPassword" resultMap="UserCustomResultMap" parameterType="java.util.Map" >
-    select 
-    id, creator, createTime, updater, updateTime, name, cnname, password, address, telephone, 
+    select distinct 
+    u.id, creator, createTime, updater, updateTime, u.name, cnname, password, address, telephone, 
     email, beginDate, endDate, u.groupId, accessFileLevel, status, commendMan, movetelePhone, 
     nowAddress, nowtelePhone, identityCode, insuranceCode, instancyLinkman, instancytelePhone, 
     sex, birthday, personnelType, duty, workDate, highSchool, finishSchool, finishSchoolDate, 
@@ -127,7 +127,7 @@
     INNER JOIN sys_role r ON ur.roleId=r.roleId
 	INNER JOIN sys_user u ON ur.userId=u.id
 	INNER JOIN sys_group g ON u.groupId=g.groupId
-    where name = #{name,jdbcType=VARCHAR}
+    where u.name = #{name,jdbcType=VARCHAR}
     AND password = #{password,jdbcType=VARCHAR}
   </select>
   

@@ -82,7 +82,7 @@
 						<li>
 							<img src="${pageContext.request.contextPath}/ui/images/menu/bmsz.png"
 								width="17" height="17"> 
-							<a href="${pageContext.request.contextPath}/page/newPagePlan/sys/group/list.jsp"
+							<a href="${pageContext.request.contextPath}/group/selectAllGroupByPage.do"
 							target="rightFrame">
 								部门设置
 							</a>

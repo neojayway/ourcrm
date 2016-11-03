@@ -51,7 +51,7 @@ public class LoggerAspect {
 				UserCustom userCustom = (UserCustom) session.getAttribute("userCustom");
 				if (userCustom!=null) {
 					//设置登录用户名称
-					log.setUsername("用户编号："+userCustom.getId()+"用户登录名:"+userCustom.getName());
+					log.setUsername("'用户编号："+userCustom.getId()+"用户登录名:"+userCustom.getName()+"'");
 					//设置用户中文名称
 					log.setCnname("'"+userCustom.getCnname()+"'");
 				}

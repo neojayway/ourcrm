@@ -10,11 +10,15 @@
 	function check() {
 		document.form1.submit();
 	}
+
+	function forward(url){
+		window.location = url;
+	};
 </script>
 </head>
 <body>
 	<form name="form1" method="post"
-		action="${pageContext.request.contextPath}/sys/sysUserGroupAction_save.do">
+		action="${pageContext.request.contextPath}/group/insertGroup.do">
 		<div class="mtitle">
 			<div class="mtitle-row">&nbsp;</div>
 			部门新建
@@ -31,7 +35,7 @@
 			<button type='button' class='button'
 				onMouseOver="this.className='button_over';"
 				onMouseOut="this.className='button';"
-				onClick="forward('group.do?method=list')">
+				onClick="forward('${pageContext.request.contextPath}/group/selectAllGroupByPage.do')">
 				<img src="${pageContext.request.contextPath}/ui/images/button/fanhui.png"
 					border='0' align='absmiddle'>
 				&nbsp;返回
@@ -61,23 +65,8 @@
 							<tr>
 								<td class="red">部门名称</td>
 								<td>
-									<input name="name" type="text" class="input"
+									<input name="groupname" type="text" class="input"
 										style="width: 90%">
-								</td>
-
-								<td>部门负责人</td>
-								<td>
-									<input name="principal" type="text" class="input"
-										style="width: 90%">
-								</td>
-
-							</tr>
-							<tr>
-								<td height="40" valign="top">部门职能</td>
-								<td colspan="3">
-									<textarea name="incumbent" rows="3"
-										style="width: 96%">
-									</textarea>
 								</td>
 							</tr>
 							<tr>
