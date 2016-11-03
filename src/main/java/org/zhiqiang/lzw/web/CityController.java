@@ -59,7 +59,8 @@ public class CityController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/getCitysByProvince/{pid}",method=RequestMethod.GET)
-	protected @ResponseBody List<City> getCitysByProvince(Model model,@PathVariable("pid")Integer pid) throws Exception{
+	protected @ResponseBody List<City> getCitysByProvince(Model model,
+		@PathVariable("pid")Integer pid) throws Exception{
 		List<City> list = cityService.getCitysByPid(pid);
 		//model.addAttribute("citys",list);
 		if(list.size()>0) return list;
