@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"
 	contentType="text/html; charset=utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -14,9 +15,12 @@
 	function forward(strURL) {
 		window.location = strURL;
 	}
-
+	
 	function deleteIds() {
-		document.forms[1].submit();
+		var flag = confirm("确定删除吗？");
+		if(flag){
+			document.forms[1].submit();
+		}
 	}
 </script>
 </head>
@@ -40,13 +44,13 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<form name="form1" method="post"
-					action="${pageContext.request.contextPath}/sys/sysUserGroupAction_list.do">
+				<form name="form1" method="get"
+					action="${pageContext.request.contextPath}/group/selectAllGroupByPage.do">
 					<table width="100%" border="0" cellspacing="0" cellpadding="0"
 						name="base" id="base">
 						<tr>
 							<td width="38%" nowrap="nowrap">部门名称： 
-								<input name="name" type="text" id="name" value="" 
+								<input name="groupName" type="text" id="name" value="${requestScope.groupName}" 
 									style="width: 140px">
 							</td>
 							<td width="39%" nowrap="nowrap">&nbsp;</td>
@@ -63,7 +67,7 @@
 									<button type='button' class='button'
 										onMouseOver="this.className='button_over';"
 										onMouseOut="this.className='button';"
-										onClick="forward('group.do?method=search')">
+										onClick="forward('${pageContext.request.contextPath}/group/selectAllGroupByPage.do')">
 										<img src="${pageContext.request.contextPath}/ui/images/button/qingkong.png"
 											border='0' align='absmiddle'>
 										&nbsp;清空
@@ -87,7 +91,7 @@
 		<button type='button' class='button'
 			onMouseOver="this.className='button_over';"
 			onMouseOut="this.className='button';"
-			onClick="forward('${pageContext.request.contextPath}/sys/sysUserGroupAction_addLink.do')">
+			onClick="forward('${pageContext.request.contextPath}/page/newPagePlan/sys/group/add.jsp')">
 			<img src="${pageContext.request.contextPath}/ui/images/button/xinjian.png"
 				border='0' align='absmiddle'>
 			&nbsp;新建
@@ -107,7 +111,7 @@
 	<div class="border">
 
 		<form name="form2" method="post"
-			action="${pageContext.request.contextPath}/sys/sysUserGroupList.do">
+			action="${pageContext.request.contextPath}/group/deleteGroup.do">
 			<input type="hidden" name="method" value="delete">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0"
 				id="PowerTable" class="PowerTable">
@@ -115,95 +119,89 @@
 				<tr>
 					<td width="5%" class="listViewThS1">
 						<input type="checkbox"id="checkall" name="checkall" 
-						value="" class="checkbox" onClick="checkAll()">
+						value="-1" class="checkbox" onClick="checkAll()">
 					</td>
 					<td width="20%" class="listViewThS1">部门名称</td>
-					<td width="15%" class="listViewThS1">部门负责人</td>
-					<td width="50%" class="listViewThS1">部门职能</td>
-					<td width="10%" class="listViewThS1">人员设置</td>
+					<!-- <td width="15%" class="listViewThS1">部门负责人</td> -->
+					<td width="50%" class="listViewThS1">部门描述</td>
+					<td width="50%" class="listViewThS1">设置</td>
 				</tr>
-				<tr>
-					<td>
-						<input type="checkbox" name="ids" value="12"
-							class="checkbox" onClick="changeCheckCount();">
-					</td>
-					<td>
-						<a href="${pageContext.request.contextPath}/sys/sysUserGroupAction_edit.do">
-							市场部
-						</a>
-					</td>
-					<td>xxxx</td>
-					<td>xxx</td>
-					<td>
-						<a href="javascript:OpenWin('${pageContext.request.contextPath}/sys/group/usersInGroup.jsp?id=12')">
-							设置
-						</a>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<input type="checkbox" name="ids" value="13"
-							class="checkbox" onClick="changeCheckCount();">
-					</td>
-					<td>
-						<a href="${pageContext.request.contextPath}/sys/sysUserGroup.do?method=edit&id=13">
-							财务部
-						</a>
-					</td>
-					<td>王天</td>
-					<td></td>
-					<td>
-						<a href="javascript:OpenWin('${pageContext.request.contextPath}/sys/group/usersInGroup.jsp?id=13')">
-							设置
-						</a>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<input type="checkbox" name="ids" value="14"
-							class="checkbox" onClick="changeCheckCount();">
-					</td>
-					<td>
-						<a href="${pageContext.request.contextPath}/sys/sysUserGroup.do?method=edit&id=14">
-							企划中心
-						</a>
-					</td>
-					<td>王天</td>
-					<td></td>
-					<td>
-						<a href="javascript:OpenWin('${pageContext.request.contextPath}/sys/group/usersInGroup.jsp?id=14')">
-							设置
-						</a>
-					</td>
-				</tr>
-
+				
+				<c:forEach items="${requestScope.groupList}" var="group" varStatus="status">
+					<tr>
+						<td>
+							<input type="checkbox" name="ids" value="${group.groupid }"
+								class="checkbox" onClick="changeCheckCount();">
+						</td>
+						<td>
+							<a href="${pageContext.request.contextPath}/page/newPagePlan/sys/group/edit.jsp">
+								${group.groupname}
+							</a>
+						</td>
+						<td>${group.remark}</td>
+						<td>
+							<a href="${pageContext.request.contextPath}/page/newPagePlan/sys/group/usersInGroup.jsp">
+								设置
+							</a>
+						</td>
+					</tr>
+				</c:forEach>
 			</table>
+			
+			
+			<center>
+				第${requestScope.pageBean.currPage}页/共${requestScope.pageBean.totalPages}页
+				<c:choose>
+					<c:when test="${requestScope.pageBean.currPage<=1 }">
+						首页
+						上一页
+					</c:when>
+					<c:otherwise>
+						<a href="${pageContext.request.contextPath}/group/selectAllGroupByPage.do?${requestScope.pageBean.url}&currPage=1">首页</a>
+						<a href="${pageContext.request.contextPath}/group/selectAllGroupByPage.do?${requestScope.pageBean.url}&currPage=${requestScope.pageBean.currPage-1}">上一页</a>
+					</c:otherwise>
+				</c:choose>
+				<c:choose>
+					<c:when test="${requestScope.pageBean.currPage>=requestScope.pageBean.totalPages }">
+						下一页
+						尾页
+					</c:when>
+					<c:otherwise>
+						<a href="${pageContext.request.contextPath}/group/selectAllGroupByPage.do?${requestScope.pageBean.url}&currPage=${requestScope.pageBean.currPage+1}">下一页</a>
+						<a href="${pageContext.request.contextPath}/group/selectAllGroupByPage.do?${requestScope.pageBean.url}&currPage=${requestScope.pageBean.totalPages}">尾页</a>
+					</c:otherwise>
+				</c:choose>
+			</center>
 		</form>
 	</div>
 </body>
 <script type="text/javascript">
 	function changeCheckCount() {
 		var count = 0;
-		$("input[type='checkbox'][name='ids']").each(function(index, data) {
+		$("input[type='checkbox'][name*='ids']").each(function(index, data) {
 			if (this.checked) {
 				count++;
 			}
 		});
-		if (count == $("input[type='checkbox'][name='ids']").length) {
+		if (count == $("input[type='checkbox'][name*='ids']").length) {
 			$("#checkall").attr("checked", "checked");
 		} else {
 			$("#checkall").attr("checked", null);
 		}
 	}
 
+	
 	function checkAll() {
-		if ($("#checkall")[0].checked) {
+		/* if ($("#checkall")[0].checked) {
 			$("input[type='checkbox'][name='ids']").attr("checked", "checked");
 		} else {
 			$("input[type='checkbox'][name='ids']").attr("checked", null);
-		}
+		} */
+		if ($("#checkall").attr("checked")) {
+			$("input[type='checkbox'][name*='ids']").attr("checked", "checked");
+		} else {
+			$("input[type='checkbox'][name*='ids']").attr("checked", null);
+		} 
 	}
 </script>
 </html>

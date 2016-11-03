@@ -44,8 +44,6 @@ body {
 	}
 
 	function checkSubmit() {
-		
-		alert(111);
 		document.forms[0].submit();
 	}
 </script>

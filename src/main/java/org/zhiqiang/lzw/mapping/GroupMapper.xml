@@ -22,6 +22,40 @@
     from sys_group
     where groupId = #{groupid,jdbcType=INTEGER}
   </select>
+  
+  <!-- 带条件查询分页查询 -->
+  <select id="selectByPage" resultMap="ResultMapWithBLOBs" parameterType="map">
+  	select * from SYS_GROUP 
+  	<where>
+  		<if test="groupName!=null">
+  			and groupName like #{groupName}
+  		</if>
+  	</where>
+  	 limit ${pageBean.pageIndex},${pageBean.pageSize}
+  </select>
+  
+  <!-- 带条件查询总记录数 -->
+  <select id="selectTotalRecords" resultType="Integer" parameterType="String">
+  	select count(1) from SYS_GROUP 
+  	<where>
+  		<if test="value!=null">
+  			and groupName like #{value} 
+  		</if>
+  	</where>
+  </select>
+  
+  
+  <!-- 批量删除 -->
+  <delete id="deleteByBatch" parameterType="Integer[]">
+    DELETE FROM SYS_GROUP WHERE groupId IN
+    <foreach collection="array" index="index" item="item" open="(" separator="," close=")"> 
+        #{item}  
+    </foreach>
+  </delete>
+  
+  
+  
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sys_group
     where groupId = #{groupid,jdbcType=INTEGER}
