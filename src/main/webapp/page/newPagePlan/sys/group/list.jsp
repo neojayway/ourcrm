@@ -140,7 +140,7 @@
 						</td>
 						<td>${group.remark}</td>
 						<td>
-							<a href="${pageContext.request.contextPath}/page/newPagePlan/sys/group/usersInGroup.jsp">
+							<a href="${pageContext.request.contextPath}/group/showUsersInGroup.do?groupId=${group.groupid }">
 								设置
 							</a>
 						</td>

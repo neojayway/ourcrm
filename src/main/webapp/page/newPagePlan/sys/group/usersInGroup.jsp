@@ -1,17 +1,19 @@
 <%@ page language="java" pageEncoding="UTF-8"
 	contentType="text/html; charset=utf-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>部门人员设置</title>
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/ui/js/jquery-1.8.3.min.js"></script> --%>
 <link href="${pageContext.request.contextPath}/ui/css/style_cn.css"
 	rel="stylesheet" type="text/css">
-<script src="${pageContext.request.contextPath}/ui/js/listbox.js"
+<script src="${pageContext.request.contextPath}/ui/js/listbox.js" 
 	type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/ui/js/global.js"
 	type="text/javascript"></script>
-<script>
+<script type="text/javascript">
+
 	function check() {
 		var users = dumpSelect("right");
 		if (users == "") {
@@ -22,37 +24,53 @@
 			return true;
 		}
 	}
+
+	
+	function submitSelect(){
+		var rslt =  $("rslt");
+		for(var i=0;i<rslt.options.length;i++){
+			var option = rslt.options[i];
+			option.selected = "selected";
+		};
+		document.ActionForm.submit();
+	}
+
+	function shutdown(){
+		window.document.location = '${pageContext.request.contextPath}/group/selectAllGroupByPage.do'
+	}
+	
 </script>
 </head>
 
 <body>
-	<form name="ActionForm" method="post" action="group.do"
+	<form name="ActionForm" method="post" action="${pageContext.request.contextPath }/group/updateUserOfGroup.do"
 		onSubmit="return check();">
 		<input type="hidden" name="method" value="userChange"> 
-		<input type="hidden" name="group_id" value="4"> 
-		<input type="hidden" name="users" value="">
+		<input type="hidden" name="groupId" value="${requestScope.groupCustom.groupid }"> 
+		<input type="hidden" name="uidStr" value="${requestScope.uidStr }">
 		<div class="mtitle">
 			<div class="mtitle-row">&nbsp;</div>
 			部门人员设置
 		</div>
 		<br>
+		<!-- if(check()) document.ActionForm.submit(); -->
 		<div class="control">
 			<button type='button' class='button'
 				onMouseOver="this.className='button_over';"
 				onMouseOut="this.className='button';"
-				onClick="if(check()) document.ActionForm.submit();">
+				onClick="submitSelect()">
 				<img src="${pageContext.request.contextPath}/ui/images/button/baocun.png"
 					border='0' align='absmiddle'>
 				&nbsp;保存
 			</button>
 			<button type='button' class='button'
 				onMouseOver="this.className='button_over';"
-				onMouseOut="this.className='button';" onClick="self.close();">
+				onMouseOut="this.className='button';" onClick="shutdown();">
 				<img src="${pageContext.request.contextPath}/ui/images/button/guanbi.png"
 					border='0' align='absmiddle'>
 				&nbsp;关闭
 			</button>
-		</div>
+		</div>	
 		<table width="100%" border="0" cellspacing="0" class="tabForm">
 			<tr>
 				<th colspan="4" align="left" class="th_head">
@@ -76,12 +94,16 @@
 								<td>
 									<select name="lselect" size="1" multiple id="lslt"
 										style="width: 100%; height: 250px" onDblClick="moveRight()">
-										<option value="12">王卓</option>
+										<c:forEach items="${requestScope.userList }" var="user">
+											<option value="${user.id }">${user.cnname }</option>
+										</c:forEach>
+										
+										<!-- <option value="12">王卓</option>
 										<option value="11">牛丹丹</option>
 										<option value="8">张宁</option>
 										<option value="7">王楠</option>
 										<option value="5">肖秋水</option>
-										<option value="1">系统管理员</option>
+										<option value="1">系统管理员</option> -->
 									</select>
 								</td>
 								<td align="center">
@@ -123,12 +145,16 @@
 								<td>
 									<select name="rselect" size="1" multiple id="rslt"
 										style="width: 100%; height: 250px" onDblClick="moveLeft()">
-										<option value="10" onDblClick="">王强</option>
+										<c:forEach items="${requestScope.groupCustom.users }" var="user">
+											<option value="${user.id}" onDblClick="">${user.cnname}</option>
+										</c:forEach>
+										
+										<!-- <option value="10" onDblClick="">王强</option>
 										<option value="9" onDblClick="">之燕燕</option>
 										<option value="6" onDblClick="">懂鹏</option>
 										<option value="4" onDblClick="">朱丹</option>
 										<option value="3" onDblClick="">张大勇</option>
-										<option value="2" onDblClick="">王天</option>
+										<option value="2" onDblClick="">王天</option> -->
 									</select>
 								</td>
 							</tr>

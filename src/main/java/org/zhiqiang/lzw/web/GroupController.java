@@ -2,7 +2,11 @@ package org.zhiqiang.lzw.web;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,10 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.zhiqiang.lzw.entity.Group;
+import org.zhiqiang.lzw.entity.User;
+import org.zhiqiang.lzw.entity.custom.GroupCustom;
 import org.zhiqiang.lzw.entity.custom.PageBean;
 import org.zhiqiang.lzw.service.IGroupService;
+import org.zhiqiang.lzw.service.IUserService;
 
 /**
  * 部门后端控制器
@@ -28,6 +36,10 @@ public class GroupController {
 	@Autowired
 	@Qualifier("groupService")
 	private IGroupService groupService;
+	
+	@Autowired
+	@Qualifier("userService")
+	private IUserService userService;
 
 	/**
 	 * 查询所有部门
@@ -81,10 +93,101 @@ public class GroupController {
 		return "forward:/group/selectAllGroupByPage.do";
 	}
 	
+	/**
+	 * 展示部门所有用户数据以及存在的用户数据
+	 * @param groupId
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/showUsersInGroup")
+	public String showUsersInGroup(Integer groupId,Model model){
+		//获得存在的所有用户
+		List<User> userList = userService.selectAllUser();
+		logger.info("存在的所有用户:"+userList);
+		//获得部门
+		GroupCustom groupCustom = groupService.selectGroupCustom(groupId);
+		List<User> users = groupCustom.getUsers();
+		//将部门下的用户编号拼接成字符串，用于保存在表单的隐藏域中，表示部门原有的用户
+		String uidStr = "";
+		for (User user : users) {
+			uidStr += user.getId()+",";
+		}
+		if (uidStr.endsWith(",")) {
+			uidStr = uidStr.substring(0, uidStr.length()-1);
+		}
+		
+		logger.info("部门下的用户:"+groupCustom);
+		
+		//将查询得到的所有用户要提出掉部门下的用户
+		//保证左右下拉框中的下拉项不会重复
+		if (userList!=null) {
+			Iterator<User> iterator = userList.iterator();
+			//用foreach循环遍历去删除list集合中值会出现并发修改异常，用list特有迭代器的remove（）可以避免这个问题 
+			while (iterator.hasNext()) {
+				User user = (User) iterator.next();
+				Integer id = user.getId();
+				if (groupCustom!=null) {
+					for (User user2 : groupCustom.getUsers()) {
+						if (user2.getId() == id) {
+							iterator.remove();
+						}
+					}
+				}
+			}
+		}
+		model.addAttribute("userList", userList);
+		model.addAttribute("groupCustom", groupCustom);
+		model.addAttribute("uidStr",uidStr);
+		return "page/newPagePlan/sys/group/usersInGroup";
+	}
+	
+	
+	/**
+	 * 为用户分配指定的部门
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping("/updateUserOfGroup")
+	public String updateUserOfGroup(Integer[] rselect,Integer groupId,String uidStr) throws Exception{
+		System.out.println(uidStr+"++++++++++++++++");
+		String[] uidArray = uidStr.split(",");
+		if (rselect!=null) {
+			//首先将下拉框中提交的用户分配到指定部门
+			userService.updateBatchGroupIdForUser(groupId, rselect);
+		}
+		
+		//遍历部门原有的员工，如果该员工在新提交过来的员工集合中没有找到，则将该员工的的部门更新为“待分配部门”
+		for (int i = 0; i < uidArray.length; i++) {
+			Integer uid = Integer.parseInt(uidArray[i]);
+			boolean flag = false;
+			for (int j = 0; j < rselect.length; j++) {
+				if (rselect[j] == uid) {
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				//在原有的部门下员工在新提交的用户编号数组中没有找到，需要剔除用户所属部门
+				userService.updateGroupIdForUser(10, uid);
+				logger.info("用户编号为："+uid+"的用户从部门："+groupId+"中剔除到10号待分配的部门");
+			}
+		}
+		return "forward:/group/selectAllGroupByPage.do";
+	}
+	
+	
+	
 	
 	public void setGroupService(IGroupService groupService) {
 		this.groupService = groupService;
 	}
+
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
+	}
+	
+	
+	
 	
 	
 }

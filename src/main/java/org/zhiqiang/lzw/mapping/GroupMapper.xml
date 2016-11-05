@@ -5,15 +5,62 @@
     <id column="groupId" property="groupid" jdbcType="INTEGER" />
     <result column="groupName" property="groupname" jdbcType="VARCHAR" />
   </resultMap>
+  
   <resultMap id="ResultMapWithBLOBs" type="org.zhiqiang.lzw.entity.Group" extends="BaseResultMap" >
     <result column="remark" property="remark" jdbcType="LONGVARCHAR" />
   </resultMap>
+  
+  <!-- 自定义GroupCustomResultMap -->
+  <resultMap type="org.zhiqiang.lzw.entity.custom.GroupCustom" id="GroupCustomResultMap" extends="ResultMapWithBLOBs">
+  	<!-- 部门员工一对多 -->
+  	<collection property="users" ofType="org.zhiqiang.lzw.entity.User">
+  		<id column="id" property="id" jdbcType="INTEGER" />
+	    <result column="creator" property="creator" jdbcType="VARCHAR" />
+	    <result column="createTime" property="createtime" jdbcType="VARCHAR" />
+	    <result column="updater" property="updater" jdbcType="VARCHAR" />
+	    <result column="updateTime" property="updatetime" jdbcType="VARCHAR" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="cnname" property="cnname" jdbcType="VARCHAR" />
+	    <result column="password" property="password" jdbcType="VARCHAR" />
+	    <result column="address" property="address" jdbcType="VARCHAR" />
+	    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+	    <result column="email" property="email" jdbcType="VARCHAR" />
+	    <result column="beginDate" property="begindate" jdbcType="DATE" />
+	    <result column="endDate" property="enddate" jdbcType="DATE" />
+	    <result column="groupId" property="groupid" jdbcType="INTEGER" />
+	    <result column="accessFileLevel" property="accessfilelevel" jdbcType="VARCHAR" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="commendMan" property="commendman" jdbcType="VARCHAR" />
+	    <result column="movetelePhone" property="movetelephone" jdbcType="VARCHAR" />
+	    <result column="nowAddress" property="nowaddress" jdbcType="VARCHAR" />
+	    <result column="nowtelePhone" property="nowtelephone" jdbcType="VARCHAR" />
+	    <result column="identityCode" property="identitycode" jdbcType="VARCHAR" />
+	    <result column="insuranceCode" property="insurancecode" jdbcType="VARCHAR" />
+	    <result column="instancyLinkman" property="instancylinkman" jdbcType="VARCHAR" />
+	    <result column="instancytelePhone" property="instancytelephone" jdbcType="VARCHAR" />
+	    <result column="sex" property="sex" jdbcType="VARCHAR" />
+	    <result column="birthday" property="birthday" jdbcType="DATE" />
+	    <result column="personnelType" property="personneltype" jdbcType="VARCHAR" />
+	    <result column="duty" property="duty" jdbcType="VARCHAR" />
+	    <result column="workDate" property="workdate" jdbcType="DATE" />
+	    <result column="highSchool" property="highschool" jdbcType="VARCHAR" />
+	    <result column="finishSchool" property="finishschool" jdbcType="VARCHAR" />
+	    <result column="finishSchoolDate" property="finishschooldate" jdbcType="DATE" />
+	    <result column="consortName" property="consortname" jdbcType="VARCHAR" />
+	    <result column="youngoneName" property="youngonename" jdbcType="VARCHAR" />
+	    <result column="officetelePhone" property="officetelephone" jdbcType="VARCHAR" />
+	    <result column="consorttelePhone" property="consorttelephone" jdbcType="VARCHAR" />
+	    <result column="consortCompany" property="consortcompany" jdbcType="VARCHAR" />
+  	</collection>
+  </resultMap>
+  
   <sql id="Base_Column_List" >
     groupId, groupName
   </sql>
   <sql id="Blob_Column_List" >
     remark
   </sql>
+  
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -22,6 +69,15 @@
     from sys_group
     where groupId = #{groupid,jdbcType=INTEGER}
   </select>
+  
+  <!-- 根据部门编号（部门关联查询用户 ）-->
+  <select id="selectGroupCustom" resultMap="GroupCustomResultMap" parameterType="Integer">
+  	SELECT g.groupId, groupName, g.remark,u.*
+  		FROM sys_group g 
+  		INNER JOIN sys_user u ON g.groupId = u.groupId 
+  	WHERE g.groupId = #{groupId}; 
+  </select>
+  
   
   <!-- 带条件查询分页查询 -->
   <select id="selectByPage" resultMap="ResultMapWithBLOBs" parameterType="map">

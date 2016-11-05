@@ -1,8 +1,8 @@
-// JavaScript Document
+// 下拉框中项移动的方法
 function moveLeft() {
 	var left = $("lslt");
 	var right = $("rslt");
-	var ids = new Array();
+	var ids = new Array();//该数组保存选中的需要被移动的下拉项的位置索引值
 	for(var i=0;i<right.options.length;i++) {
 		var temp = right.options[i];
 		if(temp.selected) {
@@ -14,7 +14,7 @@ function moveLeft() {
 		}
 	}
 	for(var i=0;i<ids.length;i++) {
-		var temp = right.options[ids[i]-i];	//if moved,option's length changed
+		var temp = right.options[ids[i]-i];	//如果被移动一个项，那么真实的下拉项的索引值要减1
 		right.removeChild(temp);
 	}
 	if(right.options[0]!=null)
@@ -35,7 +35,7 @@ function moveRight() {
 		}
 	}
 	for(var i=0;i<ids.length;i++) {
-		var temp = left.options[ids[i]-i];	//if moved,option's length changed
+		var temp = left.options[ids[i]-i];	
 		left.removeChild(temp);
 	}
 	if(left.options[0]!=null)

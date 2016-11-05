@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.zhiqiang.lzw.entity.Group;
+import org.zhiqiang.lzw.entity.custom.GroupCustom;
 import org.zhiqiang.lzw.entity.custom.PageBean;
 import org.zhiqiang.lzw.mapping.GroupMapper;
 import org.zhiqiang.lzw.service.IGroupService;
@@ -70,6 +71,17 @@ public class GroupServiceImpl implements IGroupService{
 	@Override
 	public void insert(Group record) throws Exception {
 		groupMapper.insert(record);
+	}
+
+	
+	/**
+     * 根据部门编号查找指定部门（部门关联查询用户）
+     * @param groupId
+     * @return
+     */
+	@Override
+	public GroupCustom selectGroupCustom(Integer groupId) {
+		return groupMapper.selectGroupCustom(groupId);
 	}
 	
 	

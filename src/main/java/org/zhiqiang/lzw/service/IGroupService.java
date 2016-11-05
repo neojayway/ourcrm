@@ -3,6 +3,7 @@ package org.zhiqiang.lzw.service;
 import java.util.List;
 
 import org.zhiqiang.lzw.entity.Group;
+import org.zhiqiang.lzw.entity.custom.GroupCustom;
 import org.zhiqiang.lzw.entity.custom.PageBean;
 
 /**
@@ -39,4 +40,11 @@ public interface IGroupService {
      * @throws Exception
      */
     void insert(Group record) throws Exception;
+    
+    /**
+     * 根据部门编号查找指定部门（部门关联查询用户）
+     * @param groupId
+     * @return
+     */
+    GroupCustom selectGroupCustom(Integer groupId);
 }
