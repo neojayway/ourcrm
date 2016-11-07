@@ -4,8 +4,10 @@ import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -18,20 +20,24 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.zhiqiang.lzw.entity.CodeRule;
 import org.zhiqiang.lzw.entity.Company;
+import org.zhiqiang.lzw.entity.custom.PageBean;
+import org.zhiqiang.lzw.util.SerialNumberUtil;
 
 public class CompanyServiceImplTest {
 
 	private ApplicationContext context;
-	
+
 	@Before
 	public void setUp() throws Exception {
-		//context = new ClassPathXmlApplicationContext("spring/applicationContext-*.xml");
+		context = new ClassPathXmlApplicationContext(
+				"spring/applicationContext-*.xml");
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		//context = null;
+		context = null;
 	}
 
 	@Test
@@ -121,25 +127,54 @@ public class CompanyServiceImplTest {
 		}
 		
 		//循环打印treeSet中对象的值
-		for (Company company : treeSet) {
+		/*for (Company company : treeSet) {
+			System.out.println(company);
+		}*/
+		
+		PageBean pageBean = new PageBean();
+		pageBean.setPageSize(5);
+		pageBean.setCurrPage(1);
+		
+		List<Company> list2 = new ArrayList<Company>();
+		
+		if (treeSet.size() > 0) {
+			if(pageBean!=null){
+				int index1 = 0;
+				int index2 = 0;
+				boolean flag = false;
+				Iterator<Company> iterator = treeSet.iterator();
+				while(iterator.hasNext()){
+					if(pageBean.getPageIndex()==index1){
+						flag = true;
+					}
+					if(flag){
+						list2.add(iterator.next());
+						index2++;
+						if(index2==pageBean.getPageSize()){
+							break;
+						}
+					}
+					index1++;
+				}
+				
+			}
+		}
+		for (Company company : list2) {
 			System.out.println(company);
 		}
-		
+	}
+	@Test
+	public void testGetCompanyWhereTodayNeedTouch() throws Exception {
+		// ICompanyService companyService =
+		// (ICompanyService)context.getBean("companyService");
+		SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd");
+
+		String str = simple.format(new Date());
+
+		System.out.println(str);
+		// companyService.getCompanyWhereTodayNeedTouch(date);
 	}
 
-	@Test
-	public void testGetCompanyWhereTodayNeedTouch() throws Exception{
-		//ICompanyService companyService = 
-		//		(ICompanyService)context.getBean("companyService");
-		SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd");
-		
-		String str = simple.format(new Date());
-		
-		
-		System.out.println(str);
-		//companyService.getCompanyWhereTodayNeedTouch(date);
-	}
-	
 	@Test
 	public void testGetCompanyByPage() {
 		fail("Not yet implemented");
@@ -166,9 +201,25 @@ public class CompanyServiceImplTest {
 	}
 
 	@Test
-	public void testAddBefore(){
-		ICompanyService companyService = 
-			(ICompanyService)context.getBean("companyService");
-		
+	public void testAddBefore() {
+		String tabName = "c_company";
+		String nextSeq = "";
+		ICompanyService companyService = (ICompanyService) context
+				.getBean("companyService");
+		ICodeRuleService codeRuleService = (ICodeRuleService) context
+				.getBean("codeRuleService");
+		CodeRule codeRule = codeRuleService.selectCodeRuleByTable(tabName);
+		Integer glidebit = codeRule.getGlidebit();
+		System.out.println(codeRule);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String curdate = simpleDateFormat.format(new Date());
+		if (curdate.equals(codeRule.getCurdate())) {
+			nextSeq = SerialNumberUtil.geneNextGlideNumber(codeRule
+					.getNextseq());
+		} else {
+			nextSeq = SerialNumberUtil.geneFirstGlideNumber(glidebit);
+		}
+		String companyCode = "C-" + curdate + "-" + nextSeq;
+		System.out.println(companyCode);
 	}
 }

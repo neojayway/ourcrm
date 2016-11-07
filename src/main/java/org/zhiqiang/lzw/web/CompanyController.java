@@ -10,6 +10,8 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -19,10 +21,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.zhiqiang.lzw.entity.City;
 import org.zhiqiang.lzw.entity.CodeRule;
 import org.zhiqiang.lzw.entity.Company;
+import org.zhiqiang.lzw.entity.Province;
+import org.zhiqiang.lzw.entity.User;
+import org.zhiqiang.lzw.entity.custom.PageBean;
+import org.zhiqiang.lzw.service.ICityService;
 import org.zhiqiang.lzw.service.ICodeRuleService;
 import org.zhiqiang.lzw.service.ICompanyService;
+import org.zhiqiang.lzw.service.IDictionaryTypeService;
+import org.zhiqiang.lzw.service.IProvinceService;
+import org.zhiqiang.lzw.util.PinYinUtil;
 import org.zhiqiang.lzw.util.SerialNumberUtil;
 
 /**
@@ -44,21 +54,50 @@ public class CompanyController {
 	}
 	
 	@Autowired
-	@Qualifier("iCodeRuleService")
-	private ICodeRuleService iCodeRuleService;
+	@Qualifier("codeRuleService")
+	private ICodeRuleService codeRuleService;
 	
 	public void setiCodeRuleService(ICodeRuleService iCodeRuleService) {
-		this.iCodeRuleService = iCodeRuleService;
+		this.codeRuleService = iCodeRuleService;
+	}
+	
+	@Autowired
+	@Qualifier("dictionaryTypeService")
+	private IDictionaryTypeService dictionaryTypeService;
+	
+	public void setDictionaryTypeService(
+			IDictionaryTypeService dictionaryTypeService) {
+		this.dictionaryTypeService = dictionaryTypeService;
+	}
+	
+	@Autowired
+	@Qualifier("provinceService")
+	private IProvinceService provinceService;
+	
+	public void setProvinceService(IProvinceService provinceService) {
+		this.provinceService = provinceService;
+	}
+	
+	@Autowired
+	@Qualifier("cityService")
+	private ICityService cityService;
+	
+	public void setCityService(ICityService cityService) {
+		this.cityService = cityService;
 	}
 
 	/**
-	 * 获取所有数据
+	 * 分页查询数据
 	 * @return
 	 */
-	@RequestMapping(value="/getAllCompany", method=RequestMethod.GET)
-	protected String getAllCompany(Model model) throws Exception{
-		List<Company> list = companyService.getAllCompany();
+	@RequestMapping(value="/selectCompanyByPage", method=RequestMethod.GET)
+	protected String selectCompanyByPage(Model model, PageBean pageBean) 
+		throws Exception{
+		if(pageBean==null) pageBean = new PageBean();
+		pageBean.setTotalRecords(companyService.selectTotalRecords());
+		List<Company> list = companyService.selectByPage(pageBean);
 		model.addAttribute("companys", list);
+		model.addAttribute("pageBean", pageBean);
 		return "page/newPagePlan/crm/customer/base/list";
 	}
 	
@@ -98,99 +137,16 @@ public class CompanyController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/fuzzySearchCompany/{data}", method = RequestMethod.GET)
-	protected @ResponseBody TreeSet<Company> fuzzySearchCompany(Model model,
-		@PathVariable("data") String data) throws Exception{
-		// 获取到所有数据保存到list集合
-		List<Company> list = companyService.getAllCompany();
-		// 创建TreeMap对象
-		Map<String, Company> map = new TreeMap<String, Company>();
-		// 循环遍历list集合
-		for (int i = 0; i < list.size(); i++) {
-			// 创建StringBuilder对象，开始拼接资料
-			StringBuilder str = new StringBuilder();
-			str.append(list.get(i).getId());
-			str.append(list.get(i).getCode());
-			str.append(list.get(i).getName());
-			str.append(list.get(i).getPycode());
-			str.append(list.get(i).getGrade());
-			str.append(list.get(i).getRegionname());
-			str.append(list.get(i).getSource());
-			str.append(list.get(i).getTrade());
-			str.append(list.get(i).getScale());
-			str.append(list.get(i).getProvince());
-			str.append(list.get(i).getCity());
-			str.append(list.get(i).getPostcode());
-			str.append(list.get(i).getAddress());
-			str.append(list.get(i).getEmail());
-			str.append(list.get(i).getWeb());
-			str.append(list.get(i).getTel1());
-			str.append(list.get(i).getFax());
-			str.append(list.get(i).getMobile());
-			str.append(list.get(i).getTel2());
-			str.append(list.get(i).getNexttouchdate());
-			str.append(list.get(i).getQuality());
-			str.append(list.get(i).getDealin());
-			str.append(list.get(i).getKind());
-			str.append(list.get(i).getArtificialperson());
-			str.append(list.get(i).getRegistemoney());
-			str.append(list.get(i).getBank());
-			str.append(list.get(i).getAccount());
-			str.append(list.get(i).getTaxcode());
-			str.append(list.get(i).getCreater());
-			str.append(list.get(i).getCreatetime());
-			str.append(list.get(i).getUpdater());
-			str.append(list.get(i).getUpdatetime());
-			str.append(list.get(i).getOwneruser());
-			str.append(list.get(i).getDispenseperson());
-			str.append(list.get(i).getDispensedate());
-			str.append(list.get(i).getRemark());
-			// 将拼接好的字符串和对应对象放入map集合中
-			map.put(str.toString(), list.get(i));
+	@RequestMapping(value = "/fuzzySearchCompany", method = RequestMethod.GET)
+	protected @ResponseBody Map<String, Object> fuzzySearchCompany(Model model,
+		String data, PageBean pageBean) throws Exception{
+		
+		if(data!=null){
+			data = new String(data.getBytes("iso-8859-1"),"utf-8");
+			pageBean.setUrl("groupName="+data);	
 		}
-
-		// 准备一个TreeSet，用来存放挑选好的对象，以及对对象进行排序
-		TreeSet<Company> treeSet = new TreeSet<Company>(
-			new Comparator<Company>() {
-			// 排序方法
-			@Override
-			public int compare(Company c1, Company c2) {
-				return c1.getId().compareTo(c2.getId());
-			}
-		});
-
-		// 判断传入的参数是否为空
-		if (data.equals("-1")) {
-			// 如果为空就查所有
-			data = "";
-		}
-
-		// 循环遍历map集合中所有的key
-		for (String key : map.keySet()) {
-			// 定义一个正则表达式 接收来自页面的参数
-			String regEx = data;
-			// 创建Pattern对象
-			Pattern pattern = Pattern.compile(regEx);
-			// 创建Matcher对象
-			Matcher matcher = pattern.matcher(key);
-			// 重置此匹配器，然后尝试查找匹配该模式、从指定索引开始的输入序列的下一个子序列。
-			boolean b = matcher.find();
-			// 判断匹配结果
-			if (b) {
-				// 根据key，获取到对应的value值，即对象
-				Company company = map.get(key);
-				// 把对象放入TreeSet中
-				treeSet.add(company);
-			}
-		}
-
-		// 循环打印treeSet中对象的值
-		/*for (Company company : treeSet) {
-			System.out.println(company);
-		}*/
-
-		if (treeSet.size() > 0) return treeSet;
-		else return null;
+		
+		return companyService.fuzzySearchCompany(data, pageBean);
 	}
 
 	/**
@@ -201,7 +157,21 @@ public class CompanyController {
 	 */
 	@RequestMapping(value = "/saveCompany", method = RequestMethod.POST)
 	protected String saveCompany(Company company) throws Exception{
+		
+		Integer pid = new Integer(company.getProvince());
+		Province province = provinceService.getProvinceById(pid);
+		String name = province.getName();
+		company.setProvince(name);
+		
 		int insertCompany = companyService.insertCompany(company);
+		String code = company.getCode();
+		String nextseq = SerialNumberUtil.geneNextGlideNumber
+			(code.substring(code.length()-3));
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String curDate = simpleDateFormat.format(new Date());
+		codeRuleService.updateSerialNumberByTable("c_company", 
+			nextseq,curDate);
+		
 		if (insertCompany > 0) return "redirect:/company/getAllCompany";
 		else return "/error";
 	}
@@ -219,10 +189,49 @@ public class CompanyController {
 		throws Exception{
 		Company company = companyService.getCompanyById(id);
 		model.addAttribute("company", company);
-		if (company != null) return "/edit";
+		
+		String province = company.getProvince();
+		
+		//获取到所有省份
+		List<Province> allProvince = provinceService.getAllProvince();
+		//将省份资料放入model
+		model.addAttribute("allProvince", allProvince);
+		
+		int pid = 0;
+		for (int i = 0; i < allProvince.size(); i++) {
+			if(province.equals(allProvince.get(i).getName())){
+				pid = allProvince.get(i).getId();
+			}
+		}
+		
+		//获取到客户所在省所有市的基础数据
+		List<City> cityList = cityService.getCitysByPid(pid);
+		model.addAttribute("cityList", cityList);
+		
+		if (company != null) return "/page/newPagePlan/crm/customer/base/edit";
 		else return "/error";
 	}
 
+	/**
+	 * 修改客户信息
+	 * @param model
+	 * @param company
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/updateAfter", method = RequestMethod.POST)
+	protected String updateAfter(Model model, Company company) throws Exception{
+		
+		Integer pid = new Integer(company.getProvince());
+		Province province = provinceService.getProvinceById(pid);
+		String name = province.getName();
+		company.setProvince(name);
+		
+		companyService.updateCompany(company);
+		
+		return "redirect:/company/getAllCompany";
+	}
+	
 	/**
 	 * 删除单个客户
 	 * 
@@ -261,23 +270,85 @@ public class CompanyController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/addBefore", method=RequestMethod.POST)
-	protected String addBefore(Model model) throws Exception{
+	@RequestMapping(value="/addBefore", method=RequestMethod.GET)
+	protected String addBefore(Model model, HttpSession session) throws Exception{
+		//定义客户编码规则对应的表名
 		String tabName = "c_company";
+		//定义下一次产生的流水号
 		String nextSeq = "";
-		CodeRule codeRule = iCodeRuleService.selectCodeRuleByTable(tabName);
+		//得到客户对应的编码规则
+		CodeRule codeRule = codeRuleService.selectCodeRuleByTable(tabName);
+		//得到客户对应的流水号的流水位
 		Integer glidebit = codeRule.getGlidebit();
-		System.out.println(codeRule);
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+		//打印编码规则信息
+		//System.out.println(codeRule);
+		//获取到一个格式化后的当前日期字符串
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String curdate = simpleDateFormat.format(new Date());
+		//把当前日期与编码规则里面的最后一次更改日期进行对比
 		if(curdate.equals(codeRule.getCurdate())){
-			nextSeq = SerialNumberUtil.geneNextGlideNumber(codeRule.getNextseq());
+			//如果日期相同，把编码规则的流水号赋值
+			nextSeq = codeRule.getNextseq();
 		}else{
+			//如果日期不同，生成流水位长度的初始流水号
 			nextSeq = SerialNumberUtil.geneFirstGlideNumber(glidebit);
 		}
-		String companyCode = "C-"+curdate+"-"+
-				SerialNumberUtil.geneFirstGlideNumber(glidebit);
-		return null;
+		//查看生成后的客户编码规则
+		String companyCode = "C-"+curdate+"-"+nextSeq;
+		//从session域里面拿到登录的用户信息
+		User user = (User)session.getAttribute("userCustom");
+		//得到登录用户的中文名和ID
+		String cnname = user.getCnname();
+		Integer userID = user.getId();
+		//得到当前系统时间
+		simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String date = simpleDateFormat.format(new Date());
+		//将客户编码、登录用户名、系统时间放入model里面
+		model.addAttribute("companyCode", companyCode);
+		model.addAttribute("cnname", cnname);
+		model.addAttribute("userID", userID);
+		model.addAttribute("date", date);
+		
+		//获取到所有省份
+		List<Province> allProvince = provinceService.getAllProvince();
+		//将省份资料放入model
+		model.addAttribute("allProvince", allProvince);
+		
+		//获取到北京市的基础数据
+		List<City> cityList = cityService.getCitysByPid(1);
+		model.addAttribute("cityList", cityList);
+		
+		return "page/newPagePlan/crm/customer/base/add";
+	}
+
+	/**
+	 * 把页面传过来的客户名翻译成首字母拼音
+	 * @param model
+	 * @param pinyin
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/doPinYin/{companyName}", method=RequestMethod.GET)
+	protected @ResponseBody String doPinYin(Model model, 
+		@PathVariable("companyName")String companyName) throws Exception{
+		String firstSpell = PinYinUtil.converterToFirstSpell(companyName);
+		System.out.println(firstSpell);
+		return firstSpell;
+	}
+	
+	/**
+	 * 根据省份获得对应城市
+	 * @param model
+	 * @param pid
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/doGetCitysByPid/{pid}", method=RequestMethod.GET)
+	protected @ResponseBody List<City> doGetCitysByPid(Model model, 
+		@PathVariable("pid") Integer pid)throws Exception{
+		List<City> cityList = cityService.getCitysByPid(pid);
+		if(cityList.size()>0) return cityList;
+		else return null;
 	}
 	
 }

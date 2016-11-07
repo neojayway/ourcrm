@@ -37,12 +37,26 @@
 
 <script type="text/javascript">
 
+	function fristPageOnclick(){
+		var $page = $(this).html();
+		alert($page);
+	}
+
 	function getData(){
+		//var $page = $(this).html();
+		
+		$("a").click(
+			function(){
+				alert($(this).html());
+		}); 
+		
+		//alert($page); 
+		/* 
 		var str = $("[name='data']").val();
 		//判断文本框是否输入值，没输入就查所有
 		if(str == null || str=="" || $.trim(str).length==0) str = -1;
 		$.ajax({
-			url:'${pageContext.request.contextPath}/company/fuzzySearchCompany/'+str,
+			url:'${pageContext.request.contextPath}/company/fuzzySearchCompany.do&'+url+"&"+currPage,
 			type:'get',
 			dataType:'json',
 			success:function(data){
@@ -75,17 +89,17 @@
 				$th18.appendTo($tr11);
 				$th19.appendTo($tr11);
 				if(data!=null){
-					for (var i = 0; i < data.length; i++) {
-						var companyId = data[i].id;
-						var companyName = data[i].name;
-						var companyTrade = data[i].trade;
-						var companyGrade = data[i].grade;
-						var companyTel1 = data[i].tel1;
-						var companyEmail = data[i].email;
-						var companyNextTouchDate = data[i].nexttouchdate;
-						var companyCreater = data[i].creater;
-						var companyProvince = data[i].province;
-						var companyCity = data[i].city;
+					for (var i = 0; i < data.list2.length; i++) {
+						var companyId = data.list2[i].id;
+						var companyName = data.list2[i].name;
+						var companyTrade = data.list2[i].trade;
+						var companyGrade = data.list2[i].grade;
+						var companyTel1 = data.list2[i].tel1;
+						var companyEmail = data.list2[i].email;
+						var companyNextTouchDate = data.list2[i].nexttouchdate;
+						var companyCreater = data.list2[i].creater;
+						var companyProvince = data.list2[i].province;
+						var companyCity = data.list2[i].city;
 						var $tr21 = $("<tr>");
 						$tr21.appendTo($table);
 						var $td21 = $("<td><input type='checkbox' name='ids' cssClass='checkbox' onclick='changeCheckCount();' /></td>");
@@ -109,15 +123,25 @@
 						var $tr22 = $("</tr>");
 						$tr22.appendTo($table);
 					}
+						$("#curPageSpan").val(data.pageBean.currPage);
+						$("#fristPage").
+							attr("href","${pageContext.request.contextPath}/company/fuzzySearchCompany.do?${requestScope.pageBean.url}&currPage=1");
+						$("#prePage").
+							attr("href","${pageContext.request.contextPath}/company/fuzzySearchCompany.do?${requestScope.pageBean.url}&currPage=${requestScope.pageBean.currPage-1}");
+						$("#nextPage").
+							attr("href","${pageContext.request.contextPath}/company/fuzzySearchCompany.do?${requestScope.pageBean.url}&currPage=${requestScope.pageBean.currPage+1}");
+						$("#lastPage").
+							attr("href","${pageContext.request.contextPath}/company/fuzzySearchCompany.do?${requestScope.pageBean.url}&currPage=${requestScope.pageBean.totalPages}");					
 				}else{
 					var $tr12=$("<tr><td colspan=4>未查询到与  [ "+str+" ] 相关的任何信息,请重新查询！</td></tr>");
-					$tr12.appendTo($table);	
+					$tr12.appendTo($table);
+										
 				}
 				$table.appendTo("#createTable");
 				$("#createtable").append("</table>");
 			}
 		});
-	}
+ */	}
 
 	function forward(strURL) {
 		window.location = strURL;
@@ -192,18 +216,19 @@
 			<td colspan="2">
 				<!-- 基本查询的表单--> 
 				<form name="form1" method="get"
-					action="/company/getAllCompany.do">
+					action="/company/fuzzySearchCompany.do">
 					<div class="control" align="center">
-						搜索客户: <input type="text" name="data" onchange="getData(this)"/>
+						搜索客户: <input type="text" name="data" onchange="getData(this)"
+							 value="${requestScope.data}"/>
 						&nbsp;
-						<%-- <button type='button' class='button'
+						<button type='button' class='button'
 							onMouseOver="this.className='button_over';"
 							onMouseOut="this.className='button';"
 							onClick="document.forms[0].submit();">
 							<img src="${pageContext.request.contextPath}/ui/images/button/sousuo.png"
 								border='0' align='absmiddle'>
-							&nbsp;搜索所有
-						</button> --%>
+							&nbsp;搜索
+						</button>
 
 						<button type='button' class='button'
 							onMouseOver="this.className='button_over';"
@@ -310,6 +335,39 @@
 					</tr>
 				</c:if>
 			</table>
+			
+			<center>
+				<input id="currPage" type="hidden" value="${requestScope.pageBean.currPage}"/>
+				<input id="dataUrl" type="hidden" value="${requestScope.pageBean.url }"/>
+				第<span id="curPageSpan">${requestScope.pageBean.currPage}</span>页/共${requestScope.pageBean.totalPages}页
+				<a id="fristPage" href="javascript:void(0)" onclick="fristPageOnclick(this)">首页</a>
+				<a id="prePage" href="javascript:void(0)" onclick="prePageOnclick(this)">上一页</a>
+				<a id="nextPage" href="javascript:void(0)" onclick="nextPageOnclick(this)">下一页</a>
+				<a id="lastPage" href="javascript:void(0)" onclick="lastPageOnclick(this)">尾页</a>
+				
+				<%-- 第<span id="curPageSpan">${requestScope.pageBean.currPage}</span>页/共${requestScope.pageBean.totalPages}页
+				<c:choose>
+					<c:when test="${requestScope.pageBean.currPage<=1 }">
+						首页
+						上一页
+					</c:when>
+					<c:otherwise>
+						<a id="fristPage" href="${pageContext.request.contextPath}/company/fuzzySearchCompany.do?currPage=1" onclick="getData()">首页</a>
+						<a id="prePage" href="${pageContext.request.contextPath}/company/fuzzySearchCompany.do?currPage=${requestScope.pageBean.currPage-1}">上一页</a>
+					</c:otherwise>
+				</c:choose>
+				<c:choose>
+					<c:when test="${requestScope.pageBean.currPage>=requestScope.pageBean.totalPages }">
+						下一页
+						尾页
+					</c:when>
+					<c:otherwise>
+						<a id="nextPage" href="${pageContext.request.contextPath}/company/fuzzySearchCompany.do?currPage=${requestScope.pageBean.currPage+1}">下一页</a>
+						<a id="lastPage" href="${pageContext.request.contextPath}/company/fuzzySearchCompany.do?currPage=${requestScope.pageBean.totalPages}">尾页</a>
+					</c:otherwise>
+				</c:choose> --%>
+			</center>
+			
 		</form>
 	</div>
 	<script type="text/javascript">

@@ -112,6 +112,21 @@
       </if>
     </trim>
   </insert>
+  
+  <!-- 根据对应的表名修改下一流水号 -->
+  <update id="updateSerialNumberByTable" parameterType="java.util.Map">
+  	update sys_code_rule
+  	<set>
+  		<if test="serialNumber != null">
+  			nextseq = #{serialNumber,jdbcType=VARCHAR},
+  		</if>
+  		<if test="curDate != null">
+  			curDate = #{curDate,jdbcType=VARCHAR}
+  		</if>
+  	</set>
+  	where tabName = #{tableName,jdbcType=VARCHAR}
+  </update>
+  
   <update id="updateByPrimaryKeySelective" parameterType="org.zhiqiang.lzw.entity.CodeRule">
     update sys_code_rule
     <set>

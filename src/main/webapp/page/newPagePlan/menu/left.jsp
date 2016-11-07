@@ -43,7 +43,7 @@
 						<li>
 							<img src="${pageContext.request.contextPath}/ui/images/menu/khbf.png"
 								width="17" height="17"> 
-							<a href="${pageContext.request.contextPath}/company/getAllCompany"
+							<a href="${pageContext.request.contextPath}/company/selectCompanyByPage.do"
 								target="rightFrame">
 								客户拜访
 							</a>

@@ -1,6 +1,8 @@
 <%@ page language="java" pageEncoding="UTF-8"
 	contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -26,45 +28,95 @@
 
 <script type="text/javascript">
 	function name2pinyin() {
-		var nameValue = $("#name").val();
+		var companyName = $("#name").val();
+		$.ajax({
+			url:'${pageContext.request.contextPath}/company/doPinYin/'+companyName,
+			type:'get',
+			dataType:'text',
+			success:function(data){
+				$("[name='pycode']").val("");
+				$("[name='pycode']").val(data);
+			}
+		});
+		/* var nameValue = $("#name").val();
 		$.post(
 			"${pageContext.request.contextPath}/crm/companyAction_pinyin.do",
 			{
 				name : nameValue
-			}, function(data, textStatuts) {
+			}, 
+			function(data, textStatuts) {
 				$("#pycode").val(data);
-			});
+			}); */
 	}
 
-	function showCity(value) {
-		$.post(
-			"${pageContext.request.contextPath}/crm/companyAction_showCity.do",
-			{
-				name : value
-			},
-			function(data, textStatuts) {
-				//alert(data);
-				var dataObj = eval("(" + data + ")");
-				//alert(dataObj);
-	
-				//删除城市
-				$("select[name='city'] option[value!='']").remove();
-	
-				// <select name="city" style="width:90%">
-				//<option value="">--------</option>
-				//</select>
-				for (var i = 0; i < dataObj.length; i++) {
-					var $option = $("<option></option>");
-					$option.attr("value", dataObj[i].name);
-					$option.text(dataObj[i].name);
-					$("select[name='city']").append($option);
+	function showCity() {
+		var pid = $("#province").val();
+		$.ajax({
+			url:'${pageContext.request.contextPath}/company/doGetCitysByPid/'+pid,
+			type:'get',
+			dataType:'json',
+			success:function(data){
+				$("#city").remove();
+				var $citySelect = $("<select name='city' id='city' style='width: 90%'>");
+				var $cityOption1 = $("<option value=''>------</option>");
+				$cityOption1.appendTo($citySelect);
+				if(data==null){
+					var $cityOption2 = $("<option value=''>无附属城市！</option>");
+					$cityOption2.appendTo($citySelect);
+				}else{
+					for(var i = 0;i<data.length;i++){
+						var cityId = data[i].id;
+						var cityName = data[i].name;
+						if(cityId = 1){
+							var $cityOption = $("<option value='"+cityName+"' selected='selected'>"+cityName+"</option>");
+							$cityOption.appendTo($citySelect);
+						}else{
+							var $cityOption = $("<option value='"+cityName+"'>"+cityName+"</option>");
+							$cityOption.appendTo($citySelect);
+						}
+					}
 				}
-			});
+			$citySelect.appendTo("#citySelect");
+			$("#citySelect").append("</select>");
+			}
+		});
 	}
+
+	function Date_of_Today() {
+		var now = new Date();
+		var year = now.getYear();
+		var mm = now.getMonth() + 1;
+		var dd = now.getDate();
+		if (mm < 10)
+			mm = "0" + mm;
+		if (dd < 10)
+			dd = "0" + dd;
+
+		return year + "-" + mm + "-" + dd;
+	}
+
+	function check() {
+		var nextTouchDate = $("#nextTouchDate").val();
+		if ($.trim(nextTouchDate) == "") {
+			alert("下次联系时间不能为空");
+			$("#nextTouchDate").focus();
+			return false;
+		}
+		var curDate = Date_of_Today();
+
+		if (nextTouchDate < curDate) {
+			alert("下次联系时间必须大于系统的当前时间");
+			$("#nextTouchDate").focus();
+		}
+
+		return true;
+	}
+	
 </script>
 </head>
 <body>
-	<form name="companyForm" method="post" action="">
+	<form name="companyForm" method="post" action="${pageContext.request.contextPath}/company/saveCompany.do"
+		onsubmit="return check();">
 		<div class="mtitle">
 			<div class="mtitle-row">&nbsp;</div>
 			客户-新建
@@ -81,7 +133,7 @@
 			</button>
 			<button type='button' class='button'
 				onMouseOver="this.className='button_over';"
-				onMouseOut="this.className='button';" onClick="">
+				onMouseOut="this.className='button';" onClick="history.go(-1)">
 				<img src="${pageContext.request.contextPath}/ui/images/button/fanhui.png"
 					border='0' align='absmiddle'/>
 					&nbsp;返回
@@ -108,16 +160,16 @@
 								<td width="16%" class="red">客户编码：</td>
 								
 								<td width="34%">
-									<input id="code" name="code" 
-									value="%{#request.code}" cssStyle="width:90%" 
+									<input id="code" name="code" readonly="true" class="disabled"
+									value="${requestScope.companyCode}" style="width:90%" 
 									type="text"/>
 								</td>
 								
 								<td width="16%" class="red">客户名称：</td>
 								
 								<td width="34%">
-									<input id="name" name="name" value=""
-										cssStyle="width:90%" onblur="name2pinyin()" 
+									<input id="name" name="name"
+										style="width:90%" onblur="name2pinyin()" 
 										type="text"/>
 								</td>
 								
@@ -126,45 +178,43 @@
 								<td>拼音码：</td>
 								<td>
 									<input id="pycode" name="pycode" value=""
-									cssStyle="width:90%" readonly="true" 
-									cssClass="disabled" type="text"/>
+									style="width:90%" readonly="true" 
+									class="disabled" type="text"/>
 								</td>
 								<td>客户等级：</td>
 								<td>
-									<c:if test="#request.gradesSelect!=null">
-										<select list="#request.gradesSelect" 
-										name="grade" id="grade" listKey="value" 
-										listValue="value" headerKey=""
-										headerValue="--------" cssStyle="width:90%">
-										</select>
-									</c:if></td>
+									<select name="grade" id="grade" style="width:90%">
+										<option value="">--------</option>
+										<c:if test="${applicationScope.gradeList!=null}">
+											<c:forEach var="dictionaryType" varStatus="s" items="${applicationScope.gradeList}">
+												<option value="${dictionaryType.value}">${dictionaryType.value}</option>
+											</c:forEach>
+										</c:if>
+									</select>
+								</td>
 							</tr>
 							<tr>
 								<td>区域名称：</td>
 								<td>
-									<c:if test="#request.regionNamesSelect!=null">
-										<select list="#request.regionNamesSelect" 
-										name="regionName" id="regionName" 
-										listKey="value" listValue="value"
-										headerKey="" headerValue="--------" 
-										cssStyle="width:90%">
-										</select>
-									</c:if>
+									<select name="regionName" id="regionName" style="width:90%">
+										<option value="">--------</option>
+										<c:if test="${applicationScope.regionNameList!=null}">
+											<c:forEach var="dictionaryType" varStatus="s" items="${applicationScope.regionNameList}">
+												<option value="${dictionaryType.value}">${dictionaryType.value}</option>
+											</c:forEach>
+										</c:if>
+									</select>
 								</td>
+								
 								<td>客户来源：</td>
 								<td>
 									<select name="source" style="width: 90%">
 										<option value="">--------</option>
-										<option value="招标投标">招标投标</option>
-										<option value="展销会议">展销会议</option>
-										<option value="报刊杂志">报刊杂志</option>
-										<option value="直销业务">直销业务</option>
-										<option value="朋友介绍">朋友介绍</option>
-										<option value="户外广告">户外广告</option>
-										<option value="互联网">互联网</option>
-										<option value="代理渠道">代理渠道</option>
-										<option value="促销活动">促销活动</option>
-										<option value="电话联系">电话联系</option>
+										<c:if test="${applicationScope.sourceList!=null}">
+											<c:forEach var="dictionaryType" varStatus="s" items="${applicationScope.sourceList}">
+												<option value="${dictionaryType.value}">${dictionaryType.value}</option>
+											</c:forEach>
+										</c:if>
 									</select>
 								</td>
 							</tr>
@@ -173,42 +223,61 @@
 								<td>
 									<select id='trade' name='trade' style='width: 90%'>
 										<option value=''>------</option>
-										<option value='政府机构'>政府机构</option>
-										<option value='玩具'>玩具</option>
-										<option value='服饰'>服饰</option>
-										<option value='化工'>化工</option>
-										<option value='机械及工业制品'>机械及工业制品</option>
+										<c:if test="${applicationScope.tradeList!=null}">
+											<c:forEach var="dictionaryType" varStatus="s" items="${applicationScope.tradeList}">
+												<option value="${dictionaryType.value}">${dictionaryType.value}</option>
+											</c:forEach>
+										</c:if>
 									</select>
 								</td>
 								<td>公司规模：</td>
 								<td>
 									<select id='scale' name='scale' style='width: 90%'>
 										<option value=''>------</option>
-										<option value='300人以上'>300人以上</option>
-										<option value='100至300人'>100至300人</option>
-										<option value='50至100人'>50至100人</option>
-										<option value='少于50人'>少于50人</option>
+										<c:if test="${applicationScope.scaleList!=null}">
+											<c:forEach var="dictionaryType" varStatus="s" items="${applicationScope.scaleList}">
+												<option value="${dictionaryType.value}">${dictionaryType.value}</option>
+											</c:forEach>
+										</c:if>
 									</select>
 								</td>
 							</tr>
 							<tr>
 								<td>省份：</td>
 								<td>
-									<c:if test="#request.provincesSelect!=null">
-										<select list="#request.provincesSelect" 
-										name="province" id="province" 
-										listKey="name" listValue="name" 
-										headerKey="" headerValue="--------" 
-										onchange="showCity(this.value)"
-										cssStyle="width:90%">
-										</select>
-									</c:if>
+									<select name="province" id="province" style='width: 90%' onchange="showCity(this)">
+										<option value=''>------</option>
+										<c:if test="${requestScope.allProvince!=null}">
+											<c:forEach var="province" varStatus="s" items="${requestScope.allProvince}">
+												<c:choose>
+													<c:when test="${province.id == 1 }">
+														<option value="${province.id}" selected="selected">${province.name}</option>
+													</c:when>
+													<c:otherwise>
+														<option value="${province.id}">${province.name}</option>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+										</c:if>
+									</select>
 								</td>
 								<td>城市：</td>
 								<td>
-									<select list="{}" name="city" id="city" 
-									headerKey="" headerValue="--------" 
-									cssStyle="width:90%">
+									<span id="citySelect"></span>
+									<select name="city" id="city" style='width: 90%' >
+										<option value=''>------</option>
+										<c:if test="${requestScope.cityList!=null}">
+											<c:forEach var="city" varStatus="s" items="${requestScope.cityList}">
+												<c:choose>
+													<c:when test="${city.id == 1 }">
+														<option value="${city.name}" selected="selected">${city.name}</option>
+													</c:when>
+													<c:otherwise>
+														<option value="${city.name}">${city.name}</option>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+										</c:if>
 									</select>
 								</td>
 							</tr>
@@ -216,25 +285,25 @@
 								<td>邮政编码：</td>
 								<td>
 									<input name="postcode" value="" id="postcode"
-										cssStyle="width:90%" type="text"/>
+										style="width:90%" type="text"/>
 								</td>
 							</tr>
 							<tr>
 								<td>联系地址：</td>
 								<td colspan="3">
 									<input name="address" value="" id="address" 
-									cssStyle="width:96%" type="text"/>
+									style="width:96%" type="text"/>
 								</td>
 							</tr>
 							<tr>
 								<td>电子邮件：</td>
 								<td>
 									<input name="email" id="email" 
-									cssStyle="width:96%" value="" type="text"/>
+									style="width:96%" value="" type="text"/>
 								</td>
 								<td>公司网站：</td>
 								<td>
-									<input name="web" id="web" cssStyle="width:90%"
+									<input name="web" id="web" style="width:90%"
 										value="" type="text"/>
 								</td>
 							</tr>
@@ -242,11 +311,11 @@
 								<td>电话一：</td>
 								<td>
 									<input name="tel1" id="tel1" 
-									cssStyle="width:90%" value="" type="text"/>
+									style="width:90%" value="" type="text"/>
 								</td>
 								<td>传真：</td>
 								<td>
-									<input name="fax" id="fax" cssStyle="width:90%"
+									<input name="fax" id="fax" style="width:90%"
 										value="" type="text"/>
 								</td>
 							</tr>
@@ -254,11 +323,11 @@
 								<td>手机：</td>
 								<td>
 									<input name="mobile" id="mobile"
-										cssStyle="width:90%" value="" type="text"/>
+										style="width:90%" value="" type="text"/>
 								</td>
 								<td>电话二：</td>
 								<td>
-									<input name="tel2" id="tel2" cssStyle="width:90%"
+									<input name="tel2" id="tel2" style="width:90%"
 										value="" type="text"/>
 								</td>
 							</tr>
@@ -266,20 +335,18 @@
 								<td>下次联系时间:</td>
 								<td>
 									<input name="nextTouchDate" id="nextTouchDate"
-										cssStyle="width:90%" cssClass="dateClassStyle" 
+										style="width:90%" class="dateClassStyle" 
 										value="" type="text"/>
 								</td>
 								<td>客户性质：</td>
 								<td>
 									<select id='quality' name='quality' style='width: 90%'>
 										<option value=''>------</option>
-										<option value='下属子公司'>下属子公司</option>
-										<option value='上级主管单位'>上级主管单位</option>
-										<option value='竞争对手'>竞争对手</option>
-										<option value='合作伙伴'>合作伙伴</option>
-										<option value='代理商'>代理商</option>
-										<option value='供应商'>供应商</option>
-										<option value='客户' selected>客户</option>
+										<c:if test="${applicationScope.qualityList!=null}">
+											<c:forEach var="dictionaryType" varStatus="s" items="${applicationScope.qualityList}">
+												<option value="${dictionaryType.value}">${dictionaryType.value}</option>
+											</c:forEach>
+										</c:if>
 									</select>
 								</td>
 							</tr>
@@ -287,7 +354,7 @@
 								<td valign="top">备注：</td>
 								<td colspan="3">
 									<textarea rows="" cols="" name="remark" rows="4"
-										id="remark" cssStyle="width:96%" ></textarea>
+										id="remark" style="width:96%" ></textarea>
 								</td>
 							</tr>
 						</table>
@@ -313,20 +380,22 @@
 								<td width="34%">
 									<select id='dealin' name='dealin' style='width: 90%'>
 										<option value=''>------</option>
-										<option value='证券/金融/投资'>证券/金融/投资</option>
-										<option value='电子/电器/半导体/仪器仪表'>电子/电器/半导体/仪器仪表</option>
-										<option value='计算机软件'>计算机软件</option>
-										<option value='计算机硬件'>计算机硬件</option>
+										<c:if test="${applicationScope.busineScopeList!=null}">
+											<c:forEach var="dictionaryType" varStatus="s" items="${applicationScope.busineScopeList}">
+												<option value="${dictionaryType.value}">${dictionaryType.value}</option>
+											</c:forEach>
+										</c:if>
 									</select>
 								</td>
 								<td width="16%">企业性质：</td>
 								<td width="34%">
 									<select id='kind' name='kind' style='width: 90%'>
 										<option value=''>------</option>
-										<option value='合资企业'>合资企业</option>
-										<option value='外资企业'>外资企业</option>
-										<option value='民营企业'>民营企业</option>
-										<option value='国有企业'>国有企业</option>
+										<c:if test="${applicationScope.kindList!=null}">
+											<c:forEach var="dictionaryType" varStatus="s" items="${applicationScope.kindList}">
+												<option value="${dictionaryType.value}">${dictionaryType.value}</option>
+											</c:forEach>
+										</c:if>
 									</select>
 								</td>
 							</tr>
@@ -334,32 +403,32 @@
 								<td>法人代表：</td>
 								<td>
 									<input name="artificialPerson"
-										id="artificialPerson" cssStyle="width:90%" 
+										id="artificialPerson" style="width:90%" 
 										value="" type="text"/>
 								</td>
 								<td>注册资金：</td>
 								<td>
 									<input name="registeMoney" id="registeMoney"
-										cssStyle="width:90%" value="" type="text"/>
+										style="width:90%" value="" type="text"/>
 								</td>
 							</tr>
 							<tr>
 								<td>开户银行：</td>
 								<td>
-									<input name="bank" id="bank" cssStyle="width:90%"
+									<input name="bank" id="bank" style="width:90%"
 										value="" type="text"/>
 								</td>
 								<td>银行账户：</td>
 								<td>
 									<input name="account" id="account"
-										cssStyle="width:90%" value="" type="text"/>
+										style="width:90%" value="" type="text"/>
 								</td>
 							</tr>
 							<tr>
 								<td>公司税号：</td>
 								<td>
 									<input name="taxCode" id="taxCode"
-										cssStyle="width:90%" value="" type="text"/>
+										style="width:90%" value="" type="text"/>
 								</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
@@ -385,40 +454,40 @@
 							<tr>
 								<td width="16%">创建人：</td>
 								<td width="34%">
-									<input name="creater" id="creater"
-										cssStyle="width:90%" cssClass="disabled" 
-										type="text"/>
+									<input name="creater" id="creater" readonly="true"
+										style="width:90%" class="disabled" 
+										type="text" value="${requestScope.cnname}"/>
 								</td>
 								<td width="16%">创建日期：</td>
 								<td width="34%">
-									<input name="createTime"
-										id="createTime" cssStyle="width:90%" 
-										cssClass="disabled" type="text"/>
+									<input name="createTime" readonly="true"
+										id="createTime" style="width:90%" 
+										class="disabled" type="text" value="${requestScope.date}"/>
 								</td>
 							</tr>
 							<tr>
 								<td>修改人：</td>
 								<td>
-									<input name="updater" id="updater"
-										cssStyle="width:90%" cssClass="disabled"
-										type="text"/>
+									<input name="updater" id="updater" readonly="true"
+										style="width:90%" class="disabled"
+										type="text" value="${requestScope.cnname}"/>
 								</td>
 								<td>修改日期：</td>
 								<td>
-									<input name="updateTime" id="updateTime"
-										cssStyle="width:90%" cssClass="disabled" 
-										type="text"/>
+									<input name="updateTime" id="updateTime" readonly="true"
+										style="width:90%" class="disabled" 
+										type="text" value="${requestScope.date}"/>
 								</td>
 							</tr>
 							<tr>
 								<td>所属人：</td>
 								<td>
 									<!-- 保存所有人的姓名 --> 
-									<input name="dispensePerson"
-										id="dispensePerson" cssStyle="width:90%" 
-										cssClass="disabled" type="text"/>
+									<input name="dispensePerson" readonly="true"
+										id="dispensePerson" style="width:90%" 
+										class="disabled" type="text" value="${requestScope.cnname}"/>
 									<!-- 保存所属人的id --> 
-									<input type="hidden" name="ownerUser" />
+									<input type="hidden" name="owneruser" value="${requestScope.userID}"/>
 								</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>

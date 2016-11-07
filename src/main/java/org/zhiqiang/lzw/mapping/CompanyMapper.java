@@ -1,9 +1,7 @@
 package org.zhiqiang.lzw.mapping;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 import org.zhiqiang.lzw.entity.Company;
 
 /**
@@ -13,11 +11,22 @@ import org.zhiqiang.lzw.entity.Company;
  */
 public interface CompanyMapper {
 	
-	int getCounts() throws Exception;
+    /**
+     * 带条件分页查询
+     * @param 
+     * @return
+     */
+    List<Company> selectByPage(Map<String, Object> map);
+    
+    /**
+     * 查询总记录数
+     * @param 
+     * @return
+     */
+    int selectTotalRecords();
+
 	
 	List<Company> getAllCompany() throws Exception;
-	
-	List<Company> getCompanyByPage(Map map) throws Exception;
 	
 	List<Company> getCompanyWhereTodayNeedTouch(String date) throws Exception;
 	

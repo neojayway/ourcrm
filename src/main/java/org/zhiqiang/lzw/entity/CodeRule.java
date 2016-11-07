@@ -31,7 +31,7 @@ public class CodeRule {
     //是否有效
     private String available;
 
-    //下次产生的序号
+    //下一次产生的序号
     private String nextseq;
 
     //序号对应的日期

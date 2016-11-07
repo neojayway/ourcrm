@@ -105,7 +105,7 @@ public class Company {
     //修改时间
     private String updatetime;
 
-    //所属人
+    //所属人编号
     private Integer owneruser;
 
     //所属人名称

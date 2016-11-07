@@ -8,7 +8,7 @@ package org.zhiqiang.lzw.entity.custom;
 public class PageBean {
 	
 	private Integer currPage = 1; //默认为第一页
-	private Integer pageSize = 2; //默认每页显示2条
+	private Integer pageSize = 5; //默认每页显示5条
 	private Integer totalRecords;
 	private Integer totalPages;
 	private String url;

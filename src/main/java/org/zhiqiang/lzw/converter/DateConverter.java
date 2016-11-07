@@ -18,7 +18,7 @@ public class DateConverter implements Converter<String, Date>{
 	
 	@Override
 	public Date convert(String source) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			logger.info("正在进行日期转换...");
 			//转换成功直接返回
