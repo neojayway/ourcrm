@@ -10,11 +10,18 @@
     <result column="privalegeComm" property="privalegecomm" jdbcType="BIT" />
     <result column="menuId" property="menuid" jdbcType="VARCHAR" />
   </resultMap>
+  
+  <resultMap type="org.zhiqiang.lzw.entity.PrivilegeCodeAndPos" id="CodeAndPosResultMap">
+  	<result column="maxpos" property="pos"/>
+  	<result column="maxcode" property="code"/>
+  </resultMap>
+  
   <sql id="Base_Column_List" >
     privilegeId, privilegeName, privilegeUrl, privilegeCode, privilegePos, privalegeComm, 
     menuId
   </sql>
   
+  <!-- 根据主键查询权限 -->
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -27,7 +34,45 @@
   	select 
   	<include refid="Base_Column_List"/> 
   	from sys_privilege
-  </select>  
+  </select>
+  
+  <!-- 带条件查询总记录数 -->
+  <select id="selectCount" resultType="Integer" parameterType="String">
+  	select count(1) from sys_privilege p 
+  	<where>
+  		<if test="value!=null">
+		  	p.privilegeName like #{value}
+  		</if>
+  	</where>
+  </select>
+  
+  
+  <!-- 分页带条件查询 -->  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="Map" >
+  	SELECT <include refid="Base_Column_List"/> 
+  	FROM sys_privilege p 
+  	<where>
+  		<if test="privilegeName!=null">
+		  	p.privilegeName like #{privilegeName}
+  		</if>
+  	</where>
+  	LIMIT ${pageBean.pageIndex},${pageBean.pageSize};
+  </select>
+  
+  <!-- 查询当前最大的权限位以及最大权限为对应的最大权限 -->
+  <select id="selectMaximumPos" resultMap="CodeAndPosResultMap">
+  	SELECT MAX(privilegePos) maxpos,MAX(privilegeCode) maxcode 
+  	FROM sys_privilege p 
+  	WHERE p.privilegePos = (SELECT MAX(privilegePos) FROM sys_privilege);
+  </select>
+  
+  <!-- 批量删除权限 -->
+  <delete id="deletePrivilegeByBatch" parameterType="Integer[]">
+  	DELETE FROM sys_privilege WHERE privilegeId IN
+  	<foreach collection="array" item="item" open="(" close=")" separator=",">
+  		${item}
+  	</foreach>
+  </delete>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sys_privilege
@@ -46,7 +91,7 @@
   <insert id="insertSelective" parameterType="org.zhiqiang.lzw.entity.Privilege" >
     insert into sys_privilege
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="privilegeid != null" >
+      <if test="privilegeid != null" > 
         privilegeId,
       </if>
       <if test="privilegename != null" >
@@ -93,6 +138,7 @@
     </trim>
   </insert>
   
+  <!-- 根据主键更新部分列 -->
   <update id="updateByPrimaryKeySelective" parameterType="org.zhiqiang.lzw.entity.Privilege" >
     update sys_privilege
     <set >

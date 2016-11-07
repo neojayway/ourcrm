@@ -70,14 +70,14 @@
   		<result column="rolename" property="rolename"/>
   		<!-- 角色与权限的多对多关系 -->
 		<collection property="privileges" ofType="org.zhiqiang.lzw.entity.Privilege">
-		<id column="privilegeid" property="privilegeid"/>
-		<result column="privilegename" property="privilegename"/>
-		<result column="privilegeurl" property="privilegeurl"/>
-		<result column="privilegecode" property="privilegecode"/>
-		<result column="privilegepos" property="privilegepos"/>
-		<result column="privalegecomm" property="privalegecomm"/>
-		<result column="menuId" property="menuId"/>
-	</collection>
+			<id column="privilegeid" property="privilegeid"/>
+			<result column="privilegename" property="privilegename"/>
+			<result column="privilegeurl" property="privilegeurl"/>
+			<result column="privilegecode" property="privilegecode"/>
+			<result column="privilegepos" property="privilegepos"/>
+			<result column="privalegecomm" property="privalegecomm"/>
+			<result column="menuId" property="menuId"/>
+		</collection>
   	</collection>
   	
   </resultMap>
@@ -131,7 +131,12 @@
     AND password = #{password,jdbcType=VARCHAR}
   </select>
   
-  
+  <!-- 查询所有用户 -->
+  <select id="selectAllUser" resultMap="BaseResultMap">
+  	select  
+  		<include refid="Base_Column_List" />
+  	from sys_user;
+  </select>
    
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sys_user
@@ -460,6 +465,21 @@
       </if>
     </trim>
   </insert>
+  
+  <!-- 修改用户所在部门 -->
+  <update id="updateGroupIdForUser" parameterType="Map">
+  	UPDATE sys_user u SET u.groupId = #{groupId}  WHERE u.id = #{id};
+  </update>
+  
+  <!-- 批量修改用户所在部门 -->
+  <update id="updateBatchGroupIdForUser" parameterType="Map">
+  	UPDATE sys_user u SET u.groupId = #{groupId}  WHERE u.id in
+  	<foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">
+  		#{item}
+  	</foreach>
+  </update>
+  
+  
   <update id="updateByPrimaryKeySelective" parameterType="org.zhiqiang.lzw.entity.UserWithBLOBs" >
     update sys_user
     <set >

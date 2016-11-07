@@ -2,17 +2,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>操作权限新建</title>
+<title>操作权限修改</title>
 <link href="${pageContext.request.contextPath}/ui/css/style_cn.css" rel="stylesheet" type="text/css">
 <script language="javascript">
 </script>
 </head>
 
 <body>
-	<form name="form1" method="post" action="${pageContext.request.contextPath}/privilege/addPrivilege.do">
+	<form name="form1" method="post" action="${pageContext.request.contextPath}/privilege/updateByPrimaryKeySelective.do">
 		<div class="mtitle">
 			<div class="mtitle-row">&nbsp;</div>
-			操作权限新建
+			操作权限修改
 		</div>
 		<br>
 		<div class="control">
@@ -27,7 +27,7 @@
 			<button type='button' class='button' 
 				onMouseOver="this.className='button_over';" 
 				onMouseOut="this.className='button';"  
-			    onClick="forward('role.do?method=list')">
+			    onClick="history.go(-1)">
 			    <img src="${pageContext.request.contextPath}/ui/images/button/fanhui.png" 
 			    	border='0' align='absmiddle'>
 			    &nbsp;返回
@@ -56,8 +56,10 @@
 					<tr>
 						<td class="red">权限名称</td>
 						<td>
+							<input name="privilegeid" type="hidden" class="input"  
+								style="width:90%" value="${requestScope.privilege.privilegeid}">
 							<input name="privilegename" type="text" class="input"  
-								style="width:90%">
+								style="width:90%" value="${requestScope.privilege.privilegename}">
 						</td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
@@ -66,7 +68,7 @@
 						<td class="red">权限URL</td>
 						<td>
 							<input name="privilegeurl" type="text" class="input"  
-								style="width:90%">
+								style="width:90%" value="${requestScope.privilege.privilegeurl}"/>
 						</td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
@@ -74,8 +76,8 @@
 					<tr>
 						<td class="red">公共资源</td>
 						<td>
-								公共：<input type="radio" name="privalegecomm" value="true" class="input"/>&nbsp;&nbsp;
-								非公共：<input type="radio" name="privalegecomm" value="false" class="input"/>
+								公共：<input type="radio" name="privalegecomm" value="true" ${requestScope.privilege.privalegecomm==true?'checked=checked':'' } class="input"/>&nbsp;&nbsp;
+								非公共：<input type="radio" name="privalegecomm" value="false" ${requestScope.privilege.privalegecomm==false?'checked=checked':'' } class="input"/>
 						</td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>

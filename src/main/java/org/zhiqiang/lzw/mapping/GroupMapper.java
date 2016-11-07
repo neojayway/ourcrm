@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.zhiqiang.lzw.entity.Group;
+import org.zhiqiang.lzw.entity.custom.GroupCustom;
 
 public interface GroupMapper {
     void deleteByPrimaryKey(Integer id) throws Exception;
@@ -32,6 +33,13 @@ public interface GroupMapper {
      * @param ids
      */
     void deleteByBatch(Integer[] ids) throws Exception;
+    
+    /**
+     * 根据部门编号查找指定部门（部门关联查询用户）
+     * @param groupId
+     * @return
+     */
+    GroupCustom selectGroupCustom(Integer groupId);
     
     
     Group selectByPrimaryKey(Integer id);

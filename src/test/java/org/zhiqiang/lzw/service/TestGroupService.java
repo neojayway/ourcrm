@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.zhiqiang.lzw.entity.Group;
+import org.zhiqiang.lzw.entity.User;
+import org.zhiqiang.lzw.entity.custom.GroupCustom;
 import org.zhiqiang.lzw.entity.custom.PageBean;
 
 public class TestGroupService {
@@ -76,6 +78,21 @@ public class TestGroupService {
 	}
 	
 	
+	/**
+	 * 根据部门编号查找指定部门（部门关联查询用户）
+	 * @throws Exception
+	 */
+	@Test
+	public void testSelectGroupCustom() throws Exception{
+		IGroupService groupService =  (IGroupService) context.getBean("groupService");
+		GroupCustom groupCustom = groupService.selectGroupCustom(1);
+		System.out.println(groupCustom.getGroupname());
+		List<User> users = groupCustom.getUsers();
+		for (User user : users) {
+			System.out.println(user.getName()+"\t"+user.getId());
+		}
+		
+	}
 	
 
 }

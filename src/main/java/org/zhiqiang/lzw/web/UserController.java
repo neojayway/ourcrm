@@ -26,7 +26,7 @@ public class UserController {
 	@Autowired
 	@Qualifier("userService")
 	private IUserService userService;
-
+	
 	@RequestMapping("/login")
 	public String login(String name,String password,HttpServletRequest request,HttpSession session) throws Exception{
 		System.out.println("name:"+name+"\t"+"password:"+password);
