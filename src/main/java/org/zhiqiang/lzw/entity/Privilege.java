@@ -70,4 +70,15 @@ public class Privilege {
     public void setMenuid(String menuid) {
         this.menuid = menuid == null ? null : menuid.trim();
     }
+
+	@Override
+	public String toString() {
+		return "Privilege [privilegeid=" + privilegeid + ", privilegename="
+				+ privilegename + ", privilegeurl=" + privilegeurl
+				+ ", privilegecode=" + privilegecode + ", privilegepos="
+				+ privilegepos + ", privalegecomm=" + privalegecomm
+				+ ", menuid=" + menuid + "]";
+	}
+    
+    
 }

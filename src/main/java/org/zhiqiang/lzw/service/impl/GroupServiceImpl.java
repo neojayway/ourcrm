@@ -32,6 +32,7 @@ public class GroupServiceImpl implements IGroupService{
      */
 	@Override
 	public List<Group> selectByPage(String groupName, PageBean pageBean) {
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("groupName", groupName);
 		map.put("pageBean", pageBean);

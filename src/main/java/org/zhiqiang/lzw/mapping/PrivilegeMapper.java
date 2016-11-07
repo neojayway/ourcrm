@@ -1,8 +1,10 @@
 package org.zhiqiang.lzw.mapping;
 
 import java.util.List;
+import java.util.Map;
 
 import org.zhiqiang.lzw.entity.Privilege;
+import org.zhiqiang.lzw.entity.PrivilegeCodeAndPos;
 
 public interface PrivilegeMapper {
     int deleteByPrimaryKey(Integer privilegeid);
@@ -17,9 +19,23 @@ public interface PrivilegeMapper {
     //查询所有权限
     List<Privilege> selectAll();
     
+    //分页查询权限
+    List<Privilege> selectByPage(Map<String, Object> map);
+    
+    //查询当前最大的权限位以及最大权限为对应的最大权限
+    PrivilegeCodeAndPos selectMaximumPos();
+    
+    //批量删除权限
+    public void deletePrivilegeByBatch(Integer[] pids) throws Exception;
+    
+    //带条件查询权限的数量
+    Integer selectCount(String privilegeName);
+    
+    //根据主键查询权限
     Privilege selectByPrimaryKey(Integer privilegeid);
-
-    int updateByPrimaryKeySelective(Privilege record);
+    
+    //根据主键更新部门列
+    void updateByPrimaryKeySelective(Privilege privilege);
 
     int updateByPrimaryKey(Privilege record);
 }

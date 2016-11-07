@@ -11,7 +11,7 @@ import org.zhiqiang.lzw.entity.custom.UserCustom;
 
 public class TestUserService {
 	
-	ApplicationContext context;
+	private ApplicationContext context;
 	@Before
 	public void setUp() throws Exception {
 		context = new ClassPathXmlApplicationContext("spring/applicationContext-*.xml");

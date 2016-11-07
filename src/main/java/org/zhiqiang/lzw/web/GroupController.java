@@ -47,6 +47,9 @@ public class GroupController {
 	 */
 	@RequestMapping("/selectAllGroupByPage")
 	public String selectAllGroupByPage(String groupName,PageBean pageBean,Model model) throws UnsupportedEncodingException{
+		if (pageBean == null) {
+			pageBean = new PageBean();
+		}
 		//get请求转码
 		if (groupName!=null) {
 			groupName = new String(groupName.getBytes("iso-8859-1"),"utf-8");

@@ -98,7 +98,7 @@
 						<li>
 							<img src="${pageContext.request.contextPath}/ui/images/menu/czqxz.png"
 							width="17" height="17"> 
-							<a href="${pageContext.request.contextPath}/page/newPagePlan/sys/role/list.jsp"
+							<a href="${pageContext.request.contextPath}/privilege/selectPrivilegeByPage.do"
 							target="rightFrame">
 								操作权限组
 							</a>
