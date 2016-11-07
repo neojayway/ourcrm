@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"
 	contentType="text/html; charset=utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -9,6 +10,91 @@
 	rel="stylesheet" type="text/css">
 <script src="${pageContext.request.contextPath}/ui/js/popshow.js"
 	type="text/javascript"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/ui/js/jquery-1.4.2.js"></script>
+<script type="text/javascript">
+	function getData(){
+		var str = $("[name='name']").val();
+		//判断文本框是否输入值，没输入就查所有
+		if(str == null || str=="" || $.trim(str).length==0) str = -1;
+
+		$.ajax({
+			url:'${pageContext.request.contextPath}/province/fuzzySearchProvince/'+str,
+			type:'get',
+			dataType:'json',
+			success:function(data){
+				//移除之前的表格
+				$("#PowerTable").remove();
+				var $table=$("<table width='100%' border='0' cellspacing='0' cellpadding='0' id='PowerTable' class='PowerTable'>");
+				var $tr11=$("<tr></tr>");
+				$tr11.appendTo($table);
+				var $td11=$("<td width='4%' class='listViewThS1'><input type='checkbox' name='checkall' value='' class='checkbox' onClick='CheckAll(this.checked);changeCheckCount();'></td>");
+				var $td12=$("<td width='19%' class='listViewThS1'>编号</td>");
+				var $td13=$("<td width='27%' class='listViewThS1'>省份名称</td>");
+				var $td14=$("<td width='50%' class='listViewThS1'>拼音码</td>");
+				$td11.appendTo($tr11);
+				$td12.appendTo($tr11);
+				$td13.appendTo($tr11);
+				$td14.appendTo($tr11);
+				if(data!=null){
+					for (var i = 0; i < data.length; i++) {
+						var id = data[i].id;
+						var name = data[i].name;
+						var pycode = data[i].pycode;
+						var $tr21 = $("<tr>");
+						$tr21.appendTo($table);
+						var $td21 = $("<td><input type='checkbox' name='ids' value='"+id+"' class='checkbox' onClick='changeCheckCount();'></td>");
+						$td21.appendTo($tr21);
+						var $td22 = $("<td>"+id+"</td>");
+						$td22.appendTo($tr21);
+						var $td23 = $("<td><a href='#' onClick="+"OpenDiv('edit.jsp')"+">"+name+"</a></td>");
+						$td23.appendTo($tr21);
+						var $td24 = $("<td>"+pycode+"</td>");
+						$td24.appendTo($tr21);
+						var $tr22 = $("</tr>");
+						$tr22.appendTo($table);
+					}
+				}else{
+					var $tr12=$("<tr><td colspan=4>未查询到与  [ "+str+" ] 相关的任何信息,请重新查询！</td></tr>");
+					$tr12.appendTo($table);	
+				}
+				$table.appendTo("#provinceTableStart");
+				$("#provinceTableStart").append("</table>");
+			}
+		});
+	}
+
+	function changeCheckCount() {
+		var count = 0;
+		$("input[type='checkbox'][name='ids']").each(function(index, data) {
+			if (this.checked) {
+				count++;
+			}
+		});
+		$("#slt_ids_count2").empty();
+		$("#slt_ids_count2").append(count);
+
+		if (count == $("input[type='checkbox'][name='ids']").length) {
+			$("#checkall").attr("checked", "checked");
+		} else {
+			$("#checkall").attr("checked", null);
+		}
+	}
+
+	function checkAll() {
+		if ($("#checkall")[0].checked) {
+			$("input[type='checkbox'][name='ids']").attr("checked",
+					"checked");
+			$("#slt_ids_count2").empty();
+			$("#slt_ids_count2").append(
+					$("input[type='checkbox'][name='ids']").length);
+		} else {
+			$("input[type='checkbox'][name='ids']").attr("checked", null);
+			$("#slt_ids_count2").empty();
+			$("#slt_ids_count2").append(0);
+		}
+	}
+	
+</script>
 </head>
 
 <body>
@@ -60,7 +146,7 @@
 		<tr>
 			<td width="38%" height="45" nowrap>省份名称：
 				<input name="name" type="text" id="name" value="" 
-					style="width: 140px" />
+					style="width: 140px" onchange="getData(this)"/>
 			</td>
 			<td width="39%" nowrap>&nbsp;</td>
 			<td width="23%" align="center">
@@ -115,6 +201,7 @@
 	<div class="border">
 		<!-- 上部分页结束 -->
 		<form name="ActionForm" method="post" action="">
+			<span id="provinceTableStart"></span>
 			<table width="100%" border="0" cellspacing="0" cellpadding="0"
 				id="PowerTable" class="PowerTable">
 				<!-- title -->
@@ -129,7 +216,21 @@
 					<td width="50%" class="listViewThS1">拼音码</td>
 				</tr>
 				<!-- data -->
-				<tr>
+				<c:forEach var="province" varStatus="s" items="${requestScope.provinces}">
+					<tr>
+						<td>
+							<input type="checkbox" name="ids" value="5"
+								class="checkbox" onClick="changeCheckCount();">
+						</td>
+						<td>${province.id}</td>
+						<td>
+							<a href="#" onClick="OpenDiv('edit.jsp')">${province.name }</a>
+						</td>
+						<td>${province.pycode }</td>
+					</tr>
+					
+				</c:forEach>
+				<!-- <tr>
 					<td>
 						<input type="checkbox" name="ids" value="5"
 							class="checkbox" onClick="changeCheckCount();">
@@ -153,7 +254,7 @@
 						</a>
 					</td>
 					<td>bjs</td>
-				</tr>
+				</tr> -->
 			</table>
 		</form>
 		<%-- <%@ include file="/include/page.jsp" %> --%>

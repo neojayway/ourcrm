@@ -15,7 +15,6 @@
 		<mysql.driver.version>5.1.26</mysql.driver.version>
 	</properties>
 
-
 	<dependencies>
 		<!-- json支持 -->
 		<!-- <dependency> <groupId>org.codehaus.jackson</groupId> <artifactId>jackson-core-asl</artifactId> 
@@ -224,7 +223,6 @@
 		    <version>2.6</version>
 		</dependency>
 
-		
 		<!-- CXF框架依赖 -->
 		<!-- <dependency>
 		    <groupId>org.apache.cxf</groupId>

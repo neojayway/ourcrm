@@ -56,8 +56,7 @@
 
 <body>
 	<form name="form1" method="post"
-		action="companyAction_nextTouchTime.do" namespace="/crm"
-		onsubmit="return check();">
+		action="companyAction_nextTouchTime.do" onsubmit="return check();">
 		<input type="hidden" name="ids" value="%{#parameters.ids[0]}" />
 		<div class="mtitle">
 			<div class="mtitle-row">&nbsp;</div>

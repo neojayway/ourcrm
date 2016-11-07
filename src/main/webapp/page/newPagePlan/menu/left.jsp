@@ -106,7 +106,7 @@
 						<li>
 							<img src="${pageContext.request.contextPath}/ui/images/menu/sfzl.png"
 								width="17" height="17"> 
-							<a href="${pageContext.request.contextPath}/page/newPagePlan/sys/province/list.jsp"
+							<a href="${pageContext.request.contextPath}/province/getAllProvince"
 								target="rightFrame">
 								省份资料
 							</a>

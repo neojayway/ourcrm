@@ -1,6 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"
 	contentType="text/html;charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
 <html>
@@ -37,18 +38,14 @@
 <script type="text/javascript">
 
 	function getData(){
-		
 		var str = $("[name='data']").val();
-
 		//判断文本框是否输入值，没输入就查所有
 		if(str == null || str=="" || $.trim(str).length==0) str = -1;
-
 		$.ajax({
 			url:'${pageContext.request.contextPath}/company/fuzzySearchCompany/'+str,
 			type:'get',
 			dataType:'json',
 			success:function(data){
-
 				//移除之前的表格
 				$("#PowerTable").remove();
 				//使用JQuery创建表格   定义一个表格的开头
@@ -77,41 +74,44 @@
 				$th17.appendTo($tr11);
 				$th18.appendTo($tr11);
 				$th19.appendTo($tr11);
-	
-				for (var i = 0; i < data.length; i++) {
-					var companyId = data[i].id;
-					var companyName = data[i].name;
-					var companyTrade = data[i].trade;
-					var companyGrade = data[i].grade;
-					var companyTel1 = data[i].tel1;
-					var companyEmail = data[i].email;
-					var companyNextTouchDate = data[i].nexttouchdate;
-					var companyCreater = data[i].creater;
-					var companyProvince = data[i].province;
-					var companyCity = data[i].city;
-					var $tr21 = $("<tr>");
-					$tr21.appendTo($table);
-					var $td21 = $("<td><input type='checkbox' name='ids' cssClass='checkbox' onclick='changeCheckCount();' /></td>");
-					$td21.appendTo($tr21);
-					var $td22 = $("<td><a href='${pageContext.request.contextPath}/company/getCompantById/"+companyId+"'>"+companyName+"</a></td>");
-					$td22.appendTo($tr21);
-					var $td23 = $("<td>"+companyTrade+"</td>");
-					$td23.appendTo($tr21);
-					var $td24 = $("<td>"+companyGrade+"</td>");
-					$td24.appendTo($tr21);
-					var $td25 = $("<td>"+companyTel1+"</td>");
-					$td25.appendTo($tr21);
-					var $td26 = $("<td>"+companyEmail+"</td>");
-					$td26.appendTo($tr21);
-					var $td27 = $("<td>"+companyNextTouchDate+"</td>");
-					$td27.appendTo($tr21);
-					var $td28 = $("<td><a href=''>"+companyCreater+"</a></td>");
-					$td28.appendTo($tr21);
-					var $td29 = $("<td><a href=''>"+companyProvince+"省"+companyCity+"市"+"</a></td>");
-					$td29.appendTo($tr21);
-					var $tr22 = $("</tr>");
-					$tr22.appendTo($table);
-					
+				if(data!=null){
+					for (var i = 0; i < data.length; i++) {
+						var companyId = data[i].id;
+						var companyName = data[i].name;
+						var companyTrade = data[i].trade;
+						var companyGrade = data[i].grade;
+						var companyTel1 = data[i].tel1;
+						var companyEmail = data[i].email;
+						var companyNextTouchDate = data[i].nexttouchdate;
+						var companyCreater = data[i].creater;
+						var companyProvince = data[i].province;
+						var companyCity = data[i].city;
+						var $tr21 = $("<tr>");
+						$tr21.appendTo($table);
+						var $td21 = $("<td><input type='checkbox' name='ids' cssClass='checkbox' onclick='changeCheckCount();' /></td>");
+						$td21.appendTo($tr21);
+						var $td22 = $("<td><a href='${pageContext.request.contextPath}/company/getCompantById/"+companyId+"'>"+companyName+"</a></td>");
+						$td22.appendTo($tr21);
+						var $td23 = $("<td>"+companyTrade+"</td>");
+						$td23.appendTo($tr21);
+						var $td24 = $("<td>"+companyGrade+"</td>");
+						$td24.appendTo($tr21);
+						var $td25 = $("<td>"+companyTel1+"</td>");
+						$td25.appendTo($tr21);
+						var $td26 = $("<td>"+companyEmail+"</td>");
+						$td26.appendTo($tr21);
+						var $td27 = $("<td>"+companyNextTouchDate+"</td>");
+						$td27.appendTo($tr21);
+						var $td28 = $("<td><a href=''>"+companyCreater+"</a></td>");
+						$td28.appendTo($tr21);
+						var $td29 = $("<td><a href=''>"+companyProvince+"省"+companyCity+"市"+"</a></td>");
+						$td29.appendTo($tr21);
+						var $tr22 = $("</tr>");
+						$tr22.appendTo($table);
+					}
+				}else{
+					var $tr12=$("<tr><td colspan=4>未查询到与  [ "+str+" ] 相关的任何信息,请重新查询！</td></tr>");
+					$tr12.appendTo($table);	
 				}
 				$table.appendTo("#createTable");
 				$("#createtable").append("</table>");
@@ -161,17 +161,17 @@
 	<div class="link_title">
 		<br>&nbsp;&nbsp; 
 		<a
-			href="${pageContext.request.contextPath}/page/newPagePlan/crm/customer/base/list.jsp">
+			href="${pageContext.request.contextPath}/company/getCompanyWhereTodayNeedTouch">
 			今天需要联系的客户
 		</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<a
-			href="${pageContext.request.contextPath}/page/newPagePlan/crm/customer/base/list.jsp">
+			href="${pageContext.request.contextPath}/company/getCompanyWhereForgetTouch">
 			已过期未联系的客户
 		</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<a
-			href="${pageContext.request.contextPath}/page/newPagePlan/crm/customer/base/list.jsp">
+			href="${pageContext.request.contextPath}/company/getAllCompany">
 			全部
 		</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -195,15 +195,15 @@
 					action="/company/getAllCompany.do">
 					<div class="control" align="center">
 						搜索客户: <input type="text" name="data" onchange="getData(this)"/>
-						&nbsp;&nbsp;&nbsp;
-						<button type='button' class='button'
+						&nbsp;
+						<%-- <button type='button' class='button'
 							onMouseOver="this.className='button_over';"
 							onMouseOut="this.className='button';"
 							onClick="document.forms[0].submit();">
 							<img src="${pageContext.request.contextPath}/ui/images/button/sousuo.png"
 								border='0' align='absmiddle'>
 							&nbsp;搜索所有
-						</button>
+						</button> --%>
 
 						<button type='button' class='button'
 							onMouseOver="this.className='button_over';"
@@ -243,13 +243,13 @@
 			&nbsp;下次联系时间
 		</button>
 
-		<button type='button' class='button'
+		<%-- <button type='button' class='button'
 			onMouseOver="this.className='button_over';"
 			onMouseOut="this.className='button';" onClick="goChangePerson()">
 			<img src="${pageContext.request.contextPath}/ui/images/button/jinshourbg.png"
 				border='0' align='absmiddle'>
 			&nbsp;经手人变更
-		</button>
+		</button> --%>
 		<button type='button' class='button'
 			onMouseOver="this.className='button_over';"
 			onMouseOut="this.className='button';"
@@ -260,7 +260,7 @@
 		</button>
 	</div>
 	<div class="border">
-		<form method="post" action="/company/deleteCompanysByIds" id="deleteForm">
+		<form method="post" action="${pageContext.request.contextPath}/company/deleteCompanysByIds" id="deleteForm">
 			<p id="createTable"></p>
 			<table width="100%" border="0" cellspacing="0" cellpadding="0"
 				id="PowerTable" class="PowerTable">
@@ -275,12 +275,12 @@
 					<td width="10%" class="listViewThS1">电话一</td>
 					<td width="10%" class="listViewThS1">电子邮件</td>
 					<td width="12%" class="listViewThS1">下次联系时间</td>
-					<td width="7%" class="listViewThS1">联系人</td>
-					<td width="8%" class="listViewThS1">联系记录</td>
+					<td width="7%" class="listViewThS1">创建人</td>
+					<td width="8%" class="listViewThS1">省份城市</td>
 				</tr>
 				
 				<!-- data -->
-				<%-- <c:if test="${requestScope.companys}!=null"> --%>
+				<c:if test="${requestScope.companys != null}">
 					<c:forEach var="company" varStatus="s" items="${requestScope.companys}"> 
 						<tr>
 							<td>
@@ -296,12 +296,19 @@
 							<td>${company.grade}</td>
 							<td>${company.tel1}</td>
 							<td>${company.email}</td>
-							<td>${company.nexttouchdate}</td>
-							<td><a href="">查看</a></td>
-							<td><a href="">查看</a></td>
+							<td><fmt:formatDate value="${company.nexttouchdate}"/></td>
+							<td><a href="">${company.creater}</a></td>
+							<td>${company.province}${company.city}</td>
 						</tr>
 					</c:forEach>
-				<%-- </c:if> --%>
+				</c:if>
+				<c:if test="${requestScope.companys.size()<=0}">
+					<tr>
+						<td colspan="9">
+							未查询到任何相关数据！
+						</td>
+					</tr>
+				</c:if>
 			</table>
 		</form>
 	</div>

@@ -2,7 +2,10 @@ package org.zhiqiang.lzw.service;
 
 import static org.junit.Assert.fail;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -23,12 +26,12 @@ public class CompanyServiceImplTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		context = new ClassPathXmlApplicationContext("spring/applicationContext-*.xml");
+		//context = new ClassPathXmlApplicationContext("spring/applicationContext-*.xml");
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		context = null;
+		//context = null;
 	}
 
 	@Test
@@ -125,6 +128,19 @@ public class CompanyServiceImplTest {
 	}
 
 	@Test
+	public void testGetCompanyWhereTodayNeedTouch() throws Exception{
+		//ICompanyService companyService = 
+		//		(ICompanyService)context.getBean("companyService");
+		SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String str = simple.format(new Date());
+		
+		
+		System.out.println(str);
+		//companyService.getCompanyWhereTodayNeedTouch(date);
+	}
+	
+	@Test
 	public void testGetCompanyByPage() {
 		fail("Not yet implemented");
 	}
@@ -149,4 +165,10 @@ public class CompanyServiceImplTest {
 		fail("Not yet implemented");
 	}
 
+	@Test
+	public void testAddBefore(){
+		ICompanyService companyService = 
+			(ICompanyService)context.getBean("companyService");
+		
+	}
 }

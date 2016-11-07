@@ -71,6 +71,24 @@
     from c_company
   </select>
   
+  <!-- 查询今天需要联系的客户 -->
+  <select id="getCompanyWhereTodayNeedTouch" resultMap="BaseResultMap" parameterType="string">
+  	select 
+  	<include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from c_company where nextTouchDate = #{date}
+  </select>
+  
+  <!-- 	查询已过期未联系的客户  -->
+  <select id="getCompanyWhereForgetTouch" resultMap="BaseResultMap" parameterType="string">
+  	select 
+  	<include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from c_company where nextTouchDate <![CDATA[<]]> #{date}
+  </select>
+  
   <!-- 分页查询 -->
   <select id="getCompanyByPage" resultMap="BaseResultMap" parameterType="java.util.Map">
   	select 

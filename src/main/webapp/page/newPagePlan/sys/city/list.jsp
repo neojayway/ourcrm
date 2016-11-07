@@ -5,11 +5,12 @@
 <title>城市资料</title>
 <link href="${pageContext.request.contextPath}/ui/css/style_cn.css" rel="stylesheet" type="text/css">
 <script src="${pageContext.request.contextPath}/ui/js/popshow.js" type="text/javascript"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/ui/js/jquery-1.4.2.js"></script>
 <script type="text/javascript">
 
 	$(function(){
 		$.ajax({
-			url:'${pageContext.request.contextPath}/province/getAllProvince',
+			url:'${pageContext.request.contextPath}/province/getAllProvinceForCity',
 			type:'get',
 			dataType:'json',
 			success:function(data){
@@ -20,10 +21,10 @@
 					var id = data[i].id;
 					var name = data[i].name;
 					var $option = null;
-					if(id == "1"){
+					if(id == 1){
 						$option = $("<option value='"+id+"' selected>"+name+"</option>");
 					}else{
-						$option = $("<option value='"+id+"' selected>"+name+"</option>");
+						$option = $("<option value='"+id+"'>"+name+"</option>");
 					}
 					$option.appendTo($select);
 				}
@@ -31,18 +32,12 @@
 				$("#selectProvince").append("</select>");
 			}
 		});
-	});
 
-	//一但省份的下拉框发生改变就执行 城市查询
-	function doSearchCity(){
-		//获取到下拉框中选中的value值
-		 var pid=$("#pid").val();
-		 alert(pid);
-		 $.ajax({
-			url:'${pageContext.request.contextPath}/city/getCitysByProvince/'+pid,
+		$.ajax({
+			url:'${pageContext.request.contextPath}/city/getCitysByProvince/1',
 			type:'get',
 			dataType:'json',
-			successe:function(data){
+			success:function(data){
 				$("#PowerTable").remove();
 				var $cityTable=$("<table width='100%' border='0' cellspacing='0' cellpadding='0' id='PowerTable' class='PowerTable'>");
 				var $tr11=$("<tr></tr>");
@@ -57,29 +52,90 @@
 			  	$td13.appendTo($tr11);
 			  	$td14.appendTo($tr11);
 			  	$td15.appendTo($tr11);
-			  	for(var i=0;i<data.length;i++){
-					var id=data[i].id;
-					var name=data[i].name;
-					var pycode=data[i].pycode;
-					var pid=data[i].pid;
-					var postcode=data[i].postcode;
-					var areacode=data[i].areacode;
-					var $tr21=$("<tr>");
-					$tr21.appendTo($table);
-					var $td21=$("<td><input type='checkbox' name='ids' value='"+id+"' class='checkbox' onClick='changeCheckCount();'></td>");
-					$td21.appendTo($tr21);
-					var $td22=$("<td><a href='#' onClick='OpenDiv('edit.jsp')'>"+name+"</a></td>");
-					$td22.appendTo($tr21);
-					var $td23=$("<td>"+pycode+"</td>");
-					$td23.appendTo($tr21);
-					var $td24=$("<td>"+postcode+"</td>");
-					$td24.appendTo($tr21);
-					var $td25=$("<td>"+areacode+"</td>");
-					$td25.appendTo($tr21);
-					var $tr22 = $("</tr>");
-					$tr22.appendTo($table);
+			  	if(data==null){
+					var $tr12=$("<tr><td colspan=5>该省份尚未添加附属城市，请尽快完善基础信息！</td></tr>");
+					$tr12.appendTo($cityTable);
+				}else{
+				  	for(var i=0;i<data.length;i++){
+						var id=data[i].id;
+						var name=data[i].name;
+						var pycode=data[i].pycode;
+						var pid=data[i].pid;
+						var postcode=data[i].postcode;
+						var areacode=data[i].areacode;
+						var $tr21=$("<tr>");
+						$tr21.appendTo($cityTable);
+						var $td21=$("<td><input type='checkbox' name='ids' value='"+id+"' class='checkbox' onClick='changeCheckCount();'></td>");
+						$td21.appendTo($tr21);
+						var $td22=$("<td><a href='#' onClick='OpenDiv('edit.jsp')'>"+name+"</a></td>");
+						$td22.appendTo($tr21);
+						var $td23=$("<td>"+pycode+"</td>");
+						$td23.appendTo($tr21);
+						var $td24=$("<td>"+postcode+"</td>");
+						$td24.appendTo($tr21);
+						var $td25=$("<td>"+areacode+"</td>");
+						$td25.appendTo($tr21);
+						var $tr22 = $("</tr>");
+						$tr22.appendTo($cityTable);
+					}
 				}
-			  	$table.appendTo("#cityTable");
+			  	$cityTable.appendTo("#cityTable");
+				$("#cityTable").append("</table>");
+			}
+		});
+	});
+
+	//一但省份的下拉框发生改变就执行 城市查询
+	function doSearchCity(){
+		//获取到下拉框中选中的value值
+		 var pid=$("#pid").val();
+		 $.ajax({
+			url:'${pageContext.request.contextPath}/city/getCitysByProvince/'+pid,
+			type:'get',
+			dataType:'json',
+			success:function(data){
+				$("#PowerTable").remove();
+				var $cityTable=$("<table width='100%' border='0' cellspacing='0' cellpadding='0' id='PowerTable' class='PowerTable'>");
+				var $tr11=$("<tr></tr>");
+				$tr11.appendTo($cityTable);
+		    	var $td11=$("<td width='7%' class='listViewThS1'><input type='checkbox' name='checkall' value='' class='checkbox' onClick='CheckAll(this.checked);changeCheckCount();'></td>"); 
+			   	var $td12=$("<td width='33%' class='listViewThS1'>名称</td>");   
+			   	var $td13=$("<td width='30%' class='listViewThS1'>拼音码</td>");
+			   	var $td14=$("<td width='15%' class='listViewThS1'>邮政编码</td>");    	  	  		
+		  	    var $td15=$("<td width='15%' class='listViewThS1'>区号</td>");
+		  	    $td11.appendTo($tr11);
+		  	    $td12.appendTo($tr11);
+			  	$td13.appendTo($tr11);
+			  	$td14.appendTo($tr11);
+			  	$td15.appendTo($tr11);
+			  	if(data==null){
+					var $tr12=$("<tr><td colspan=5>该省份尚未添加附属城市，请尽快完善基础信息！</td></tr>");
+					$tr12.appendTo($cityTable);
+				}else{
+				  	for(var i=0;i<data.length;i++){
+						var id=data[i].id;
+						var name=data[i].name;
+						var pycode=data[i].pycode;
+						var pid=data[i].pid;
+						var postcode=data[i].postcode;
+						var areacode=data[i].areacode;
+						var $tr21=$("<tr>");
+						$tr21.appendTo($cityTable);
+						var $td21=$("<td><input type='checkbox' name='ids' value='"+id+"' class='checkbox' onClick='changeCheckCount();'></td>");
+						$td21.appendTo($tr21);
+						var $td22=$("<td><a href='#' onClick='OpenDiv('edit.jsp')'>"+name+"</a></td>");
+						$td22.appendTo($tr21);
+						var $td23=$("<td>"+pycode+"</td>");
+						$td23.appendTo($tr21);
+						var $td24=$("<td>"+postcode+"</td>");
+						$td24.appendTo($tr21);
+						var $td25=$("<td>"+areacode+"</td>");
+						$td25.appendTo($tr21);
+						var $tr22 = $("</tr>");
+						$tr22.appendTo($cityTable);
+					}
+				}
+			  	$cityTable.appendTo("#cityTable");
 				$("#cityTable").append("</table>");
 			}
 		});
@@ -88,6 +144,38 @@
 	function forward(strURL){
 	    window.location=strURL;
 	}
+
+	function changeCheckCount() {
+		var count = 0;
+		$("input[type='checkbox'][name='ids']").each(function(index, data) {
+			if (this.checked) {
+				count++;
+			}
+		});
+		$("#slt_ids_count2").empty();
+		$("#slt_ids_count2").append(count);
+
+		if (count == $("input[type='checkbox'][name='ids']").length) {
+			$("#checkall").attr("checked", "checked");
+		} else {
+			$("#checkall").attr("checked", null);
+		}
+	}
+
+	function checkAll() {
+		if ($("#checkall")[0].checked) {
+			$("input[type='checkbox'][name='ids']").attr("checked",
+					"checked");
+			$("#slt_ids_count2").empty();
+			$("#slt_ids_count2").append(
+					$("input[type='checkbox'][name='ids']").length);
+		} else {
+			$("input[type='checkbox'][name='ids']").attr("checked", null);
+			$("#slt_ids_count2").empty();
+			$("#slt_ids_count2").append(0);
+		}
+	}
+	
 </script>
 </head>
 
@@ -133,7 +221,8 @@
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" 
 			class="tabForm" name="base" id="base">
 			<tr>
-		    	<td width="38%" height="45" nowrap>省份：<span id="selectProvince"></span>
+		    	<td width="38%" height="45" nowrap>省份：
+		    		<span id="selectProvince"></span>
 		   	    	<!--<select id='pid' name='pid' style='width:140px' onChange='doSearch()'>
 						<option value='1' selected>北京市</option>
 						<option value='2'>上海市</option>
