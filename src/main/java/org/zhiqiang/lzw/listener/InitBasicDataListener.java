@@ -54,7 +54,7 @@ public class InitBasicDataListener implements ApplicationListener<ContextRefresh
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		
-		/*//得到IOC容器
+		//得到IOC容器
 		//ApplicationContext context = event.getApplicationContext();
 		
 		//得到客户所属行业对应的数据字典
@@ -89,7 +89,7 @@ public class InitBasicDataListener implements ApplicationListener<ContextRefresh
 		//得到客户所属企业性质对应的数据字典
 		List<DictionaryType> kindList = dictionaryTypeService.
 			selectDictionaryTypesByCode("kind");
-		application.setAttribute("kindList", kindList);*/
+		application.setAttribute("kindList", kindList);
 		
 	}
 }

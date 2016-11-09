@@ -1,7 +1,9 @@
 package org.zhiqiang.lzw.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import org.zhiqiang.lzw.entity.Company;
 import org.zhiqiang.lzw.entity.custom.PageBean;
 
@@ -26,5 +28,7 @@ public interface ICompanyService {
 	int deleteById(Integer id) throws Exception;
 	
 	int updateCompany(Company company) throws Exception;
+	
+	int updateNextTouchTime(Integer id, Date nexttouchdate) throws Exception;
 	
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"
 	contentType="text/html; charset=utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -36,17 +37,17 @@
 	}
 
 	function check() {
-		var next_touch_date = $("#next_touch_date").val();
-		if ($.trim(next_touch_date) == "") {
+		var nexttouchdate = $("#nexttouchdate").val();
+		if ($.trim(nexttouchdate) == "") {
 			alert("下次联系时间不能为空");
-			$("#next_touch_date").focus();
+			$("#nexttouchdate").focus();
 			return false;
 		}
 		var curDate = Date_of_Today();
 
-		if (next_touch_date < curDate) {
+		if (nexttouchdate < curDate) {
 			alert("下次联系时间必须大于系统的当前时间");
-			$("#next_touch_date").focus();
+			$("#nexttouchdate").focus();
 		}
 
 		return true;
@@ -56,8 +57,11 @@
 
 <body>
 	<form name="form1" method="post"
-		action="companyAction_nextTouchTime.do" onsubmit="return check();">
-		<input type="hidden" name="ids" value="%{#parameters.ids[0]}" />
+		action="${pageContext.request.contextPath}/company/doUpdateNextTouchDate.do" 
+		onsubmit="return check();">
+		<c:forEach var="ids" items="${requestScope.ids}" varStatus="s">
+			<input type="hidden" name="ids" value="${ids}"/>
+		</c:forEach>
 		<div class="mtitle">
 			<div class="mtitle-row">&nbsp;</div>
 			设定下次联系时间
@@ -79,11 +83,14 @@
 				<td width="30%">下次联系时间：</td>
 				<td width="70%">
 					<input type='text' class="dateClassStyle"
-						id='next_touch_date' name='next_touch_date' value=''
+						id='nexttouchdate' name='nexttouchdate'
 						style='width: 50%'>
 				</td>
 			</tr>
 		</table>
+		<center>
+			<INPUT TYPE='BUTTON' VALUE='关闭' onClick='window.close()'> 
+		</center>
 	</form>
 </body>
 </html>

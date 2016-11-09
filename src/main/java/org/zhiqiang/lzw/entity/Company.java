@@ -2,6 +2,10 @@ package org.zhiqiang.lzw.entity;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * 客户实体类
  * @author Administrator
@@ -331,6 +335,9 @@ public class Company {
         this.tel2 = tel2 == null ? null : tel2.trim();
     }
 
+    //配置日期的传递方式。
+    @DateTimeFormat(pattern="yyyy-MM-dd")  
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")  
     public Date getNexttouchdate() {
         return nexttouchdate;
     }

@@ -334,7 +334,7 @@
 							<tr>
 								<td>下次联系时间:</td>
 								<td>
-									<input name="nextTouchDate" id="nextTouchDate"
+									<input name="nexttouchdate" id="nexttouchdate"
 										style="width:90%" class="dateClassStyle" 
 										value="" type="text"/>
 								</td>

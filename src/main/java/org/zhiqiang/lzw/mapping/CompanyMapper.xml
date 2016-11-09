@@ -64,6 +64,7 @@
     ,
     <include refid="Blob_Column_List" />
     from c_company
+    order by id desc
   </select>
   
     <!-- 带条件查询分页查询 -->
@@ -72,7 +73,8 @@
   	<include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from c_company 
+    from c_company
+    order by id desc 
   	limit ${pageBean.pageIndex},${pageBean.pageSize}
   </select>
   
@@ -88,7 +90,9 @@
   	<include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from c_company where nextTouchDate = #{date}
+    from c_company 
+    where nextTouchDate = #{date}
+    order by id desc
   </select>
   
   <!-- 	查询已过期未联系的客户  -->
@@ -97,7 +101,9 @@
   	<include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from c_company where nextTouchDate <![CDATA[<]]> #{date}
+    from c_company 
+    where nextTouchDate <![CDATA[<]]> #{date}
+    order by id desc
   </select>
   
   <!-- 根据主键查询 -->
@@ -381,6 +387,17 @@
       </if>
     </trim>
   </insert>
+  
+  <!-- 修改下次联系时间 -->
+  <update id="updateNextTouchTime" parameterType="java.util.Map">
+  	update c_company
+  	<set>
+  		<if test="nexttouchdate != null">
+  			nextTouchDate = #{nexttouchdate,jdbcType=DATE}
+  		</if>
+  	</set>
+  	where id = #{id,jdbcType=INTEGER}
+  </update>
   
   <update id="updateByPrimaryKeySelective" parameterType="org.zhiqiang.lzw.entity.Company">
     update c_company

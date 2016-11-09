@@ -39,6 +39,8 @@ public interface CompanyMapper {
     int insertSelective(Company record) throws Exception;
 
     Company selectByPrimaryKey(Integer id) throws Exception;
+    
+    int updateNextTouchTime(Map map) throws Exception;
 
     int updateByPrimaryKeySelective(Company record) throws Exception;
 
