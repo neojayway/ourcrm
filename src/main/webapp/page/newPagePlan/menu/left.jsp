@@ -79,6 +79,7 @@
 						width="17" height="17"> 
 					<strong>系统设置 </strong>
 					<ul>
+						
 						<li>
 							<img src="${pageContext.request.contextPath}/ui/images/menu/bmsz.png"
 								width="17" height="17"> 
@@ -88,19 +89,27 @@
 							</a>
 						</li>
 						<li>
-							<img src="${pageContext.request.contextPath}/ui/images/menu/rsgl.png"
-							width="17" height="17"> 
-							<a href="${pageContext.request.contextPath}/page/newPagePlan/sys/user/list.jsp"
-							target="rightFrame">
-								人事管理
-							</a>
-						</li>
-						<li>
 							<img src="${pageContext.request.contextPath}/ui/images/menu/czqxz.png"
 							width="17" height="17"> 
 							<a href="${pageContext.request.contextPath}/privilege/selectPrivilegeByPage.do"
 							target="rightFrame">
-								操作权限组
+								权限设置
+							</a>
+						</li>
+						<li>
+							<img src="${pageContext.request.contextPath}/ui/images/menu/rsgl.png"
+							width="17" height="17"> 
+							<a href="${pageContext.request.contextPath}/role/showRoleByPage.do"
+							target="rightFrame">
+								角色管理
+							</a>
+						</li>
+						<li>
+							<img src="${pageContext.request.contextPath}/ui/images/menu/bmsz.png"
+								width="17" height="17"> 
+							<a href="${pageContext.request.contextPath}/user/showUser.do"
+							target="rightFrame">
+								用户角色
 							</a>
 						</li>
 						<li>

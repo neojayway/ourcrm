@@ -19,6 +19,9 @@ public interface PrivilegeMapper {
     //查询所有权限
     List<Privilege> selectAll();
     
+    //根据角色Id查询角色所有权限
+    List<Privilege> selectPrivilegeByRoleId(Integer rid);
+    
     //分页查询权限
     List<Privilege> selectByPage(Map<String, Object> map);
     
@@ -28,13 +31,16 @@ public interface PrivilegeMapper {
     //批量删除权限
     public void deletePrivilegeByBatch(Integer[] pids) throws Exception;
     
+    //根据权限编号删除角色权限关系记录
+    public void deleteRolePrivilegeByPid(Integer pid);
+    
     //带条件查询权限的数量
     Integer selectCount(String privilegeName);
     
     //根据主键查询权限
     Privilege selectByPrimaryKey(Integer privilegeid);
     
-    //根据主键更新部门列
+    //根据主键更新部分列
     void updateByPrimaryKeySelective(Privilege privilege);
 
     int updateByPrimaryKey(Privilege record);

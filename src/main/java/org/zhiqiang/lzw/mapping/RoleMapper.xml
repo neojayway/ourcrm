@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.zhiqiang.lzw.mapping.RoleMapper" >
-
+	
   <resultMap id="BaseResultMap" type="org.zhiqiang.lzw.entity.custom.RoleCustom" >
+    <id column="roleid" property="roleid" jdbcType="INTEGER" />
+    <result column="roleName" property="rolename" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="RoleResultMap" type="org.zhiqiang.lzw.entity.Role" >
     <id column="roleid" property="roleid" jdbcType="INTEGER" />
     <result column="roleName" property="rolename" jdbcType="VARCHAR" />
   </resultMap>
@@ -38,6 +43,77 @@
     where r.roleId = #{roleid,jdbcType=INTEGER}
   </select>
   
+  <!-- 根据角色Id查询指定角色 -->
+  <select id="selectById" resultMap="RoleResultMap" parameterType="Integer">
+  	SELECT <include refid="Base_Column_List"></include> 
+  	FROM sys_role r WHERE r.roleId = #{value}
+  </select>
+  
+  <!-- 查询所有角色 -->
+  <select id="selectAllRole" resultMap="RoleResultMap">
+  	select <include refid="Base_Column_List"></include> from sys_role
+  </select>
+  
+  <!-- 根据用户Id查询用户所有角色 -->
+  <select id="selectRoleByUid" resultMap="RoleResultMap" parameterType="Integer">
+  	SELECT r.roleId,r.roleName 
+  	FROM sys_user_role ur 
+  	INNER JOIN sys_role r ON ur.roleId=r.roleId 
+  	WHERE ur.userId = #{value} 
+  </select>
+  
+  
+  <!-- 带条件查询角色数量 -->
+  <select id="selectRoleCount" resultType="Integer" parameterType="String">
+  	SELECT COUNT(1) FROM sys_role r 
+  	<where>
+  		<if test="value!=null">
+  			r.roleName LIKE #{value}
+  		</if>
+  	</where>
+  </select>
+  
+  <!-- 带条件分页查询角色 -->
+  <select id="selectRoleByPage" resultMap="RoleResultMap" parameterType="Map">
+  	SELECT <include refid="Base_Column_List"/>
+  	FROM sys_role r 
+  	<where>
+  		<if test="roleName!=null">
+  			r.roleName LIKE #{roleName} 
+  		</if>
+  	</where>
+  	LIMIT ${pageBean.pageIndex},${pageBean.pageSize};
+  </select>
+  
+  <!-- 批量删除角色(删除角色前，应该先删除用户角色表中的对应记录，同时也应该删除角色权限表中的记录) -->
+  <delete id="deleteRoleByBatch" parameterType="Integer[]">
+  	DELETE FROM sys_role WHERE roleId IN
+  	<foreach collection="array" item="item" open="(" close=")" separator=",">
+  		${item}
+  	</foreach>
+  </delete>
+  
+  <!-- 删除指定角色的指定权限 -->
+  <delete id="deleteByRoleAndPrivilege" parameterType="Map">
+  	DELETE FROM sys_role_privilege WHERE roleId=#{rid} AND privilegeId=#{pid};
+  </delete>
+  
+  <!-- 根据角色Id删除角色权限记录 -->
+  <delete id="deleteByRole" parameterType="Integer">
+  	DELETE FROM sys_role_privilege WHERE roleId=#{value}
+  </delete>
+  
+  <!-- 根据角色编号删除用户角色关系记录 -->
+  <delete id="deleteUserRoleByRid" parameterType="Integer">
+  		DELETE FROM sys_user_role WHERE roleId=#{value}
+  </delete>
+  
+  <!-- 根据角色编号删除角色权限关系记录 -->
+  <delete id="deleteRolePrivilegeByRid" parameterType="Integer">
+  		DELETE FROM sys_role_privilege WHERE roleId=#{value}
+  </delete>
+  
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sys_role
     where roleId = #{roleid,jdbcType=INTEGER}
@@ -65,6 +141,19 @@
       </if>
     </trim>
   </insert>
+  
+  <!-- 批量插入角色权限 -->
+  <insert id="insertRoleAndPrivilegeByBatch" parameterType="Map">
+  	INSERT INTO sys_role_privilege(roleId,privilegeId) VALUES
+  	<foreach collection="pids" item="pid" separator=",">
+  		(
+  			#{rid},#{pid}
+  		)
+  	</foreach>
+  </insert>
+  
+  
+  <!-- 根据主键更新角色 -->
   <update id="updateByPrimaryKeySelective" parameterType="org.zhiqiang.lzw.entity.Role" >
     update sys_role
     <set >

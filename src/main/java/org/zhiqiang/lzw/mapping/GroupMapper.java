@@ -41,6 +41,11 @@ public interface GroupMapper {
      */
     GroupCustom selectGroupCustom(Integer groupId);
     
+    /**
+     * 查询所有部门
+     * @return
+     */
+    public List<Group> selectAllGroup();
     
     Group selectByPrimaryKey(Integer id);
 

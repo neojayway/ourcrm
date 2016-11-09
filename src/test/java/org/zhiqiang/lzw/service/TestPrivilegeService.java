@@ -88,5 +88,18 @@ public class TestPrivilegeService {
 			}
 		}
 	}
+	
+	/**
+	 * 测试批量删除权限
+	 * @throws Exception 
+	 */
+	@Test
+	public void testSelectPrivilegeByRoleId() throws Exception {
+		IPrivilegeService privilegeService = (IPrivilegeService) context.getBean("privilegeService");
+		List<Privilege> privilegeList = privilegeService.selectPrivilegeByRoleId(1);
+		for (Privilege privilege : privilegeList) {
+			System.out.println(privilege);
+		}
+	}
 
 }

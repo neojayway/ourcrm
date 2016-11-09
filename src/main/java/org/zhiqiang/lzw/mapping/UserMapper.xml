@@ -95,7 +95,7 @@
     empolder, relation
   </sql>
   
-  <!-- 根据主键查询User --> 
+  <!-- 根据主键查询User(关联查询角色) --> 
   <select id="selectByPrimaryKey" resultMap="UserCustomResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -137,11 +137,66 @@
   		<include refid="Base_Column_List" />
   	from sys_user;
   </select>
+  
+  <!-- 带条件查询查询用户的数量（用户名称模糊查询） -->
+  <select id="selectCountLikeUname" resultType="Integer" parameterType="String">
+  	SELECT COUNT(1) FROM sys_user 
+  	<where>
+  		<if test="value!=null">
+		  	cnname LIKE #{value}
+  		</if>
+  	</where>
+  </select>
+  
+  <!-- 分页查询带条件查询 -->
+  <select id="selectUserByPage" resultMap="BaseResultMap" parameterType="Map">
+  	SELECT <include refid="Base_Column_List" /> 
+  	FROM sys_user
+  	<where>
+  		<if test="cnname!=null">
+		  	cnname LIKE #{cnname} 
+  		</if>
+  	</where> 
+  	LIMIT #{pageBean.pageIndex},#{pageBean.pageSize}
+  </select>
+  
+   <!-- 查询用户具有的角色 -->
+   <select id="selectRoleByUid" resultMap="org.zhiqiang.lzw.mapping.RoleMapper.RoleResultMap" parameterType="Integer">
+	   	SELECT r.roleId,r.roleName 
+	   	FROM sys_user_role ur 
+	   	INNER JOIN sys_role r ON ur.roleId=r.roleId 
+	   	WHERE userId=#{value}
+   </select>
+   
+   <!-- 批量删除用户 -->
+   <delete id="deleteUserByBatch" parameterType="Integer[]">
+   	delete from sys_user
+    where id in
+    <foreach collection="array" item="uid" open="(" close=")" separator=",">
+    	#{uid}
+    </foreach>
+   </delete>
+   
+   <!-- 删除用户角色记录  -->
+   <delete id="deleteUserRole" parameterType="Map">
+   		DELETE FROM sys_user_role WHERE userId=#{uid} AND roleId=#{rid}
+   </delete>
+   
+   <!-- 删除指定的用户角色记录 -->
+   <delete id="deleteUserRoleByUid" parameterType="Integer">
+   		DELETE FROM sys_user_role WHERE userId=#{value}
+   </delete>
    
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sys_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  
+  <!-- 新增用户角色记录 -->
+  <insert id="insertUserRole" parameterType="Map">
+  		INSERT INTO sys_user_role(userId,roleId) VALUES(#{uid},#{rid})
+  </insert>
+  
   <insert id="insert" parameterType="org.zhiqiang.lzw.entity.UserWithBLOBs" >
     insert into sys_user (id, creator, createTime, 
       updater, updateTime, name, 
@@ -176,7 +231,9 @@
       #{organise,jdbcType=LONGVARCHAR}, #{analyse,jdbcType=LONGVARCHAR}, #{planing,jdbcType=LONGVARCHAR}, 
       #{empolder,jdbcType=LONGVARCHAR}, #{relation,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="org.zhiqiang.lzw.entity.UserWithBLOBs" >
+  
+  <!-- 新增用户部分列 -->
+  <insert id="insertSelective" parameterType="org.zhiqiang.lzw.entity.User" >
     insert into sys_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -290,7 +347,7 @@
       <if test="consortcompany != null" >
         consortCompany,
       </if>
-      <if test="remark != null" >
+      <!-- <if test="remark != null" >
         remark,
       </if>
       <if test="avocation != null" >
@@ -319,7 +376,7 @@
       </if>
       <if test="relation != null" >
         relation,
-      </if>
+      </if> -->
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -433,7 +490,7 @@
       <if test="consortcompany != null" >
         #{consortcompany,jdbcType=VARCHAR},
       </if>
-      <if test="remark != null" >
+      <!-- <if test="remark != null" >
         #{remark,jdbcType=LONGVARCHAR},
       </if>
       <if test="avocation != null" >
@@ -462,7 +519,7 @@
       </if>
       <if test="relation != null" >
         #{relation,jdbcType=LONGVARCHAR},
-      </if>
+      </if> -->
     </trim>
   </insert>
   
@@ -479,6 +536,10 @@
   	</foreach>
   </update>
   
+  <!-- 根据部门编号修改用户的部门为“未分配” -->
+  <update id="updateUserByGid" parameterType="Integer">
+  		UPDATE sys_user SET groupId=10 WHERE groupId=#{value};
+  </update>
   
   <update id="updateByPrimaryKeySelective" parameterType="org.zhiqiang.lzw.entity.UserWithBLOBs" >
     update sys_user

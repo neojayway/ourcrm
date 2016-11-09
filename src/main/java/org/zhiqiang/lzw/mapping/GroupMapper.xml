@@ -70,6 +70,11 @@
     where groupId = #{groupid,jdbcType=INTEGER}
   </select>
   
+  <!-- 查询所有部门 -->
+  <select id="selectAllGroup" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List" /> FROM sys_group;
+  </select>
+  
   <!-- 根据部门编号（部门关联查询用户 ）-->
   <select id="selectGroupCustom" resultMap="GroupCustomResultMap" parameterType="Integer">
   	SELECT g.groupId, groupName, g.remark,u.*

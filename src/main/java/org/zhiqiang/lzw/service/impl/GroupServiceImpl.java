@@ -84,6 +84,16 @@ public class GroupServiceImpl implements IGroupService{
 	public GroupCustom selectGroupCustom(Integer groupId) {
 		return groupMapper.selectGroupCustom(groupId);
 	}
+
+	
+	/**
+     * 查询所有部门
+     * @return
+     */
+	@Override
+	public List<Group> selectAllGroup() {
+		return groupMapper.selectAllGroup();
+	}
 	
 	
 

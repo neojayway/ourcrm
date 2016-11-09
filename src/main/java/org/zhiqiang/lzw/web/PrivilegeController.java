@@ -89,6 +89,12 @@ public class PrivilegeController {
 	 */
 	@RequestMapping("/deletePrivilegeByBatch")
 	public String deletePrivilegeByBatch(Integer[] pids) throws Exception{
+		if (pids!=null && pids.length>0) {
+			for (Integer pid : pids) {
+				//根据权限编号删除角色权限关系记录
+				privilegeService.deleteRolePrivilegeByPid(pid);
+			}
+		}
 		privilegeService.deletePrivilegeByBatch(pids);
 		return "forward:/privilege/selectPrivilegeByPage.do";
 	}

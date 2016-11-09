@@ -28,6 +28,12 @@ public interface IPrivilegeService {
 	public Privilege selectByPrimaryKey(Integer pid);
 	
 	/**
+	 * 根据角色Id查询角色所有权限
+	 * @return
+	 */
+    List<Privilege> selectPrivilegeByRoleId(Integer rid);
+	
+	/**
 	 * 新增权限
 	 */
 	public void addPrivilege(Privilege privilege);
@@ -58,6 +64,12 @@ public interface IPrivilegeService {
      * @param pids
      */
     public void deletePrivilegeByBatch(Integer[] pids) throws Exception;
+    
+    /**
+     * 根据权限编号删除角色权限关系记录
+     * @param pid
+     */
+    public void deleteRolePrivilegeByPid(Integer pid);
     
     /**
      * 根据主键更新部门列

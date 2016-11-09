@@ -109,6 +109,23 @@ public class PrivilegeServiceImpl implements IPrivilegeService{
 		return privilegeMapper.selectByPrimaryKey(pid);
 	}
 	
+	/**
+	 * 根据角色Id查询角色所有权限
+	 */
+	@Override
+	public List<Privilege> selectPrivilegeByRoleId(Integer rid) {
+		return privilegeMapper.selectPrivilegeByRoleId(rid);
+	}
+	
+	/**
+     * 根据权限编号删除角色权限关系记录
+     * @param pid
+     */
+	@Override
+	public void deleteRolePrivilegeByPid(Integer pid) {
+		privilegeMapper.deleteRolePrivilegeByPid(pid);
+	}
+	
 	
 
 

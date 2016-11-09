@@ -2,6 +2,9 @@ package org.zhiqiang.lzw.web;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +24,7 @@ import org.zhiqiang.lzw.entity.Group;
 import org.zhiqiang.lzw.entity.User;
 import org.zhiqiang.lzw.entity.custom.GroupCustom;
 import org.zhiqiang.lzw.entity.custom.PageBean;
+import org.zhiqiang.lzw.mapping.UserMapper;
 import org.zhiqiang.lzw.service.IGroupService;
 import org.zhiqiang.lzw.service.IUserService;
 
@@ -90,8 +94,26 @@ public class GroupController {
 	@RequestMapping("/deleteGroup")
 	public String deleteGroup(Integer[] ids) throws Exception{
 		if (ids!=null && ids.length>0) {
-			logger.info("需要删除的部门有："+ids.length);
-			groupService.deleteByBatch(ids);
+			List<Integer> idList = new ArrayList<Integer>();
+			idList.addAll(Arrays.asList(ids));
+			Iterator<Integer> iterator = idList.iterator();
+			while (iterator.hasNext()) {
+				Integer integer = (Integer) iterator.next();
+				if (integer.equals(10)) {
+					iterator.remove();
+				}
+			}
+			ids =  idList.toArray(ids);
+			if (ids!=null && ids.length>0) {
+				for (Integer id : ids) {
+					if (id!=null && !id.equals(10)) {
+						//删除部门之前，需要将该部门下所有用户的部门设置为待分配
+						userService.updateUserByGid(id);
+					}
+				}
+				logger.info("需要删除的部门有："+ids.length);
+				groupService.deleteByBatch(ids);
+			}
 		}
 		return "forward:/group/selectAllGroupByPage.do";
 	}
@@ -109,11 +131,17 @@ public class GroupController {
 		logger.info("存在的所有用户:"+userList);
 		//获得部门
 		GroupCustom groupCustom = groupService.selectGroupCustom(groupId);
+		if (groupCustom==null) {
+			groupCustom = new GroupCustom();
+			groupCustom.setGroupid(groupId);
+		}
 		List<User> users = groupCustom.getUsers();
 		//将部门下的用户编号拼接成字符串，用于保存在表单的隐藏域中，表示部门原有的用户
 		String uidStr = "";
-		for (User user : users) {
-			uidStr += user.getId()+",";
+		if (users!=null) {
+			for (User user : users) {
+				uidStr += user.getId()+",";
+			}
 		}
 		if (uidStr.endsWith(",")) {
 			uidStr = uidStr.substring(0, uidStr.length()-1);
@@ -129,8 +157,8 @@ public class GroupController {
 			while (iterator.hasNext()) {
 				User user = (User) iterator.next();
 				Integer id = user.getId();
-				if (groupCustom!=null) {
-					for (User user2 : groupCustom.getUsers()) {
+				if (groupCustom!=null && users!=null) {
+					for (User user2 : users) {
 						if (user2.getId() == id) {
 							iterator.remove();
 						}
@@ -153,27 +181,31 @@ public class GroupController {
 	@RequestMapping("/updateUserOfGroup")
 	public String updateUserOfGroup(Integer[] rselect,Integer groupId,String uidStr) throws Exception{
 		System.out.println(uidStr+"++++++++++++++++");
-		String[] uidArray = uidStr.split(",");
+		if (uidStr!=null && !uidStr.trim().isEmpty()) {
+			String[] uidArray = uidStr.split(",");
+			//遍历部门原有的员工，如果该员工在新提交过来的员工集合中没有找到，则将该员工的的部门更新为“待分配部门”
+			for (int i = 0; i < uidArray.length; i++) {
+				Integer uid = Integer.parseInt(uidArray[i]);
+				boolean flag = false;
+				if (rselect!=null) {
+					for (int j = 0; j < rselect.length; j++) {
+						if (rselect[j].equals(uid)) {
+							flag = true;
+							break;
+						}
+					}
+				}
+				if (!flag) {
+					//在原有的部门下员工在新提交的用户编号数组中没有找到，需要剔除用户所属部门
+					userService.updateGroupIdForUser(10, uid);
+					logger.info("用户编号为："+uid+"的用户从部门："+groupId+"中剔除到10号待分配的部门");
+				}
+			}
+		}
+		
 		if (rselect!=null) {
 			//首先将下拉框中提交的用户分配到指定部门
 			userService.updateBatchGroupIdForUser(groupId, rselect);
-		}
-		
-		//遍历部门原有的员工，如果该员工在新提交过来的员工集合中没有找到，则将该员工的的部门更新为“待分配部门”
-		for (int i = 0; i < uidArray.length; i++) {
-			Integer uid = Integer.parseInt(uidArray[i]);
-			boolean flag = false;
-			for (int j = 0; j < rselect.length; j++) {
-				if (rselect[j] == uid) {
-					flag = true;
-					break;
-				}
-			}
-			if (!flag) {
-				//在原有的部门下员工在新提交的用户编号数组中没有找到，需要剔除用户所属部门
-				userService.updateGroupIdForUser(10, uid);
-				logger.info("用户编号为："+uid+"的用户从部门："+groupId+"中剔除到10号待分配的部门");
-			}
 		}
 		return "forward:/group/selectAllGroupByPage.do";
 	}

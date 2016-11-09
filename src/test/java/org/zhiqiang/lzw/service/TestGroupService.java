@@ -2,6 +2,8 @@ package org.zhiqiang.lzw.service;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -94,5 +96,19 @@ public class TestGroupService {
 		
 	}
 	
+	@Test
+	public void xxx() throws Exception{
+		List<Integer> asList = new ArrayList<Integer>();
+		asList.add(10);
+		Iterator<Integer> iterator = asList.iterator();
+		while (iterator.hasNext()) {
+			Integer integer = (Integer) iterator.next();
+			if (integer.equals(10)) {
+				iterator.remove();
+			}
+		}
+		
+		
+	}
 
 }
