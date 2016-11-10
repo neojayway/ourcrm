@@ -29,7 +29,6 @@
 <script type="text/javascript">
 function name2pinyin() {
 	var companyName = $("#name").val();
-	alert(companyName);
 	$.ajax({
 		url:'${pageContext.request.contextPath}/company/doPinYin/'+companyName,
 		type:'get',
@@ -106,8 +105,7 @@ function check() {
 </head>
 <body>
 	<form name="companyForm" method="post" 
-		action="${pageContext.request.contextPath}/company/updateAfter.do" 
-		namespace="/crm">
+		action="${pageContext.request.contextPath}/company/updateAfter.do">
 		<div class="mtitle">
 			<div class="mtitle-row">&nbsp;</div>
 			客户-编辑
@@ -122,21 +120,6 @@ function check() {
 					border='0' align='absmiddle'>
 				&nbsp;保存
 			</button>
-			<%-- <button type='button' class='button'
-				onMouseOver="this.className='button_over';"
-				onMouseOut="this.className='button';" onClick="goChangePerson2()">
-				<img src="${pageContext.request.contextPath}/ui/images/button/jinshourbg.png"
-					border='0' align='absmiddle'>
-				&nbsp;经手人变更
-			</button> --%>
-			<%-- <button type='button' class='button'
-				onMouseOver="this.className='button_over';"
-				onMouseOut="this.className='button';"
-				onClick="OpenWin('/crm/customer/customer.do?method=print&id=7')">
-				<img src="${pageContext.request.contextPath}/ui/images/button/dayin.png"
-					border='0' align='absmiddle'>
-				&nbsp;打印
-			</button> --%>
 			<button type='button' class='button'
 				onMouseOver="this.className='button_over';"
 				onMouseOut="this.className='button';"
@@ -165,7 +148,8 @@ function check() {
 								<td width="16%" class="red">客户编码：</td>
 								<td width="34%">
 									<input type="text" id="code" name="code"
-										style="width:90%" value="${requestScope.company.code }"/>
+										style="width:90%" 
+										value="${requestScope.company.code }"/>
 								</td>
 								<td width="16%" class="red">客户名称：</td>
 								<td width="34%">
@@ -368,7 +352,7 @@ function check() {
 								<td>
 									<input type="text" name="nexttouchdate" id="nexttouchdate"
 										style="width:90%" class="dateClassStyle" 
-										value="${requestScope.company.nexttouchdate}"/>
+										value='<fmt:formatDate value="${requestScope.company.nexttouchdate}"/>'/>
 								</td>
 								<td>客户性质：</td>
 								<td>

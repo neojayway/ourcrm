@@ -37,26 +37,64 @@
 
 <script type="text/javascript">
 
-	function fristPageOnclick(){
-		var $page = $(this).html();
-		alert($page);
+//判断是否需要执行首页超链接跳转
+function fristPageOnclick(){
+	var $linkValue = $("#fristPage").html().trim();
+	var $currPage = parseInt($("#currPage").val());
+	if($currPage>1){
+		getData($currPage, $linkValue);
 	}
+}
 
-	function getData(){
-		//var $page = $(this).html();
-		
-		$("a").click(
-			function(){
-				alert($(this).html());
-		}); 
-		
-		//alert($page); 
-		/* 
+//判断是否需要执行上一页超链接跳转
+function prePageOnclick(){
+	var $linkValue = $("#prePage").html().trim();
+	var $currPage = parseInt($("#currPage").val());
+	if($currPage>1){
+		getData($currPage, $linkValue);
+	}
+}
+
+//判断是否需要执行下一页超链接跳转
+function nextPageOnclick(){
+	var $linkValue = $("#nextPage").html().trim();
+	var $currPage =parseInt( $("#currPage").val());
+	var $totalPages =parseInt( $("#totalPages").html().trim());
+	if($currPage<$totalPages){
+		getData($currPage, $linkValue);
+	}
+}
+
+//判断是否需要执行尾页超链接跳转
+function lastPageOnclick(){
+	var $linkValue = $("#lastPage").html().trim();
+	var $currPage = parseInt($("#currPage").val());
+	var $totalPages = parseInt($("#totalPages").html().trim());
+	if($currPage<$totalPages){
+		getData($currPage, $linkValue);
+	}
+}
+
+	function getData($currPage, $linkValue){
+
 		var str = $("[name='data']").val();
+		
 		//判断文本框是否输入值，没输入就查所有
 		if(str == null || str=="" || $.trim(str).length==0) str = -1;
+		var url='${pageContext.request.contextPath}/company/fuzzySearchCompany.do?data='+str;
+
+		if($currPage!=null){
+			var $totalPages = $("#totalPages").html();
+
+			if($linkValue=='首页') $currPage = 1;
+			if($linkValue=='上一页') $currPage--;
+			if($linkValue=='下一页') $currPage++;
+			if($linkValue=='尾页') $currPage = $totalPages;
+			url+='&currPage='+$currPage;			
+		}
+				
 		$.ajax({
-			url:'${pageContext.request.contextPath}/company/fuzzySearchCompany.do&'+url+"&"+currPage,
+			url:url,
 			type:'get',
 			dataType:'json',
 			success:function(data){
@@ -69,15 +107,15 @@
 				$tr11.appendTo($table);
 				
 				//定义表格的头部样式及属性
-				var $th11=$("<td width='7%' class='listViewThS1'><input type='checkbox' name='checkall' id='checkall' cssClass='checkbox' onclick='checkAll()'/>全选</td>");
+				var $th11=$("<td width='7%' class='listViewThS1'><input type='checkbox' name='checkall' id='checkall' class='checkbox' onclick='checkAll()'/>全选</td>");
 				var $th12 = $("<td width=26%' class='listViewThS1'>客户名称</td>");
 				var $th13 = $("<td width='10%' class='listViewThS1'>客户性质</td>");
 				var $th14 = $("<td width='10%' class='listViewThS1'>客户等级</td>");
 				var $th15 = $("<td width='10%' class='listViewThS1'>电话一</td>");
 				var $th16 = $("<td width='10%' class='listViewThS1'>电子邮件</td>");
-				var $th17 = $("<td width='12%' class='listViewThS1'>下次联系时间</td>");
+				var $th17 = $("<td width='10%' class='listViewThS1'>下次联系时间</td>");
 				var $th18 = $("<td width='7%' class='listViewThS1'>创建人</td>");
-				var $th19 = $("<td width='8%' class='listViewThS1'>省份城市</td>");
+				var $th19 = $("<td width='10%' class='listViewThS1'>省份城市</td>");
 				//把表格的头部拼接到表格中
 				$th11.appendTo($tr11);
 				$th12.appendTo($tr11);
@@ -102,7 +140,7 @@
 						var companyCity = data.list2[i].city;
 						var $tr21 = $("<tr>");
 						$tr21.appendTo($table);
-						var $td21 = $("<td><input type='checkbox' name='ids' cssClass='checkbox' onclick='changeCheckCount();' /></td>");
+						var $td21 = $("<td><input type='checkbox' name='ids' class='checkbox' onclick='changeCheckCount();' value='"+companyId+"'/></td>");
 						$td21.appendTo($tr21);
 						var $td22 = $("<td><a href='${pageContext.request.contextPath}/company/getCompantById/"+companyId+"'>"+companyName+"</a></td>");
 						$td22.appendTo($tr21);
@@ -116,22 +154,16 @@
 						$td26.appendTo($tr21);
 						var $td27 = $("<td>"+companyNextTouchDate+"</td>");
 						$td27.appendTo($tr21);
-						var $td28 = $("<td><a href=''>"+companyCreater+"</a></td>");
+						var $td28 = $("<td><a href='#'>"+companyCreater+"</a></td>");
 						$td28.appendTo($tr21);
-						var $td29 = $("<td><a href=''>"+companyProvince+"省"+companyCity+"市"+"</a></td>");
+						var $td29 = $("<td><a href='#'>"+companyProvince+"省"+companyCity+"市"+"</a></td>");
 						$td29.appendTo($tr21);
 						var $tr22 = $("</tr>");
 						$tr22.appendTo($table);
 					}
-						$("#curPageSpan").val(data.pageBean.currPage);
-						$("#fristPage").
-							attr("href","${pageContext.request.contextPath}/company/fuzzySearchCompany.do?${requestScope.pageBean.url}&currPage=1");
-						$("#prePage").
-							attr("href","${pageContext.request.contextPath}/company/fuzzySearchCompany.do?${requestScope.pageBean.url}&currPage=${requestScope.pageBean.currPage-1}");
-						$("#nextPage").
-							attr("href","${pageContext.request.contextPath}/company/fuzzySearchCompany.do?${requestScope.pageBean.url}&currPage=${requestScope.pageBean.currPage+1}");
-						$("#lastPage").
-							attr("href","${pageContext.request.contextPath}/company/fuzzySearchCompany.do?${requestScope.pageBean.url}&currPage=${requestScope.pageBean.totalPages}");					
+						$("#currPage").val(data.pageBean.currPage);
+						$("#curPageSpan").html(data.pageBean.currPage);
+						$("#totalPages").html(data.pageBean.totalPages);
 				}else{
 					var $tr12=$("<tr><td colspan=4>未查询到与  [ "+str+" ] 相关的任何信息,请重新查询！</td></tr>");
 					$tr12.appendTo($table);
@@ -141,41 +173,16 @@
 				$("#createtable").append("</table>");
 			}
 		});
- */	}
+	}
 
 	function forward(strURL) {
 		window.location = strURL;
 	}
 
-	//处理客户共享
-	function do_share() {
-
-		var count = 0;
-		var ids = "";
-		$("input[type='checkbox'][name='ids']").each(function(index, data) {
-			if (this.checked) {
-				count++;
-				if (count == 1) {
-					ids = $(this).val();
-				} else {
-					ids = ids + "," + $(this).val();
-				}
-			}
-		});
-
-		if (count == 0) {
-			alert("必须有一个客户被选中!!!");
-			return false;
-		}
-
-		if (count == 1) { //选中一个客户的情况下
-			OpenWin(
-					"${pageContext.request.contextPath}/crm/companyAction_showShareSetOne.do?id="
-							+ ids, '', 500, 400)
-		} else {
-			//选中多个的情况下
-		}
+	function getAllData(url){
+		window.location.href=url;
 	}
+	
 </script>
 <body>
 	<div class="mtitle">
@@ -184,18 +191,18 @@
 	</div>
 	<div class="link_title">
 		<br>&nbsp;&nbsp; 
-		<a
-			href="${pageContext.request.contextPath}/company/getCompanyWhereTodayNeedTouch">
+		<a id="getCompanyWhereTodayNeedTouch" onclick=""
+			href="${pageContext.request.contextPath}/company/getCompanyWhereTodayNeedTouch.do">
 			今天需要联系的客户
 		</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<a
-			href="${pageContext.request.contextPath}/company/getCompanyWhereForgetTouch">
+		<a id="getCompanyWhereForgetTouch" onclick=""
+			href="${pageContext.request.contextPath}/company/getCompanyWhereForgetTouch.do">
 			已过期未联系的客户
 		</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<a
-			href="${pageContext.request.contextPath}/company/getAllCompany">
+			href="${pageContext.request.contextPath}/company/selectCompanyByPage.do">
 			全部
 		</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -216,24 +223,22 @@
 			<td colspan="2">
 				<!-- 基本查询的表单--> 
 				<form name="form1" method="get"
-					action="/company/fuzzySearchCompany.do">
+					action="${pageContext.request.contextPath}/company/fuzzySearchCompany.do">
 					<div class="control" align="center">
-						搜索客户: <input type="text" name="data" onchange="getData(this)"
+						搜索客户: <input type="text" name="data" onchange="getData()"
 							 value="${requestScope.data}"/>
 						&nbsp;
 						<button type='button' class='button'
 							onMouseOver="this.className='button_over';"
 							onMouseOut="this.className='button';"
-							onClick="document.forms[0].submit();">
+							onClick="getData()">
 							<img src="${pageContext.request.contextPath}/ui/images/button/sousuo.png"
 								border='0' align='absmiddle'>
 							&nbsp;搜索
 						</button>
 
 						<button type='button' class='button'
-							onMouseOver="this.className='button_over';"
-							onMouseOut="this.className='button';"
-							onClick="forward('${pageContext.request.contextPath}/crm/customer/base/view.jsp')">
+							onClick="getAllData('${pageContext.request.contextPath}/company/selectCompanyByPage.do')">
 							<img src="${pageContext.request.contextPath}/ui/images/button/qingkong.png"
 								border='0' align='absmiddle'>
 							&nbsp;清空
@@ -268,13 +273,6 @@
 			&nbsp;下次联系时间
 		</button>
 
-		<%-- <button type='button' class='button'
-			onMouseOver="this.className='button_over';"
-			onMouseOut="this.className='button';" onClick="goChangePerson()">
-			<img src="${pageContext.request.contextPath}/ui/images/button/jinshourbg.png"
-				border='0' align='absmiddle'>
-			&nbsp;经手人变更
-		</button> --%>
 		<button type='button' class='button'
 			onMouseOver="this.className='button_over';"
 			onMouseOut="this.className='button';"
@@ -292,16 +290,16 @@
 				<tr>
 					<td width="3%" class="listViewThS1">
 						<input type="checkbox" name="checkall" id="checkall" 
-							cssClass="checkbox" onclick="checkAll()" />
+							class="checkbox" onclick="checkAll()" />
 					</td>
 					<td width="30%" class="listViewThS1">客户名称</td>
 					<td width="10%" class="listViewThS1">客户性质</td>
 					<td width="10%" class="listViewThS1">客户等级</td>
 					<td width="10%" class="listViewThS1">电话一</td>
 					<td width="10%" class="listViewThS1">电子邮件</td>
-					<td width="12%" class="listViewThS1">下次联系时间</td>
+					<td width="10%" class="listViewThS1">下次联系时间</td>
 					<td width="7%" class="listViewThS1">创建人</td>
-					<td width="8%" class="listViewThS1">省份城市</td>
+					<td width="10%" class="listViewThS1">省份城市</td>
 				</tr>
 				
 				<!-- data -->
@@ -309,7 +307,7 @@
 					<c:forEach var="company" varStatus="s" items="${requestScope.companys}"> 
 						<tr>
 							<td>
-								<input type="checkbox" name="ids" cssClass="checkbox" value="${company.id }" 
+								<input type="checkbox" name="ids" class="checkbox" value="${company.id}" 
 									onclick="changeCheckCount();" />
 							</td>
 							<td>
@@ -337,64 +335,18 @@
 			</table>
 			
 			<center>
-				<input id="currPage" type="hidden" value="${requestScope.pageBean.currPage}"/>
-				<input id="dataUrl" type="hidden" value="${requestScope.pageBean.url }"/>
-				第<span id="curPageSpan">${requestScope.pageBean.currPage}</span>页/共${requestScope.pageBean.totalPages}页
+				<input id="currPage" name="currPage" type="hidden" value="${requestScope.pageBean.currPage}"/>
+				<input id="dataUrl" name="url" type="hidden" value="${requestScope.pageBean.url }"/>
+				第<span id="curPageSpan">${requestScope.pageBean.currPage}</span>页/共<span id="totalPages">${requestScope.pageBean.totalPages}</span>页
 				<a id="fristPage" href="javascript:void(0)" onclick="fristPageOnclick(this)">首页</a>
 				<a id="prePage" href="javascript:void(0)" onclick="prePageOnclick(this)">上一页</a>
 				<a id="nextPage" href="javascript:void(0)" onclick="nextPageOnclick(this)">下一页</a>
 				<a id="lastPage" href="javascript:void(0)" onclick="lastPageOnclick(this)">尾页</a>
-				
-				<%-- 第<span id="curPageSpan">${requestScope.pageBean.currPage}</span>页/共${requestScope.pageBean.totalPages}页
-				<c:choose>
-					<c:when test="${requestScope.pageBean.currPage<=1 }">
-						首页
-						上一页
-					</c:when>
-					<c:otherwise>
-						<a id="fristPage" href="${pageContext.request.contextPath}/company/fuzzySearchCompany.do?currPage=1" onclick="getData()">首页</a>
-						<a id="prePage" href="${pageContext.request.contextPath}/company/fuzzySearchCompany.do?currPage=${requestScope.pageBean.currPage-1}">上一页</a>
-					</c:otherwise>
-				</c:choose>
-				<c:choose>
-					<c:when test="${requestScope.pageBean.currPage>=requestScope.pageBean.totalPages }">
-						下一页
-						尾页
-					</c:when>
-					<c:otherwise>
-						<a id="nextPage" href="${pageContext.request.contextPath}/company/fuzzySearchCompany.do?currPage=${requestScope.pageBean.currPage+1}">下一页</a>
-						<a id="lastPage" href="${pageContext.request.contextPath}/company/fuzzySearchCompany.do?currPage=${requestScope.pageBean.totalPages}">尾页</a>
-					</c:otherwise>
-				</c:choose> --%>
 			</center>
 			
 		</form>
 	</div>
 	<script type="text/javascript">
-		function goChangePerson() {
-			var count = 0;
-			var ids = "";
-			$("input[type='checkbox'][name='ids']").each(function(index, data) {
-				if (this.checked) {
-					count++;
-					if (count == 1) {
-						ids = $(this).val();
-					} else {
-						ids = ids + "," + $(this).val();
-					}
-				}
-			});
-			if (count == 0) {
-				alert("必须有一个客户被选中!!!");
-				return false;
-			}
-
-			var url = "${pageContext.request.contextPath}/page/newPagePlan/crm/customer/base/changePerson.jsp?ids="
-					+ ids;
-			//var url = "${pageContext.request.contextPath}/crm/customer/base/changePerson.jsp";
-			OpenWin(url, '', 480, 140);
-		}
-
 		//处理下次联系时间
 		function gonextTouchTime() {
 			var count = 0;
@@ -418,9 +370,8 @@
 				alert("必须有一个客户被选中!!!");
 				return false;
 			}
-			OpenWin(
-					"${pageContext.request.contextPath}/page/newPagePlan/crm/customer/base/nextTouchTime.jsp?ids="
-							+ ids, '', 420, 300);
+			OpenWin("${pageContext.request.contextPath}/company/doUpdateNextTouchDateBefore.do?ids="
+				+ids, '', 420, 300);
 		}
 
 		function changeCheckCount() {

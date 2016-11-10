@@ -38,15 +38,6 @@
 				$("[name='pycode']").val(data);
 			}
 		});
-		/* var nameValue = $("#name").val();
-		$.post(
-			"${pageContext.request.contextPath}/crm/companyAction_pinyin.do",
-			{
-				name : nameValue
-			}, 
-			function(data, textStatuts) {
-				$("#pycode").val(data);
-			}); */
 	}
 
 	function showCity() {
@@ -334,7 +325,7 @@
 							<tr>
 								<td>下次联系时间:</td>
 								<td>
-									<input name="nextTouchDate" id="nextTouchDate"
+									<input name="nexttouchdate" id="nexttouchdate"
 										style="width:90%" class="dateClassStyle" 
 										value="" type="text"/>
 								</td>

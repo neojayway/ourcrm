@@ -13,6 +13,15 @@
     id, name, pycode
   </sql>
   
+  <!-- 带条件查询分页查询 -->
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="map">
+  	select 
+  	<include refid="Base_Column_List" />
+    from b_province
+    order by id desc 
+  	limit ${pageBean.pageIndex},${pageBean.pageSize}
+  </select>
+  
   <!-- 获取所有记录数 -->
   <select id="getCounts" resultType="int">
   	select count(1) from b_province

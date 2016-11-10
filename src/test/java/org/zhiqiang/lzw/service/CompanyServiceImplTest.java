@@ -42,7 +42,8 @@ public class CompanyServiceImplTest {
 
 	@Test
 	public void testGetCounts() {
-		fail("Not yet implemented");
+		String a = "aaa,bbb,ccc,dddin短信内容A";
+		System.out.println(a.substring(a.length()-1));
 	}
 
 	@Test

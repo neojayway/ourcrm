@@ -48,7 +48,7 @@
 								客户拜访
 							</a>
 						</li>
-						<li>
+						<%-- <li>
 							<img src="${pageContext.request.contextPath}/ui/images/menu/lxrlb.png"
 								width="17" height="17"> 
 							<a href="${pageContext.request.contextPath}/page/newPagePlan/crm/customer/linkman/view.jsp"
@@ -71,7 +71,7 @@
 								target="rightFrame">
 								客户查重设置 
 							</a>
-						</li>
+						</li> --%>
 					</ul>
 				</li>
 				<li>
@@ -123,7 +123,7 @@
 						<li>
 							<img src="${pageContext.request.contextPath}/ui/images/menu/sfzl.png"
 								width="17" height="17"> 
-							<a href="${pageContext.request.contextPath}/province/getAllProvince"
+							<a href="${pageContext.request.contextPath}/province/selectProvinceByPage.do"
 								target="rightFrame">
 								省份资料
 							</a>

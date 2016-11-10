@@ -140,12 +140,10 @@ public class CompanyController {
 	@RequestMapping(value = "/fuzzySearchCompany", method = RequestMethod.GET)
 	protected @ResponseBody Map<String, Object> fuzzySearchCompany(Model model,
 		String data, PageBean pageBean) throws Exception{
-		
 		if(data!=null){
 			data = new String(data.getBytes("iso-8859-1"),"utf-8");
-			pageBean.setUrl("groupName="+data);	
+			pageBean.setUrl("data="+data);	
 		}
-		
 		return companyService.fuzzySearchCompany(data, pageBean);
 	}
 
@@ -172,7 +170,7 @@ public class CompanyController {
 		codeRuleService.updateSerialNumberByTable("c_company", 
 			nextseq,curDate);
 		
-		if (insertCompany > 0) return "redirect:/company/getAllCompany";
+		if (insertCompany > 0) return "redirect:/company/selectCompanyByPage";
 		else return "/error";
 	}
 
@@ -221,7 +219,7 @@ public class CompanyController {
 	 */
 	@RequestMapping(value = "/updateAfter", method = RequestMethod.POST)
 	protected String updateAfter(Model model, Company company) throws Exception{
-		
+		System.out.println("进入控制层！");
 		Integer pid = new Integer(company.getProvince());
 		Province province = provinceService.getProvinceById(pid);
 		String name = province.getName();
@@ -229,7 +227,7 @@ public class CompanyController {
 		
 		companyService.updateCompany(company);
 		
-		return "redirect:/company/getAllCompany";
+		return "redirect:/company/selectCompanyByPage";
 	}
 	
 	/**
@@ -243,7 +241,7 @@ public class CompanyController {
 	protected String deleteCompanyById(@PathVariable("id") Integer id) 
 		throws Exception{
 		int deleteById = companyService.deleteById(id);
-		if (deleteById > 0) return "redirect:/company/getAllCompany";
+		if (deleteById > 0) return "redirect:/company/selectCompanyByPage";
 		else return "/error";
 	}
 
@@ -258,10 +256,9 @@ public class CompanyController {
 	protected String deleteCompanysByIds(Integer[] ids) 
 		throws Exception{
 		for (int i = 0; i < ids.length; i++) {
-			System.out.println("准备删除的客户ID："+ids[i]);
 			companyService.deleteById(ids[i]);
 		}
-		return "redirect:/company/getAllCompany";
+		return "redirect:/company/selectCompanyByPage";
 	}
 
 	/**
@@ -331,8 +328,8 @@ public class CompanyController {
 	@RequestMapping(value="/doPinYin/{companyName}", method=RequestMethod.GET)
 	protected @ResponseBody String doPinYin(Model model, 
 		@PathVariable("companyName")String companyName) throws Exception{
+		companyName = new String(companyName.getBytes("iso-8859-1"),"utf-8");
 		String firstSpell = PinYinUtil.converterToFirstSpell(companyName);
-		System.out.println(firstSpell);
 		return firstSpell;
 	}
 	
@@ -349,6 +346,38 @@ public class CompanyController {
 		List<City> cityList = cityService.getCitysByPid(pid);
 		if(cityList.size()>0) return cityList;
 		else return null;
+	}
+	
+	/**
+	 * 把要修改的客户ID传给页面
+	 * @param ids
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/doUpdateNextTouchDateBefore", method=RequestMethod.GET)
+	protected String doUpdateNextTouchDateBefore(Integer[] ids, Model model)
+		throws Exception{
+		model.addAttribute("ids", ids);
+		return "/page/newPagePlan/crm/customer/base/nextTouchTime";
+	}
+	
+	/**
+	 * 批量修改下次联系时间
+	 * @param ids
+	 * @param date
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/doUpdateNextTouchDate", method=RequestMethod.POST)
+	protected String doUpdateNextTouchDate(Integer[] ids, String nexttouchdate) 
+		throws Exception{
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date nextTouchDate = simpleDateFormat.parse(nexttouchdate);
+		for (int i = 0; i < ids.length; i++) {
+			companyService.updateNextTouchTime(ids[i], nextTouchDate);
+		}
+		return "redirect:/company/selectCompanyByPage";
 	}
 	
 }

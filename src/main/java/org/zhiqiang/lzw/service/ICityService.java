@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.zhiqiang.lzw.entity.City;
+import org.zhiqiang.lzw.entity.custom.PageBean;
 
 /**
  * 城市业务接口类
@@ -16,7 +17,7 @@ public interface ICityService {
 	 * 获取所有记录数
 	 * @return
 	 */
-	int getConuts() throws Exception;
+	int getConuts(Integer pid) throws Exception;
 	
 	/**
 	 * 获取所有城市记录
@@ -25,11 +26,11 @@ public interface ICityService {
 	List<City> getAllCity() throws Exception;
 	
 	/**
-	 * 分页获取城市记录
+	 * 分页查询
 	 * @param map
 	 * @return
 	 */
-	List<City> getCityByPage(int PageSize, int offset) throws Exception;
+	public Map<String, Object> getByPage(Integer pid, PageBean pageBean) throws Exception;
 	
 	/**
 	 * 根据ID获取详情

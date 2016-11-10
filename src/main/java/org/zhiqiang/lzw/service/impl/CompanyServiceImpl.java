@@ -2,6 +2,7 @@ package org.zhiqiang.lzw.service.impl;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +11,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -59,6 +59,9 @@ public class CompanyServiceImpl implements ICompanyService{
 		return companyMapper.getAllCompany();
 	}
 	
+	/**
+	 * 模糊查询
+	 */
 	@Override
 	public Map<String, Object> fuzzySearchCompany(String data, PageBean pageBean)
 		throws Exception {
@@ -153,10 +156,7 @@ public class CompanyServiceImpl implements ICompanyService{
 			}
 		}
 
-		// 循环打印treeSet中对象的值
-		/*for (Company company : treeSet) {
-			System.out.println(company);
-		}*/
+		pageBean.setTotalRecords(treeSet.size());
 
 		List<Company> list2 = new ArrayList<Company>();
 		Iterator<Company> iterator = treeSet.iterator();
@@ -166,11 +166,12 @@ public class CompanyServiceImpl implements ICompanyService{
 			int index2 = 0;
 			boolean flag = false;
 			while(iterator.hasNext()){
+				 Company company = iterator.next();
 				if(pageBean.getPageIndex()==index1){
 					flag = true;
 				}
 				if(flag){
-					list2.add(iterator.next());
+					list2.add(company);
 					index2++;
 					if(index2==pageBean.getPageSize()){
 						break;
@@ -178,14 +179,12 @@ public class CompanyServiceImpl implements ICompanyService{
 				}
 				index1++;
 			}
-			pageBean.setTotalRecords(list2.size());
+			
 			Map<String, Object> dataMap = new HashMap<String, Object>();
 			dataMap.put("list2", list2);
 			dataMap.put("pageBean", pageBean);
 			return dataMap;
-		}else {
-			return null;
-		}
+		}else return null;
 	}
 
 	/**
@@ -236,5 +235,17 @@ public class CompanyServiceImpl implements ICompanyService{
 	@Override
 	public int updateCompany(Company company)  throws Exception{
 		return companyMapper.updateByPrimaryKeySelective(company);
+	}
+
+	/**
+	 * 修改下次联系时间
+	 */
+	@Override
+	public int updateNextTouchTime(Integer id, Date nexttouchdate)
+		throws Exception {
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("nexttouchdate", nexttouchdate);
+		return companyMapper.updateNextTouchTime(map);
 	}
 }
