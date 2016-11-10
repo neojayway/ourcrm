@@ -64,8 +64,7 @@
   		<result column="groupRemark" property="remark"/>
   	</association>
   	<!-- 用户与角色的多对多关系 -->
-  	<collection property="roleCustoms" ofType="org.zhiqiang.lzw.entity.custom.RoleCustom"
-  		select="org.zhiqiang.lzw.mapping.RoleMapper.selectByPrimaryKey" column="roleId">
+  	<collection property="roleCustoms" ofType="org.zhiqiang.lzw.entity.custom.RoleCustom">
   		<id column="roleId" property="roleid"/>
   		<result column="rolename" property="rolename"/>
   		<!-- 角色与权限的多对多关系 -->
@@ -113,18 +112,20 @@
   	注意:这些字段如果用sql片段的方式去引用的话，就不能指定到底是哪个表的字段，在多表连接查询时，如果有重名字段，就会出现冲突 
   -->
   <select id="selectByNameAndPassword" resultMap="UserCustomResultMap" parameterType="java.util.Map" >
-    select distinct 
-    u.id, creator, createTime, updater, updateTime, u.name, cnname, password, address, telephone, 
-    email, beginDate, endDate, u.groupId, accessFileLevel, status, commendMan, movetelePhone, 
+    SELECT  
+    u.id, creator, createTime, updater, updateTime, u.name, cnname, `password`, address, telephone, 
+    email, beginDate, endDate, u.groupId, accessFileLevel, `status`, commendMan, movetelePhone, 
     nowAddress, nowtelePhone, identityCode, insuranceCode, instancyLinkman, instancytelePhone, 
     sex, birthday, personnelType, duty, workDate, highSchool, finishSchool, finishSchoolDate, 
     consortName, youngoneName, officetelePhone, consorttelePhone, consortCompany
     ,
-    u.remark, avocation, strongSuit, commUniCate, bringup, organise, analyse, planing, 
+    u.remark, avocation, strongSuit, commUniCate, bringup, organise, `analyse`, planing, 
     empolder, relation
-    ,r.*,groupName,g.remark groupRemark
-    from sys_user_role ur
-    INNER JOIN sys_role r ON ur.roleId=r.roleId
+    ,r.*,p.*,groupName,g.remark groupRemark
+    FROM sys_user_role ur
+	INNER JOIN sys_role_privilege rp ON ur.roleId=rp.roleId
+	INNER JOIN sys_privilege p ON p.privilegeId=rp.privilegeId
+	INNER JOIN sys_role r ON ur.roleId=r.roleId
 	INNER JOIN sys_user u ON ur.userId=u.id
 	INNER JOIN sys_group g ON u.groupId=g.groupId
     where u.name = #{name,jdbcType=VARCHAR}
@@ -136,6 +137,11 @@
   	select  
   		<include refid="Base_Column_List" />
   	from sys_user;
+  </select>
+  
+  <!-- 查询当前最大的权限位 -->
+  <select id="selectMaxPrivilegePos" resultType="Integer">
+  		SELECT MAX(privilegePos) FROM sys_privilege
   </select>
   
   <!-- 带条件查询查询用户的数量（用户名称模糊查询） -->

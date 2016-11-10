@@ -32,6 +32,9 @@ public interface UserMapper {
     //查询用户所有的角色
     public List<Role> selectRoleByUid(Integer uid);
     
+    //查询当前最大的权限位
+    public Integer selectMaxPrivilegePos();
+    
     
     //根据主键查询，关联查询角色，权限
     UserCustom selectByPrimaryKey(Integer id);

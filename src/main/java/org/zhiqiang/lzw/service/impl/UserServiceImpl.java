@@ -1,15 +1,21 @@
 package org.zhiqiang.lzw.service.impl;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.zhiqiang.lzw.entity.Privilege;
 import org.zhiqiang.lzw.entity.Role;
 import org.zhiqiang.lzw.entity.User;
 import org.zhiqiang.lzw.entity.custom.PageBean;
+import org.zhiqiang.lzw.entity.custom.RoleCustom;
 import org.zhiqiang.lzw.entity.custom.UserCustom;
 import org.zhiqiang.lzw.mapping.UserMapper;
 import org.zhiqiang.lzw.service.IUserService;
@@ -36,7 +42,41 @@ public class UserServiceImpl implements IUserService{
 		Map<String, String> map = new HashMap<String,String>();
 		map.put("name", name);
 		map.put("password", password);
-		return userMapper.selectByNameAndPassword(map);
+		//获得用户自定义对象
+		UserCustom userCustom = userMapper.selectByNameAndPassword(map);
+		//计算每个权限位的权限总和
+		if (userCustom!=null) {
+			//获得当前最大的权限位
+			Long[] privilegeSum = new Long[selectMaxPrivilegePos()+1];
+			//定义一个treeSet集合，用于过滤掉不同角色的相同权限
+			Set<Privilege> privilegeSet = new TreeSet<Privilege>(new Comparator<Privilege>() {
+				@Override
+				public int compare(Privilege p1, Privilege p2) {
+					return p1.getPrivilegeid().compareTo(p2.getPrivilegeid());
+				}
+			});
+			List<RoleCustom> roleCustoms = userCustom.getRoleCustoms();//角色集合
+			for (RoleCustom roleCustom : roleCustoms) {
+				List<Privilege> privileges = roleCustom.getPrivileges();//权限集合
+				for (Privilege privilege : privileges) {
+					privilegeSet.add(privilege);//过滤不同角色的相同权限
+				}
+			}
+			//权限的累加
+			for (Privilege privilege : privilegeSet) {
+				Long code = privilege.getPrivilegecode();
+				Integer pos = privilege.getPrivilegepos();
+				if (privilegeSum[pos]==null) {
+					privilegeSum[pos] = code;
+				}else {
+					privilegeSum[pos] = privilegeSum[pos]+code;
+				}
+			}
+			//设置权限总和集合
+			userCustom.setPrivilegeSum(privilegeSum);
+		}
+		
+		return userCustom;
 	}
 	
 	
@@ -162,6 +202,14 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public void updateUserByGid(Integer gid) {
 		userMapper.updateUserByGid(gid);
+	}
+	
+	/**
+	 * 查询当前最大的权限位
+	 */
+	@Override
+	public Integer selectMaxPrivilegePos() {
+		return userMapper.selectMaxPrivilegePos();
 	}
 	
 

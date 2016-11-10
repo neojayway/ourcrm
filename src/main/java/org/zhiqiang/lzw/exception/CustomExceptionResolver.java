@@ -24,25 +24,24 @@ public class CustomExceptionResolver implements HandlerExceptionResolver{
 	public ModelAndView resolveException(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex) {
 		
-		CustomException customException = null;
+		//构建ModelAndView
+		ModelAndView modelAndView = new ModelAndView();
+		//错误信息
+		String message = ex.getMessage();
+		
 		//进行异常处理
 		if (ex instanceof CustomException) {
 			logger.info("全局异常处理器捕获到自定义异常CustomException...");
-			customException = (CustomException)ex;
+		}else if (ex instanceof NoOwnPrivilegeException) {
+			logger.info("全局异常处理器捕获到自定义异常NoOwnPrivilegeException...");
 		}else {
 			logger.info("全局异常处理器捕获到其他系统异常...");
 			ex.printStackTrace();
-			customException = new CustomException("未知错误");
+			message = "未知错误";
 		}
-		//错误信息
-		String message = customException.getMessage();
-		
-		//构建ModelAndView
-		ModelAndView modelAndView = new ModelAndView();
 		
 		//将异常信息保存到request域中
 		modelAndView.addObject("errorInfo", message);
-		
 		//指向错误页面
 		modelAndView.setViewName("page/newPagePlan/error");
 		

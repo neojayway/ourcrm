@@ -43,8 +43,7 @@ public class InitPrivilegeListener implements ApplicationListener<ContextRefresh
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		logger.info("InitPrivilegeListener...监听器监听到IOC容器初始化完毕");
-		//application.setAttribute("user", "张三");
-		/*//得到IOC容器
+		//得到IOC容器
 		ApplicationContext context = event.getApplicationContext();
 		List<Privilege> privilegeList = privilegeService.selectAll();
 		if (privilegeList!=null && privilegeList.size()>0) {
@@ -55,7 +54,7 @@ public class InitPrivilegeListener implements ApplicationListener<ContextRefresh
 			}
 			//将map保存至application域中让整个应用共享
 			application.setAttribute("privilegeMap", privilegeMap);
-		}*/
+		}
 	}
 	
 	

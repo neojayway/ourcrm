@@ -1,5 +1,6 @@
 package org.zhiqiang.lzw.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -59,6 +60,15 @@ public class TestUserService {
 	public void testupdateBatchGroupIdForUser() throws Exception {
 		IUserService userService = (IUserService) context.getBean("userService");
 		userService.updateBatchGroupIdForUser(2, new Integer[]{1,6});
+	}
+	
+	
+	@Test
+	public void testzzz() throws Exception {
+		List<Long> list = new ArrayList<Long>();
+		list.add(0, 5L);
+		list.add(1,7L);
+		System.out.println(list);
 	}
 
 }

@@ -20,6 +20,9 @@ public class UserCustom extends UserWithBLOBs{
 	
 	//用户所在部门
 	private Group group;
+	
+	//保存用户每个权限位的权限总和
+	private Long[] privilegeSum;
 
 	
 	
@@ -41,6 +44,14 @@ public class UserCustom extends UserWithBLOBs{
 
 	public void setGroup(Group group) {
 		this.group = group;
+	}
+
+	public Long[] getPrivilegeSum() {
+		return privilegeSum;
+	}
+
+	public void setPrivilegeSum(Long[] privilegeSum) {
+		this.privilegeSum = privilegeSum;
 	}
 	
 	

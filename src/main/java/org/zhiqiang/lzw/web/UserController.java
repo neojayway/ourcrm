@@ -133,6 +133,11 @@ public class UserController {
 		return "redirect:/user/showUser.do"; 
 	}
 	
+	/**
+	 * 批量删除用户
+	 * @param uids
+	 * @return
+	 */
 	@RequestMapping("/deleteUserByBatch")
 	public String deleteUserByBatch(Integer[] uids){
 		if (uids!=null && uids.length>0) {
@@ -186,7 +191,6 @@ public class UserController {
 		model.addAttribute("ridStr", ridStr.toString().length()>0?ridStr.toString()
 				.substring(0, ridStr.toString().length()-1):"");
 		model.addAttribute("uid", uid);
-		
 		
 		return "page/newPagePlan/sys/userandrole/roleInUser";
 	}

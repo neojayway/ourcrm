@@ -27,7 +27,7 @@
 			<button type='button' class='button' 
 				onMouseOver="this.className='button_over';" 
 				onMouseOut="this.className='button';"  
-			    onClick="forward('role.do?method=list')">
+			    onClick="history.go(-1)">
 			    <img src="${pageContext.request.contextPath}/ui/images/button/fanhui.png" 
 			    	border='0' align='absmiddle'>
 			    &nbsp;返回

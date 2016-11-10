@@ -30,6 +30,9 @@ public interface IUserService {
     //查询用户所有的角色
     public List<Role> selectRoleByUid(Integer uid);
     
+    //查询当前最大的权限位
+    public Integer selectMaxPrivilegePos();
+    
     //带条件查询查询用户的数量（用户名称模糊查询）
     public Integer selectCountLikeUname(String cnname);
     

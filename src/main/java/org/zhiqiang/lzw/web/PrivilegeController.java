@@ -59,7 +59,7 @@ public class PrivilegeController {
 	 * 新增权限
 	 * @return
 	 */
-	@RequestMapping("addPrivilege")
+	@RequestMapping("/addPrivilege")
 	public String addPrivilege(Privilege privilege){
 		//查询获得最大的权限位以及最大的权限位对应的权限码
 		PrivilegeCodeAndPos privilegeCodeAndPos = privilegeService.selectMaximumPos();
