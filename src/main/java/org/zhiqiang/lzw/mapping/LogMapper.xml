@@ -18,6 +18,32 @@
   <sql id="Blob_Column_List" >
     actionContent
   </sql>
+  
+  <!-- 带条件查询操作日志总数 -->
+  <select id="selectLogCount" resultType="Integer" parameterType="Map">
+  	SELECT COUNT(1) FROM ${tableName}
+  	<where>
+  		<if test="cnname!=null">
+  			cnname LIKE #{cnname}
+  		</if>
+  	</where>
+  </select>
+  
+  <!-- 带条件分页查询 -->
+  <select id="selectLogByPage" resultMap="ResultMapWithBLOBs">
+  	SELECT  
+  	<include refid="Base_Column_List"/>,
+  	<include refid="Blob_Column_List"/>
+  	FROM ${tableName} 
+  	<where>
+  		<if test="cnname!=null">
+  			cnname LIKE #{cnname}
+  		</if>
+  	</where>
+  	 ORDER BY id DESC LIMIT #{pageBean.pageIndex},#{pageBean.pageSize}
+  </select>
+  
+  
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

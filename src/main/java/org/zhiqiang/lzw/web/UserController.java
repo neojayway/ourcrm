@@ -76,6 +76,18 @@ public class UserController {
 	}
 	
 	/**
+	 * 注销
+	 * @return
+	 */
+	@RequestMapping("/logout")
+	public String logout(HttpServletRequest request){
+		//将session中的用户对象清除
+		HttpSession session = request.getSession();
+		session.removeAttribute("userCustom");
+		return "index";
+	}
+	
+	/**
 	 * 展示用户
 	 * @return
 	 * @throws UnsupportedEncodingException 

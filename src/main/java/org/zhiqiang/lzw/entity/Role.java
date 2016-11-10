@@ -20,4 +20,11 @@ public class Role {
     public void setRolename(String rolename) {
         this.rolename = rolename == null ? null : rolename.trim();
     }
+
+	@Override
+	public String toString() {
+		return "Role [roleid=" + roleid + ", rolename=" + rolename + "]";
+	}
+    
+    
 }

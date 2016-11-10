@@ -2,6 +2,10 @@ package org.zhiqiang.lzw.web;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -60,7 +64,7 @@ public class PrivilegeController {
 	 * @return
 	 */
 	@RequestMapping("/addPrivilege")
-	public String addPrivilege(Privilege privilege){
+	public String addPrivilege(Privilege privilege,HttpServletRequest request){
 		//查询获得最大的权限位以及最大的权限位对应的权限码
 		PrivilegeCodeAndPos privilegeCodeAndPos = privilegeService.selectMaximumPos();
 		if (privilegeCodeAndPos!=null) {
@@ -76,6 +80,16 @@ public class PrivilegeController {
 			}
 			//保存权限
 			privilegeService.addPrivilege(privilege);
+			//同时保存到application域中去
+			ServletContext application = request.getSession().getServletContext();
+			Object privilegeObj = application.getAttribute("privilegeMap");
+			if (privilegeObj!=null) {
+				Map<String, Privilege> privilegeMap = (Map<String, Privilege>) privilegeObj;
+				if (privilege!=null) {
+					//将权限保存到application域中
+					privilegeMap.put(privilege.getPrivilegeurl(), privilege);
+				}
+			}
 		}
 		
 		return "forward:/privilege/selectPrivilegeByPage.do";

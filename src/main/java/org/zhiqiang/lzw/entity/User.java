@@ -372,4 +372,31 @@ public class User {
     public void setConsortcompany(String consortcompany) {
         this.consortcompany = consortcompany == null ? null : consortcompany.trim();
     }
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", creator=" + creator + ", createtime="
+				+ createtime + ", updater=" + updater + ", updatetime="
+				+ updatetime + ", name=" + name + ", cnname=" + cnname
+				+ ", password=" + password + ", address=" + address
+				+ ", telephone=" + telephone + ", email=" + email
+				+ ", begindate=" + begindate + ", enddate=" + enddate
+				+ ", groupid=" + groupid + ", accessfilelevel="
+				+ accessfilelevel + ", status=" + status + ", commendman="
+				+ commendman + ", movetelephone=" + movetelephone
+				+ ", nowaddress=" + nowaddress + ", nowtelephone="
+				+ nowtelephone + ", identitycode=" + identitycode
+				+ ", insurancecode=" + insurancecode + ", instancylinkman="
+				+ instancylinkman + ", instancytelephone=" + instancytelephone
+				+ ", sex=" + sex + ", birthday=" + birthday
+				+ ", personneltype=" + personneltype + ", duty=" + duty
+				+ ", workdate=" + workdate + ", highschool=" + highschool
+				+ ", finishschool=" + finishschool + ", finishschooldate="
+				+ finishschooldate + ", consortname=" + consortname
+				+ ", youngonename=" + youngonename + ", officetelephone="
+				+ officetelephone + ", consorttelephone=" + consorttelephone
+				+ ", consortcompany=" + consortcompany + "]";
+	}
+    
+    
 }

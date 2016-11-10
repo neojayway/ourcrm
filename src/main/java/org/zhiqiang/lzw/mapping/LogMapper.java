@@ -1,5 +1,6 @@
 package org.zhiqiang.lzw.mapping;
 
+import java.util.List;
 import java.util.Map;
 
 import org.zhiqiang.lzw.entity.Log;
@@ -30,4 +31,16 @@ public interface LogMapper {
      * @param tableName
      */
     void createLogTable(String tableName);
+    
+    /**
+     * 带条件查询操作日志总数
+     * @return
+     */
+    public Integer selectLogCount(Map<String, Object> map);
+    
+    /**
+     * 带条件分页查询
+     * @return
+     */
+    public List<Log> selectLogByPage(Map<String, Object> map);
 }

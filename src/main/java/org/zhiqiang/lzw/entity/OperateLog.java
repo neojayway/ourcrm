@@ -60,4 +60,6 @@ public class OperateLog {
     public void setActioncontent(String actioncontent) {
         this.actioncontent = actioncontent == null ? null : actioncontent.trim();
     }
+    
+    
 }

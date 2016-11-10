@@ -66,7 +66,7 @@ public class CheckPrivilegeInterceptor implements HandlerInterceptor{
 					if ((codeSum & code)>0) {//有权限
 						return true;
 					}else {//没有权限
-						throw new NoOwnPrivilegeException("很遗憾，您不具备‘"+privilege.getPrivilegename()+"’!!!");
+						throw new NoOwnPrivilegeException("很遗憾，您不具备‘"+privilege.getPrivilegename()+"’的权限!!!");
 					}
 				}
 			}else {//公共资源直接放行
@@ -74,10 +74,8 @@ public class CheckPrivilegeInterceptor implements HandlerInterceptor{
 			}
 		}else {
 			//当前请求在application域中没有找到匹配的权限
-			return false;
+			throw new NoOwnPrivilegeException("当前权限未被创建!!!");
 		}
-		//判断用户是否具有指定的权限
-		
 		return true;
 	}
 	

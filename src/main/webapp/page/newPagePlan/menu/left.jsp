@@ -113,6 +113,14 @@
 							</a>
 						</li>
 						<li>
+							<img src="${pageContext.request.contextPath}/ui/images/menu/bmsz.png"
+								width="17" height="17"> 
+							<a href="${pageContext.request.contextPath}/log/selectLogByPage.do"
+							target="rightFrame">
+								日志查看
+							</a>
+						</li>
+						<li>
 							<img src="${pageContext.request.contextPath}/ui/images/menu/sfzl.png"
 								width="17" height="17"> 
 							<a href="${pageContext.request.contextPath}/province/getAllProvince"

@@ -41,16 +41,17 @@
 		<aop:pointcut expression="execution(* org.zhiqiang.lzw.service..*.*(..))" id="pointcut"/>
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut"/>
 		<!-- 定义切面 -->
-		<!-- <aop:aspect id="loggerAspect" ref="logger">
-			环绕通知
+		<aop:aspect id="loggerAspect" ref="logger">
+			<!-- 环绕通知 -->
 			<aop:around method="record" pointcut="(execution(* org.zhiqiang.lzw.service..*.save*(..))
 											   or execution(* org.zhiqiang.lzw.service..*.update*(..))
 											   or execution(* org.zhiqiang.lzw.service..*.insert*(..))
+											   or execution(* org.zhiqiang.lzw.service..*.delete*(..))
 											   or execution(* org.zhiqiang.lzw.service..*.add*(..))
 											   or execution(* org.zhiqiang.lzw.service..*.login*(..)))
 											   and !bean(logService)
 											"/>
-		</aop:aspect> -->
+		</aop:aspect>
 	</aop:config>
 	
 </beans>

@@ -57,6 +57,13 @@ public class PageBean {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+	@Override
+	public String toString() {
+		return "PageBean [currPage=" + currPage + ", pageSize=" + pageSize
+				+ ", totalRecords=" + totalRecords + ", totalPages="
+				+ totalPages + ", url=" + url + "]";
+	}
+	
 	
 	
 	

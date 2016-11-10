@@ -1,5 +1,6 @@
 package org.zhiqiang.lzw.entity.custom;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.zhiqiang.lzw.entity.Group;
@@ -52,6 +53,12 @@ public class UserCustom extends UserWithBLOBs{
 
 	public void setPrivilegeSum(Long[] privilegeSum) {
 		this.privilegeSum = privilegeSum;
+	}
+
+	@Override
+	public String toString() {
+		return "UserCustom [roleCustoms=" + roleCustoms + ", group=" + group
+				+ ", privilegeSum=" + Arrays.toString(privilegeSum) + "]";
 	}
 	
 	

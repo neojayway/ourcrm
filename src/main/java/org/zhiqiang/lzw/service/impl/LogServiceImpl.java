@@ -5,12 +5,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.zhiqiang.lzw.entity.Log;
+import org.zhiqiang.lzw.entity.custom.PageBean;
 import org.zhiqiang.lzw.mapping.LogMapper;
 import org.zhiqiang.lzw.service.ILogService;
 
@@ -69,14 +71,43 @@ public class LogServiceImpl implements ILogService{
 		}
 	}
 	
+	/**
+	 * 带条件查询操作日志总数
+	 * @param tableName 动态指定表名（当前月对应日志表）
+	 * @param cnname 操作人模糊查询
+	 * @return 日志总数
+	 */
+	@Override
+	public Integer selectLogCount(String tableName, String cnname) {
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("tableName", tableName);
+		map.put("cnname", cnname);
+		return logMapper.selectLogCount(map);
+	}
 	
+	
+	/**
+     * 带条件分页查询
+     * @param tableName 动态指定表名（当前月对应日志表）
+     * @param cnname 操作人模糊查询
+     * @param pageBean 分页信息bean
+     * @return 当前页日志集合
+     */
+	@Override
+	public List<Log> selectLogByPage(String tableName, String cnname,
+			PageBean pageBean) {
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("tableName", tableName);
+		map.put("cnname", cnname);
+		map.put("pageBean", pageBean);
+		return logMapper.selectLogByPage(map);
+	}
+
 	
 	
 	public void setLogMapper(LogMapper logMapper) {
 		this.logMapper = logMapper;
 	}
-
-	
 
 
 

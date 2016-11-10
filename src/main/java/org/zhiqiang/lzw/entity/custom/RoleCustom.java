@@ -22,5 +22,12 @@ public class RoleCustom extends Role{
 	public void setPrivileges(List<Privilege> privileges) {
 		this.privileges = privileges;
 	}
+
+	@Override
+	public String toString() {
+		return "RoleCustom [privileges=" + privileges + "]";
+	}
+	
+	
 	
 }

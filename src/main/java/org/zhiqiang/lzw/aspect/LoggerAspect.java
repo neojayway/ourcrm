@@ -47,15 +47,7 @@ public class LoggerAspect {
 		//构建日志实体
 		Log log = new Log();
 		try {
-			if (session!=null) {
-				UserCustom userCustom = (UserCustom) session.getAttribute("userCustom");
-				if (userCustom!=null) {
-					//设置登录用户名称
-					log.setUsername("'用户编号："+userCustom.getId()+"用户登录名:"+userCustom.getName()+"'");
-					//设置用户中文名称
-					log.setCnname("'"+userCustom.getCnname()+"'");
-				}
-			}
+			
 			//操作名称（切点方法名称即可）
 			String mname = joinPoint.getSignature().getName();
 			log.setActiontype("'"+mname+"'");
@@ -69,13 +61,14 @@ public class LoggerAspect {
 			Object[] args = joinPoint.getArgs();
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < args.length; i++) {
-				sb.append(args[i].toString());
+				sb.append(args[i].toString()+"|");
 				logger.info("操作参数..."+args[i].toString());
 			}
 			log.setActioncontent("'"+sb.toString()+"'");
 			
 			//调用切点目标方法
 			Object ret = joinPoint.proceed();
+			
 			//设置操作结果
 			log.setResult("'success'");
 			return ret;//环绕通知返回切点结果
@@ -85,8 +78,18 @@ public class LoggerAspect {
 			log.setResult("'failure'");
 			logger.error(e.getMessage());
 		}finally{
+			if (session!=null) {
+				UserCustom userCustom = (UserCustom) session.getAttribute("userCustom");
+				if (userCustom!=null) {
+					//设置登录用户名称
+					log.setUsername("'用户编号："+userCustom.getId()+"用户登录名:"+userCustom.getName()+"'");
+					//设置用户中文名称
+					log.setCnname("'"+userCustom.getCnname()+"'");
+				}
+			}
 			//无论失败与成功都要保存日志
 			try {
+				//LogUtil.generateLogTableName(0)：当前月对应的表名
 				logService.recordLogToSpecifiedLogTable(LogUtil.generateLogTableName(0), log);
 				logger.info("日志切面记录日志成功！");
 			} catch (Exception e) {
