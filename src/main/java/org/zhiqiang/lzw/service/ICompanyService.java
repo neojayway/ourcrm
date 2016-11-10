@@ -9,13 +9,13 @@ import org.zhiqiang.lzw.entity.custom.PageBean;
 
 public interface ICompanyService {
 	
-    List<Company> selectByPage(PageBean pageBean);
+    List<Company> selectByPage(PageBean pageBean)throws Exception;
     
-    int selectTotalRecords();
+    int selectTotalRecords()throws Exception;
 
 	List<Company> getAllCompany() throws Exception;
 	
-	Map<String, Object> fuzzySearchCompany(String Data, PageBean pageBean) throws Exception;
+	Map<String, Object> fuzzySearchCompany(String data, PageBean pageBean) throws Exception;
 	
 	List<Company> getCompanyWhereTodayNeedTouch(String date) throws Exception;
 	

@@ -1,6 +1,5 @@
 package org.zhiqiang.lzw.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -12,7 +11,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -186,9 +184,7 @@ public class CompanyServiceImpl implements ICompanyService{
 			dataMap.put("list2", list2);
 			dataMap.put("pageBean", pageBean);
 			return dataMap;
-		}else {
-			return null;
-		}
+		}else return null;
 	}
 
 	/**

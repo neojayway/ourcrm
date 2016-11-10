@@ -8,24 +8,33 @@
 	rel="stylesheet" type="text/css">
 <script src="${pageContext.request.contextPath}/ui/js/popshow.js"
 	type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/ui/js/jquery-1.4.2.js"
+	type="text/javascript"></script>
 <style type="text/css">
 body {
 	padding: 10px;
 }
 </style>
+<script type="text/javascript">
+function name2pinyin() {
+	var provinceName = $("#name").val();
+	$.ajax({
+		url:'${pageContext.request.contextPath}/company/doPinYin/'+provinceName,
+		type:'get',
+		dataType:'text',
+		success:function(data){
+			$("[name='pycode']").val("");
+			$("[name='pycode']").val(data);
+		}
+	});
+}
+</script>
 </head>
 
 <body>
-	<form name="ActionForm" method="post" action="province.do"
-		onSubmit="return check();">
-		<input type="hidden" name="method" value="add"> 
+	<form name="ActionForm" method="post" action="${pageContext.request.contextPath}/province/saveProvince.do">
 		<br>
 		<div class="control">
-			<select name='window' id='window' style='width: 100'>
-				<option value=''>------</option>
-				<option value='edit'>保存后编辑</option>
-				<option value='add'>保存后新建</option>
-			</select>
 			<button type='button' class='button'
 				onMouseOver="this.className='button_over';"
 				onMouseOut="this.className='button';"
@@ -37,10 +46,10 @@ body {
 			<button type='button' class='button'
 				onMouseOver="this.className='button_over';"
 				onMouseOut="this.className='button';"
-				onClick="parent.close_window();">
+				onClick="history.go(-1)">
 				<img src="${pageContext.request.contextPath}/ui/images/button/guanbi.png"
 					border='0' align='absmiddle'>
-				&nbsp;关闭
+				&nbsp;返回
 			</button>
 		</div>
 
@@ -68,7 +77,7 @@ body {
 								<td class="red">省份名称：</td>
 								<td>
 									<input name="name" type="text" class="input" id="name"
-										style="width: 90%">
+										style="width:90%" onblur="name2pinyin()">
 								</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
@@ -77,13 +86,10 @@ body {
 								<td class="red">拼音码：</td>
 								<td>
 									<input name="pycode" type="text" id="pycode"
-										style="width: 90%">
+										style="width: 90%" readonly="true" class="disabled" >
 								</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
-							</tr>
-							<tr>
-								<td colspan="4" height="5"></td>
 							</tr>
 						</table>
 					</div>

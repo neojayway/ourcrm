@@ -11,6 +11,13 @@ import org.zhiqiang.lzw.entity.Province;
  */
 public interface ProvinceMapper {
 	
+    /**
+     * 带条件分页查询
+     * @param 
+     * @return
+     */
+    List<Province> selectByPage(Map<String, Object> map);
+	
 	/**
 	 * 获取所有记录数
 	 * @return
@@ -24,13 +31,6 @@ public interface ProvinceMapper {
 	 * @throws Exception
 	 */
 	List<Province> getAllProvinces() throws Exception;
-	
-	/**
-	 * 分页显示数据
-	 * @return
-	 * @throws Exception
-	 */
-	List<Province> getProvinceByPage(Map map) throws Exception;
 	
 	/**
 	 * 根据主键ID进行删除

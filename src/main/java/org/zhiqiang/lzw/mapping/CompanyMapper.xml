@@ -67,7 +67,7 @@
     order by id desc
   </select>
   
-    <!-- 带条件查询分页查询 -->
+  <!-- 带条件查询分页查询 -->
   <select id="selectByPage" resultMap="ResultMapWithBLOBs" parameterType="map">
   	select 
   	<include refid="Base_Column_List" />

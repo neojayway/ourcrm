@@ -1,8 +1,10 @@
 package org.zhiqiang.lzw.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.zhiqiang.lzw.entity.Province;
+import org.zhiqiang.lzw.entity.custom.PageBean;
 
 /**
  *省份业务接口类
@@ -10,6 +12,8 @@ import org.zhiqiang.lzw.entity.Province;
  *
  */
 public interface IProvinceService {
+	
+	List<Province> selectByPage(PageBean pageBean)throws Exception;
 	
 	/**
 	 * 获取所有记录数
@@ -25,12 +29,7 @@ public interface IProvinceService {
 	 */
 	List<Province> getAllProvince() throws Exception;
 	
-	/**
-	 * 分页显示省份记录
-	 * @return
-	 * @throws Exception
-	 */
-	List<Province> getProvinceByPage(int PageSize, int offset) throws Exception;
+	Map<String, Object> fuzzySearchCompany(String data, PageBean pageBean) throws Exception;
 	
 	/**
 	 * 根据ID获取详情

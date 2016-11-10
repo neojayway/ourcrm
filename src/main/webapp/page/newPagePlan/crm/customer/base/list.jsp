@@ -83,7 +83,7 @@ function lastPageOnclick(){
 		if(str == null || str=="" || $.trim(str).length==0) str = -1;
 		var url='${pageContext.request.contextPath}/company/fuzzySearchCompany.do?data='+str;
 
-		if($currPage==1 || $currPage==2 || $currPage==3 || $currPage==4 || $currPage==5){
+		if($currPage!=null){
 			var $totalPages = $("#totalPages").html();
 
 			if($linkValue=='首页') $currPage = 1;
