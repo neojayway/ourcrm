@@ -1,6 +1,7 @@
 package org.zhiqiang.lzw.web;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.management.RuntimeErrorException;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.zhiqiang.lzw.entity.City;
+import org.zhiqiang.lzw.entity.custom.PageBean;
 import org.zhiqiang.lzw.service.ICityService;
 
 /**
@@ -46,11 +48,6 @@ public class CityController {
 		else return "error";
 	}
 	
-	protected String getCityByPage() throws Exception {
-		
-		return null;
-	}
-	
 	/**
 	 * 根据省份获取对应的城市
 	 * @param model
@@ -58,12 +55,11 @@ public class CityController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/getCitysByProvince/{pid}",method=RequestMethod.GET)
-	protected @ResponseBody List<City> getCitysByProvince(Model model,
-		@PathVariable("pid")Integer pid) throws Exception{
-		List<City> list = cityService.getCitysByPid(pid);
-		if(list.size()>0) return list;
-		else return null;
+	@RequestMapping(value="/getCitysByProvince",method=RequestMethod.GET)
+	protected @ResponseBody Map<String, Object> getCitysByProvince(Model model,
+		Integer pid, PageBean pageBean) throws Exception{
+		Map<String, Object> dataMap = cityService.getByPage(pid, pageBean);
+		return dataMap;
 	}
 	
 	
@@ -75,11 +71,12 @@ public class CityController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/getCityById/{id}",method=RequestMethod.GET)
-	protected String getCityById(Model model,@PathVariable("id")Integer id) throws Exception{
+	protected String getCityById(Model model,@PathVariable("id")Integer id) 
+		throws Exception{
+		System.out.println(id);
 		City city = cityService.getCityById(id);
 		model.addAttribute("city", city);
-		if(city!=null) return "city";
-		else return "error";
+		return "/page/newPagePlan/sys/city/edit";
 	}
 	
 	/**
@@ -90,22 +87,9 @@ public class CityController {
 	 */
 	@RequestMapping(value="/updateCity",method=RequestMethod.POST)
 	protected String updateCity(City city)throws Exception{
-		int updateCity = cityService.updateCity(city);
-		if(updateCity>0) return "ok";
-		else return "error";
-	}
-	
-	/**
-	 * 删除单个城市
-	 * @param id
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping(value="/deleteOneById/{id}",method=RequestMethod.GET)
-	protected String deleteOneById(@PathVariable("id")Integer id)throws Exception{
-		int deleteOneById = cityService.deleteOneById(id);
-		if(deleteOneById>0) return "ok";
-		else return "error";
+		System.out.println(city);
+		cityService.updateCity(city);
+		return "/page/newPagePlan/sys/city/list";
 	}
 	
 	/**
@@ -115,11 +99,11 @@ public class CityController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/deleteCitys",method=RequestMethod.POST)
-	protected String deleteCitys(Integer[] city_ids)throws Exception{
-		for (int i = 0; i < city_ids.length; i++) {
-			cityService.deleteOneById(city_ids[i]);
+	protected String deleteCitys(Integer[] ids)throws Exception{
+		for (int i = 0; i < ids.length; i++) {
+			cityService.deleteOneById(ids[i]);
 		}
-		return "ok";
+		return "/page/newPagePlan/sys/city/list";
 	}
 	
 	/**
@@ -131,8 +115,7 @@ public class CityController {
 	 */
 	@RequestMapping(value="/saveCity",method=RequestMethod.POST)
 	protected String saveCity(Model model,City city)throws Exception{
-		int insertCity = cityService.insertCity(city);
-		if(insertCity>0) return "ok";
-		else return "error";
+		cityService.insertCity(city);
+		return "/page/newPagePlan/sys/city/list";
 	}
 }

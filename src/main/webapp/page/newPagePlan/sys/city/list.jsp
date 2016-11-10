@@ -10,8 +10,8 @@
 
 //判断是否需要执行首页超链接跳转
 function fristPageOnclick(){
-	var $linkValue = $("#fristPage").html();
-	var $currPage = $("#currPage").val();
+	var $linkValue = $("#fristPage").html().trim();
+	var $currPage = parseInt($("#currPage").val());
 	if($currPage>1){
 		doSearchCity($currPage, $linkValue);
 	}
@@ -19,8 +19,8 @@ function fristPageOnclick(){
 
 //判断是否需要执行上一页超链接跳转
 function prePageOnclick(){
-	var $linkValue = $("#prePage").html();
-	var $currPage = $("#currPage").val();
+	var $linkValue = $("#prePage").html().trim();
+	var $currPage = parseInt($("#currPage").val());
 	if($currPage>1){
 		doSearchCity($currPage, $linkValue);
 	}
@@ -28,9 +28,9 @@ function prePageOnclick(){
 
 //判断是否需要执行下一页超链接跳转
 function nextPageOnclick(){
-	var $linkValue = $("#nextPage").html();
-	var $currPage = $("#currPage").val();
-	var $totalPages = $("#totalPages").html();
+	var $linkValue = $("#nextPage").html().trim();
+	var $currPage =parseInt( $("#currPage").val());
+	var $totalPages =parseInt( $("#totalPages").html().trim());
 	if($currPage<$totalPages){
 		doSearchCity($currPage, $linkValue);
 	}
@@ -38,9 +38,9 @@ function nextPageOnclick(){
 
 //判断是否需要执行尾页超链接跳转
 function lastPageOnclick(){
-	var $linkValue = $("#lastPage").html();
-	var $currPage = $("#currPage").val();
-	var $totalPages = $("#totalPages").html();
+	var $linkValue = $("#lastPage").html().trim();
+	var $currPage = parseInt($("#currPage").val());
+	var $totalPages = parseInt($("#totalPages").html().trim());
 	if($currPage<$totalPages){
 		doSearchCity($currPage, $linkValue);
 	}
@@ -72,7 +72,7 @@ function lastPageOnclick(){
 		});
 
 		$.ajax({
-			url:'${pageContext.request.contextPath}/city/getCitysByProvince/1',
+			url:'${pageContext.request.contextPath}/city/getCitysByProvince.do?pid=1',
 			type:'get',
 			dataType:'json',
 			success:function(data){
@@ -80,7 +80,7 @@ function lastPageOnclick(){
 				var $cityTable=$("<table width='100%' border='0' cellspacing='0' cellpadding='0' id='PowerTable' class='PowerTable'>");
 				var $tr11=$("<tr></tr>");
 				$tr11.appendTo($cityTable);
-		    	var $td11=$("<td width='7%' class='listViewThS1'><input type='checkbox' name='checkall' value='' class='checkbox' onClick='CheckAll(this.checked);changeCheckCount();'></td>"); 
+		    	var $td11=$("<td width='7%' class='listViewThS1'><input type='checkbox' name='checkall' id='checkall' class='checkbox' onClick='checkAll()'>全选</td>"); 
 			   	var $td12=$("<td width='33%' class='listViewThS1'>名称</td>");   
 			   	var $td13=$("<td width='30%' class='listViewThS1'>拼音码</td>");
 			   	var $td14=$("<td width='15%' class='listViewThS1'>邮政编码</td>");    	  	  		
@@ -90,22 +90,22 @@ function lastPageOnclick(){
 			  	$td13.appendTo($tr11);
 			  	$td14.appendTo($tr11);
 			  	$td15.appendTo($tr11);
-			  	if(data==null){
+			  	if(data.cityList.length==0){
 					var $tr12=$("<tr><td colspan=5>该省份尚未添加附属城市，请尽快完善基础信息！</td></tr>");
 					$tr12.appendTo($cityTable);
 				}else{
-				  	for(var i=0;i<data.length;i++){
-						var id=data[i].id;
-						var name=data[i].name;
-						var pycode=data[i].pycode;
-						var pid=data[i].pid;
-						var postcode=data[i].postcode;
-						var areacode=data[i].areacode;
+				  	for(var i=0;i<data.cityList.length;i++){
+						var id=data.cityList[i].id;
+						var name=data.cityList[i].name;
+						var pycode=data.cityList[i].pycode;
+						var pid=data.cityList[i].pid;
+						var postcode=data.cityList[i].postcode;
+						var areacode=data.cityList[i].areacode;
 						var $tr21=$("<tr>");
 						$tr21.appendTo($cityTable);
 						var $td21=$("<td><input type='checkbox' name='ids' value='"+id+"' class='checkbox' onClick='changeCheckCount();'></td>");
 						$td21.appendTo($tr21);
-						var $td22=$("<td><a href='#' onClick='OpenDiv('edit.jsp')'>"+name+"</a></td>");
+						var $td22=$("<td><a href='${pageContext.request.contextPath}/city/getCityById/"+id+"'>"+name+"</a></td>");
 						$td22.appendTo($tr21);
 						var $td23=$("<td>"+pycode+"</td>");
 						$td23.appendTo($tr21);
@@ -119,6 +119,9 @@ function lastPageOnclick(){
 				}
 			  	$cityTable.appendTo("#cityTable");
 				$("#cityTable").append("</table>");
+				$("#currPage").val(data.pageBean.currPage);
+				$("#curPageSpan").html(data.pageBean.currPage);
+				$("#totalPages").html(data.pageBean.totalPages);
 			}
 		});
 	});
@@ -127,7 +130,17 @@ function lastPageOnclick(){
 	function doSearchCity($currPage, $linkValue){
 		//获取到下拉框中选中的value值
 		 var pid=$("#pid").val();
-		 var url = '${pageContext.request.contextPath}/city/getCitysByProvince.do?'+pid;
+		 var url = '${pageContext.request.contextPath}/city/getCitysByProvince.do?pid='+pid;
+
+		 if($currPage!=null){
+			var $totalPages = $("#totalPages").html();
+			if($linkValue=='首页') $currPage = 1;
+			if($linkValue=='上一页') $currPage--;
+			if($linkValue=='下一页') $currPage++;
+			if($linkValue=='尾页') $currPage = $totalPages;
+			url+='&currPage='+$currPage;			
+		}
+		 
 		 $.ajax({
 			url:url,
 			type:'get',
@@ -137,7 +150,7 @@ function lastPageOnclick(){
 				var $cityTable=$("<table width='100%' border='0' cellspacing='0' cellpadding='0' id='PowerTable' class='PowerTable'>");
 				var $tr11=$("<tr></tr>");
 				$tr11.appendTo($cityTable);
-		    	var $td11=$("<td width='7%' class='listViewThS1'><input type='checkbox' name='checkall' value='' class='checkbox' onClick='CheckAll(this.checked);changeCheckCount();'></td>"); 
+		    	var $td11=$("<td width='7%' class='listViewThS1'><input type='checkbox' name='checkall' id='checkall' class='checkbox' onClick='checkAll()'>全选</td>"); 
 			   	var $td12=$("<td width='33%' class='listViewThS1'>名称</td>");   
 			   	var $td13=$("<td width='30%' class='listViewThS1'>拼音码</td>");
 			   	var $td14=$("<td width='15%' class='listViewThS1'>邮政编码</td>");    	  	  		
@@ -147,22 +160,22 @@ function lastPageOnclick(){
 			  	$td13.appendTo($tr11);
 			  	$td14.appendTo($tr11);
 			  	$td15.appendTo($tr11);
-			  	if(data==null){
+			  	if(data.cityList.length==0){
 					var $tr12=$("<tr><td colspan=5>该省份尚未添加附属城市，请尽快完善基础信息！</td></tr>");
 					$tr12.appendTo($cityTable);
 				}else{
-				  	for(var i=0;i<data.length;i++){
-						var id=data[i].id;
-						var name=data[i].name;
-						var pycode=data[i].pycode;
-						var pid=data[i].pid;
-						var postcode=data[i].postcode;
-						var areacode=data[i].areacode;
+				  	for(var i=0;i<data.cityList.length;i++){
+						var id=data.cityList[i].id;
+						var name=data.cityList[i].name;
+						var pycode=data.cityList[i].pycode;
+						var pid=data.cityList[i].pid;
+						var postcode=data.cityList[i].postcode;
+						var areacode=data.cityList[i].areacode;
 						var $tr21=$("<tr>");
 						$tr21.appendTo($cityTable);
 						var $td21=$("<td><input type='checkbox' name='ids' value='"+id+"' class='checkbox' onClick='changeCheckCount();'></td>");
 						$td21.appendTo($tr21);
-						var $td22=$("<td><a href='#' onClick='OpenDiv('edit.jsp')'>"+name+"</a></td>");
+						var $td22=$("<td><a href='${pageContext.request.contextPath}/city/getCityById/"+id+"'>"+name+"</a></td>");
 						$td22.appendTo($tr21);
 						var $td23=$("<td>"+pycode+"</td>");
 						$td23.appendTo($tr21);
@@ -176,6 +189,9 @@ function lastPageOnclick(){
 				}
 			  	$cityTable.appendTo("#cityTable");
 				$("#cityTable").append("</table>");
+				$("#currPage").val(data.pageBean.currPage);
+				$("#curPageSpan").html(data.pageBean.currPage);
+				$("#totalPages").html(data.pageBean.totalPages);
 			}
 		});
 	}
@@ -213,6 +229,10 @@ function lastPageOnclick(){
 			$("#slt_ids_count2").empty();
 			$("#slt_ids_count2").append(0);
 		}
+	}
+
+	function addCity(url){
+		window.location.href=url;
 	}
 	
 </script>
@@ -255,8 +275,6 @@ function lastPageOnclick(){
 			border="0">
 		&nbsp;城市资料搜索
 	</h3>
-	<form name="SearchForm" method="post" action="city.do">
-		<input type="hidden" name="method" value="search">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" 
 			class="tabForm" name="base" id="base">
 			<tr>
@@ -270,7 +288,6 @@ function lastPageOnclick(){
 				</td>
 			</tr>
 		</table>
-	</form>
 	<br>
 	<h3>
 		<img src="${pageContext.request.contextPath}/ui/images/menu/khlb.png" 
@@ -281,7 +298,7 @@ function lastPageOnclick(){
 		<button type='button' class='button' 
 			onMouseOver="this.className='button_over';" 
 			onMouseOut="this.className='button';"  
-			onClick="OpenDiv('add.jsp')">
+			onClick="addCity('${pageContext.request.contextPath}/page/newPagePlan/sys/city/add.jsp')">
 			<img src="${pageContext.request.contextPath}/ui/images/button/xinjian.png" 
 				border='0' align='absmiddle'>
 			&nbsp;新建
@@ -289,23 +306,15 @@ function lastPageOnclick(){
 		<button type='button' class='button' 
 			onMouseOver="this.className='button_over';" 
 			onMouseOut="this.className='button';"  
-			onClick="delForm('city.do?method=delete')">
+			onClick="document.ActionForm.submit();">
 			<img src="${pageContext.request.contextPath}/ui/images/button/shanchu.png" 
 				border='0' align='absmiddle'>
 			&nbsp;删除
 		</button>
-		<button type='button' class='button' 
-			onMouseOver="this.className='button_over';" 
-			onMouseOut="this.className='button';"  
-			onClick="forward('city.do?method=search&pid=1')">
-			<img src="${pageContext.request.contextPath}/ui/images/button/shuaxin.png" 
-				border='0' align='absmiddle'>
-			&nbsp;刷新
-		</button>
 	</div>
 	<!-- list -->
 	<div class="border">
-		<form name="ActionForm" method="post" action="">
+		<form name="ActionForm" method="post" action="${pageContext.request.contextPath}/city/deleteCitys.do">
 			<p id="cityTable"></p>
 		</form>
 	 	<center>

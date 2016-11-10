@@ -148,7 +148,8 @@ function check() {
 								<td width="16%" class="red">客户编码：</td>
 								<td width="34%">
 									<input type="text" id="code" name="code"
-										style="width:90%" value="${requestScope.company.code }"/>
+										style="width:90%" 
+										value="${requestScope.company.code }"/>
 								</td>
 								<td width="16%" class="red">客户名称：</td>
 								<td width="34%">

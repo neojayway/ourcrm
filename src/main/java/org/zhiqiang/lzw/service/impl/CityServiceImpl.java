@@ -3,10 +3,12 @@ package org.zhiqiang.lzw.service.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.zhiqiang.lzw.entity.City;
+import org.zhiqiang.lzw.entity.custom.PageBean;
 import org.zhiqiang.lzw.mapping.CityMapper;
 import org.zhiqiang.lzw.service.ICityService;
 
@@ -31,8 +33,8 @@ public class CityServiceImpl implements ICityService{
 	 * @return
 	 */
 	@Override
-	public int getConuts()  throws Exception{
-		return cityMapper.getCounts();
+	public int getConuts(Integer pid)  throws Exception{
+		return cityMapper.getCounts(pid);
 	}
 	
 	/**
@@ -50,11 +52,19 @@ public class CityServiceImpl implements ICityService{
 	 * @return
 	 */
 	@Override
-	public List<City> getCityByPage(int PageSize, int offset)  throws Exception{
-		Map map = new HashMap();
-		map.put("pageSize", PageSize);
-		map.put("offset", offset);
-		return cityMapper.getByPage(map);
+	public Map<String, Object> getByPage(Integer pid, PageBean pageBean) throws Exception{
+		if(pageBean == null){
+			pageBean = new PageBean();
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("pid", pid);
+		map.put("pageBean", pageBean);
+		List<City> cityList = cityMapper.getByPage(map);
+		pageBean.setTotalRecords(cityMapper.getCounts(pid));
+		Map<String,Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("cityList", cityList);
+		dataMap.put("pageBean", pageBean);
+		return dataMap;
 	}
 
 	/**

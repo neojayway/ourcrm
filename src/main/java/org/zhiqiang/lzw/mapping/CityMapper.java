@@ -16,14 +16,14 @@ public interface CityMapper {
 	 * 获取记录数
 	 * @return
 	 */
-	public int getCounts() throws Exception;
+	public int getCounts(Integer pid) throws Exception;
 	
 	/**
 	 * 分页查询
 	 * @param map
 	 * @return
 	 */
-	public List<City> getByPage(Map map) throws Exception;
+	public List<City> getByPage(Map<String,Object> map) throws Exception;
 	
 	/**
 	 * 查询所有

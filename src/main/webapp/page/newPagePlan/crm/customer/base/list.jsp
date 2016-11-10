@@ -37,43 +37,43 @@
 
 <script type="text/javascript">
 
-	//判断是否需要执行首页超链接跳转
-	function fristPageOnclick(){
-		var $linkValue = $("#fristPage").html();
-		var $currPage = $("#currPage").val();
-		if($currPage>1){
-			getData($currPage, $linkValue);
-		}
+//判断是否需要执行首页超链接跳转
+function fristPageOnclick(){
+	var $linkValue = $("#fristPage").html().trim();
+	var $currPage = parseInt($("#currPage").val());
+	if($currPage>1){
+		getData($currPage, $linkValue);
 	}
+}
 
-	//判断是否需要执行上一页超链接跳转
-	function prePageOnclick(){
-		var $linkValue = $("#prePage").html();
-		var $currPage = $("#currPage").val();
-		if($currPage>1){
-			getData($currPage, $linkValue);
-		}
+//判断是否需要执行上一页超链接跳转
+function prePageOnclick(){
+	var $linkValue = $("#prePage").html().trim();
+	var $currPage = parseInt($("#currPage").val());
+	if($currPage>1){
+		getData($currPage, $linkValue);
 	}
+}
 
-	//判断是否需要执行下一页超链接跳转
-	function nextPageOnclick(){
-		var $linkValue = $("#nextPage").html();
-		var $currPage = $("#currPage").val();
-		var $totalPages = $("#totalPages").html();
-		if($currPage<$totalPages){
-			getData($currPage, $linkValue);
-		}
+//判断是否需要执行下一页超链接跳转
+function nextPageOnclick(){
+	var $linkValue = $("#nextPage").html().trim();
+	var $currPage =parseInt( $("#currPage").val());
+	var $totalPages =parseInt( $("#totalPages").html().trim());
+	if($currPage<$totalPages){
+		getData($currPage, $linkValue);
 	}
+}
 
-	//判断是否需要执行尾页超链接跳转
-	function lastPageOnclick(){
-		var $linkValue = $("#lastPage").html();
-		var $currPage = $("#currPage").val();
-		var $totalPages = $("#totalPages").html();
-		if($currPage<$totalPages){
-			getData($currPage, $linkValue);
-		}
+//判断是否需要执行尾页超链接跳转
+function lastPageOnclick(){
+	var $linkValue = $("#lastPage").html().trim();
+	var $currPage = parseInt($("#currPage").val());
+	var $totalPages = parseInt($("#totalPages").html().trim());
+	if($currPage<$totalPages){
+		getData($currPage, $linkValue);
 	}
+}
 
 	function getData($currPage, $linkValue){
 
@@ -107,7 +107,7 @@
 				$tr11.appendTo($table);
 				
 				//定义表格的头部样式及属性
-				var $th11=$("<td width='7%' class='listViewThS1'><input type='checkbox' name='checkall' id='checkall' cssClass='checkbox' onclick='checkAll()'/>全选</td>");
+				var $th11=$("<td width='7%' class='listViewThS1'><input type='checkbox' name='checkall' id='checkall' class='checkbox' onclick='checkAll()'/>全选</td>");
 				var $th12 = $("<td width=26%' class='listViewThS1'>客户名称</td>");
 				var $th13 = $("<td width='10%' class='listViewThS1'>客户性质</td>");
 				var $th14 = $("<td width='10%' class='listViewThS1'>客户等级</td>");
@@ -154,9 +154,9 @@
 						$td26.appendTo($tr21);
 						var $td27 = $("<td>"+companyNextTouchDate+"</td>");
 						$td27.appendTo($tr21);
-						var $td28 = $("<td><a href=''>"+companyCreater+"</a></td>");
+						var $td28 = $("<td><a href='#'>"+companyCreater+"</a></td>");
 						$td28.appendTo($tr21);
-						var $td29 = $("<td><a href=''>"+companyProvince+"省"+companyCity+"市"+"</a></td>");
+						var $td29 = $("<td><a href='#'>"+companyProvince+"省"+companyCity+"市"+"</a></td>");
 						$td29.appendTo($tr21);
 						var $tr22 = $("</tr>");
 						$tr22.appendTo($table);
@@ -177,36 +177,6 @@
 
 	function forward(strURL) {
 		window.location = strURL;
-	}
-
-	//处理客户共享
-	function do_share() {
-
-		var count = 0;
-		var ids = "";
-		$("input[type='checkbox'][name='ids']").each(function(index, data) {
-			if (this.checked) {
-				count++;
-				if (count == 1) {
-					ids = $(this).val();
-				} else {
-					ids = ids + "," + $(this).val();
-				}
-			}
-		});
-
-		if (count == 0) {
-			alert("必须有一个客户被选中!!!");
-			return false;
-		}
-
-		if (count == 1) { //选中一个客户的情况下
-			OpenWin(
-					"${pageContext.request.contextPath}/crm/companyAction_showShareSetOne.do?id="
-							+ ids, '', 500, 400)
-		} else {
-			//选中多个的情况下
-		}
 	}
 
 	function getAllData(url){
@@ -400,9 +370,6 @@
 				alert("必须有一个客户被选中!!!");
 				return false;
 			}
-			/* OpenWin(
-					"${pageContext.request.contextPath}/page/newPagePlan/crm/customer/base/nextTouchTime.jsp?ids="
-							+ ids, '', 420, 300); */
 			OpenWin("${pageContext.request.contextPath}/company/doUpdateNextTouchDateBefore.do?ids="
 				+ids, '', 420, 300);
 		}

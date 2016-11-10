@@ -38,15 +38,6 @@
 				$("[name='pycode']").val(data);
 			}
 		});
-		/* var nameValue = $("#name").val();
-		$.post(
-			"${pageContext.request.contextPath}/crm/companyAction_pinyin.do",
-			{
-				name : nameValue
-			}, 
-			function(data, textStatuts) {
-				$("#pycode").val(data);
-			}); */
 	}
 
 	function showCity() {

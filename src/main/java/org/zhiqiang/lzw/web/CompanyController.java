@@ -256,7 +256,6 @@ public class CompanyController {
 	protected String deleteCompanysByIds(Integer[] ids) 
 		throws Exception{
 		for (int i = 0; i < ids.length; i++) {
-			System.out.println("准备删除的客户ID："+ids[i]);
 			companyService.deleteById(ids[i]);
 		}
 		return "redirect:/company/selectCompanyByPage";

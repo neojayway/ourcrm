@@ -18,8 +18,15 @@
   </sql>
   
   <!-- 获取所有记录数 -->
-  <select id="getCounts" resultType="int">
-  	select count(1) from b_city
+  <select id="getCounts" resultType="int" parameterType="int">
+  	select count(1) 
+  	from b_city
+  	<where>
+  		<if test="value != null">
+  			pid=#{value}
+  		</if>
+  	</where>
+  	order by id
   </select>
   
   <!-- 分页获取记录 -->
@@ -27,7 +34,14 @@
   	select 
 	<!-- 导入sql片段 -->
     <include refid="Base_Column_List" />
-	from b_city limit #{offset} , #{pageSize}
+	from b_city
+	<where>
+		<if test="pid != null">
+			pid=#{pid}
+		</if>
+	</where>
+	order by id
+	limit ${pageBean.pageIndex},${pageBean.pageSize}
   </select>
   
   <!-- 获取所有记录 -->
