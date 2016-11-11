@@ -1,6 +1,8 @@
 package org.zhiqiang.lzw.web;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,12 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.zhiqiang.lzw.entity.Group;
 import org.zhiqiang.lzw.entity.Role;
 import org.zhiqiang.lzw.entity.User;
+import org.zhiqiang.lzw.entity.Weather;
 import org.zhiqiang.lzw.entity.custom.PageBean;
 import org.zhiqiang.lzw.entity.custom.UserCustom;
 import org.zhiqiang.lzw.exception.CustomException;
 import org.zhiqiang.lzw.service.IGroupService;
 import org.zhiqiang.lzw.service.IRoleService;
 import org.zhiqiang.lzw.service.IUserService;
+import org.zhiqiang.lzw.service.IWeatherService;
 import org.zhiqiang.lzw.util.MD5keyBean;
 
 /**
@@ -47,6 +51,10 @@ public class UserController {
 	@Autowired
 	@Qualifier("roleService")
 	private IRoleService roleService;
+	
+	@Autowired
+	@Qualifier("weatherService")
+	private IWeatherService weatherService;
 	
 	/**
 	 * 登录
@@ -92,6 +100,15 @@ public class UserController {
 		if (userCustom!=null) {
 			//登录成功，将用户信息保存至session域中
 			session.setAttribute("userCustom", userCustom);
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			session.setAttribute("today", dateFormat.format(new Date())); 
+			//查询天气信息并保存在到session域中
+			try {
+				List<Weather> weatherList = weatherService.getWeatherbyCityName("长沙");
+				session.setAttribute("weatherList", weatherList);
+			} catch (Exception e) {
+				logger.info("获得天气信息异常！");
+			}
 			logger.info("用户登录成功！"+userCustom.getName());
 			return "page/newPagePlan/menu/main";
 		}
@@ -292,6 +309,10 @@ public class UserController {
 
 	public void setRoleService(IRoleService roleService) {
 		this.roleService = roleService;
+	}
+
+	public void setWeatherService(IWeatherService weatherService) {
+		this.weatherService = weatherService;
 	}
 	
 	

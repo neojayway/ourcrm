@@ -12,8 +12,14 @@ import java.util.List;
 
 
 
+
+
+
 import org.junit.Before;
 import org.junit.Test;
+import org.zhiqiang.lzw.entity.Weather;
+import org.zhiqiang.lzw.service.IWeatherService;
+import org.zhiqiang.lzw.service.impl.WeatherServiceImpl;
 
 public class TestWeather {
 
@@ -64,10 +70,20 @@ public class TestWeather {
 		}
 		
 		//得到天气
-		ArrayOfString arrayOfString = client1.getWeatherbyCityName("娄底");
+		ArrayOfString arrayOfString = client1.getWeatherbyCityName("海南");
 		List<String> weatherList = arrayOfString.getString();
+		System.out.println("-------------------天气数据--------------------");
 		for (String string : weatherList) {
 			System.out.println(string);
+		}
+	}
+	
+	@Test
+	public void testGetWeatherbyCityName() {
+		IWeatherService weatherService = new WeatherServiceImpl();
+		List<Weather> weatherList = weatherService.getWeatherbyCityName("长沙");
+		for (Weather weather : weatherList) {
+			System.out.println(weather);
 		}
 	}
 
