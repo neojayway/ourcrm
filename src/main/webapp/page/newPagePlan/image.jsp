@@ -25,9 +25,9 @@
 		String rand = String.valueOf(random.nextInt(10));
 		sRand += rand;
 	}
+	System.out.println(sRand+"------------------");
 	// 将认证码存入SESSION
 	session.setAttribute("CHECK_NUMBER_KEY", sRand);
-
 	// 在内存中创建图象
 	int width = 55;
 	int height = 20;
@@ -60,6 +60,7 @@
 
 	for (int i = 0; i < 4; i++) {
 		String rand = sRand.substring(i, i + 1);
+		
 		// 将认证码显示到图象中
 		g.setColor(new Color(20 + random.nextInt(110), 20 + random
 				.nextInt(110), 20 + random.nextInt(110)));

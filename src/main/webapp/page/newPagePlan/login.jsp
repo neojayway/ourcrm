@@ -101,7 +101,7 @@ body {
 												<TR>
 													<TD class="td">用户帐号：</TD>
 													<TD class="td">
-														<input name="name" type="text" value=""
+														<input name="name" type="text" value="${requestScope.name}"
 															id="name" />
 													</TD>
 												</TR>
@@ -109,7 +109,7 @@ body {
 													<TD class="td">登录密码：</TD>
 													<TD class="td">
 														<input name="password" type="password"
-															value="" id="password">
+															value="${requestScope.password}" id="password">
 													</TD>
 												</TR>
 												<TR>
@@ -121,6 +121,7 @@ body {
 															src="${pageContext.request.contextPath}/image.jsp"
 															height="19" align="absmiddle" onClick="changeCheckNum()"
 															title="点击换一张" style="cursor: hand">
+														<span style="color:red">${requestScope.checkInfo}</span>
 													</TD>
 												</TR>
 												<TR>

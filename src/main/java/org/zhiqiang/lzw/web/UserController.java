@@ -58,7 +58,31 @@ public class UserController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/login")
-	public String login(String name,String password,HttpServletRequest request,HttpSession session) throws Exception{
+	public String login(String name,String password,String checkNum,HttpServletRequest request,HttpSession session) throws Exception{
+		if (checkNum!=null && !checkNum.trim().isEmpty()) {
+			Object attribute = session.getAttribute("CHECK_NUMBER_KEY");
+			if (attribute!=null) {
+				String verifyNo = (String) attribute;
+				if (!verifyNo.equals(checkNum)) {
+					request.setAttribute("checkInfo", "验证码错误！");
+					request.setAttribute("name", name);
+					request.setAttribute("password", password);
+					return "index";
+				}
+			}else {
+				request.setAttribute("checkInfo", "验证码生成出错！");
+				request.setAttribute("name", name);
+				request.setAttribute("password", password);
+				return "index";
+			}
+			
+		}else {
+			request.setAttribute("checkInfo", "验证码不能为空！");
+			request.setAttribute("name", name);
+			request.setAttribute("password", password);
+			return "index";
+		}
+		
 		System.out.println("name:"+name+"\t"+"password:"+password);
 		UserCustom userCustom =null;
 		if (name!=null && !name.trim().isEmpty() 

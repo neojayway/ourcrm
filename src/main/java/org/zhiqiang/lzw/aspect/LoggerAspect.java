@@ -69,6 +69,24 @@ public class LoggerAspect {
 			//调用切点目标方法
 			Object ret = joinPoint.proceed();
 			
+			if (session!=null) {
+				UserCustom userCustom = (UserCustom) session.getAttribute("userCustom");
+				if (userCustom!=null) {
+					//设置登录用户名称
+					log.setUsername("'用户编号："+userCustom.getId()+"用户登录名:"+userCustom.getName()+"'");
+					//设置用户中文名称
+					log.setCnname("'"+userCustom.getCnname()+"'");
+				}else {
+					if (ret instanceof UserCustom) {
+						userCustom = (UserCustom) ret;
+						//设置登录用户名称
+						log.setUsername("'用户编号："+userCustom.getId()+"用户登录名:"+userCustom.getName()+"'");
+						//设置用户中文名称
+						log.setCnname("'"+userCustom.getCnname()+"'");
+					}
+				}
+			}
+			
 			//设置操作结果
 			log.setResult("'success'");
 			return ret;//环绕通知返回切点结果
@@ -78,15 +96,8 @@ public class LoggerAspect {
 			log.setResult("'failure'");
 			logger.error(e.getMessage());
 		}finally{
-			if (session!=null) {
-				UserCustom userCustom = (UserCustom) session.getAttribute("userCustom");
-				if (userCustom!=null) {
-					//设置登录用户名称
-					log.setUsername("'用户编号："+userCustom.getId()+"用户登录名:"+userCustom.getName()+"'");
-					//设置用户中文名称
-					log.setCnname("'"+userCustom.getCnname()+"'");
-				}
-			}
+			
+			
 			//无论失败与成功都要保存日志
 			try {
 				//LogUtil.generateLogTableName(0)：当前月对应的表名
