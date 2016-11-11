@@ -105,7 +105,7 @@ function lastPageOnclick(){
 						$tr21.appendTo($cityTable);
 						var $td21=$("<td><input type='checkbox' name='ids' value='"+id+"' class='checkbox' onClick='changeCheckCount();'></td>");
 						$td21.appendTo($tr21);
-						var $td22=$("<td><a href='${pageContext.request.contextPath}/city/getCityById/"+id+"'>"+name+"</a></td>");
+						var $td22=$("<td><a href='${pageContext.request.contextPath}/city/getCityById.do?id="+id+"'>"+name+"</a></td>");
 						$td22.appendTo($tr21);
 						var $td23=$("<td>"+pycode+"</td>");
 						$td23.appendTo($tr21);
@@ -175,7 +175,7 @@ function lastPageOnclick(){
 						$tr21.appendTo($cityTable);
 						var $td21=$("<td><input type='checkbox' name='ids' value='"+id+"' class='checkbox' onClick='changeCheckCount();'></td>");
 						$td21.appendTo($tr21);
-						var $td22=$("<td><a href='${pageContext.request.contextPath}/city/getCityById/"+id+"'>"+name+"</a></td>");
+						var $td22=$("<td><a href='${pageContext.request.contextPath}/city/getCityById.do?id="+id+"'>"+name+"</a></td>");
 						$td22.appendTo($tr21);
 						var $td23=$("<td>"+pycode+"</td>");
 						$td23.appendTo($tr21);

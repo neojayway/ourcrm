@@ -46,7 +46,7 @@ $(function(){
 function name2pinyin() {
 	var companyName = $("#name").val();
 	$.ajax({
-		url:'${pageContext.request.contextPath}/company/doPinYin/'+companyName,
+		url:'${pageContext.request.contextPath}/company/doPinYin.do?companyName='+companyName,
 		type:'get',
 		dataType:'text',
 		success:function(data){

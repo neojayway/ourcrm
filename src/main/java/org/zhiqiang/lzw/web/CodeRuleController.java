@@ -3,14 +3,10 @@ package org.zhiqiang.lzw.web;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.zhiqiang.lzw.entity.CodeRule;
@@ -77,8 +73,8 @@ public class CodeRuleController {
 		return "redirect:/codeRule/selectCodeRuleByPage.do";
 	}
 	
-	@RequestMapping("/getCodeRuleById/{id}")
-	protected String getCodeRuleById(Model model,@PathVariable("id")Integer id)
+	@RequestMapping("/getCodeRuleById")
+	protected String getCodeRuleById(Model model,Integer id)
 		throws Exception{
 		CodeRule codeRule = codeRuleService.selectCodeRuleById(id);
 		model.addAttribute("codeRule", codeRule);

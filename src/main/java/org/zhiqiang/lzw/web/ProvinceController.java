@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -100,8 +99,8 @@ public class ProvinceController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/getProvinceById/{id}",method=RequestMethod.GET)
-	protected String getProvinceById(Model model,@PathVariable("id")Integer id) throws Exception{
+	@RequestMapping(value="/getProvinceById",method=RequestMethod.GET)
+	protected String getProvinceById(Model model,Integer id) throws Exception{
 		Province province = provinceService.getProvinceById(id);
 		model.addAttribute("province", province);
 		return "page/newPagePlan/sys/province/edit";
@@ -130,19 +129,6 @@ public class ProvinceController {
 	protected String updateProvince(Province province) throws Exception{
 		provinceService.updateProvince(province);
 		return "redirect:/province/selectProvinceByPage";
-	}
-	
-	/**
-	 * 删除单个省份对象
-	 * @param id
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping(value="/deleteOneById/{id}",method=RequestMethod.GET)
-	protected String deleteOneById(Integer id) throws Exception{
-		int i = provinceService.deleteProvince(id);
-		if(i>0) return "ok";
-		else return "error";
 	}
 	
 	/**

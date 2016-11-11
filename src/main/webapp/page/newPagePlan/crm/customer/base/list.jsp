@@ -142,7 +142,7 @@ function lastPageOnclick(){
 						$tr21.appendTo($table);
 						var $td21 = $("<td><input type='checkbox' name='ids' class='checkbox' onclick='changeCheckCount();' value='"+companyId+"'/></td>");
 						$td21.appendTo($tr21);
-						var $td22 = $("<td><a href='${pageContext.request.contextPath}/company/getCompantById/"+companyId+"'>"+companyName+"</a></td>");
+						var $td22 = $("<td><a href='${pageContext.request.contextPath}/company/getCompantById.do?id="+companyId+"'>"+companyName+"</a></td>");
 						$td22.appendTo($tr21);
 						var $td23 = $("<td>"+companyTrade+"</td>");
 						$td23.appendTo($tr21);
@@ -154,9 +154,9 @@ function lastPageOnclick(){
 						$td26.appendTo($tr21);
 						var $td27 = $("<td>"+companyNextTouchDate+"</td>");
 						$td27.appendTo($tr21);
-						var $td28 = $("<td><a href='#'>"+companyCreater+"</a></td>");
+						var $td28 = $("<td>"+companyCreater+"</td>");
 						$td28.appendTo($tr21);
-						var $td29 = $("<td><a href='#'>"+companyProvince+"省"+companyCity+"市"+"</a></td>");
+						var $td29 = $("<td>"+companyProvince+" "+companyCity+"</td>");
 						$td29.appendTo($tr21);
 						var $tr22 = $("</tr>");
 						$tr22.appendTo($table);
@@ -317,7 +317,7 @@ function lastPageOnclick(){
 									onclick="changeCheckCount();" />
 							</td>
 							<td>
-								<a href="${pageContext.request.contextPath}/company/getCompantById/${company.id}">
+								<a href="${pageContext.request.contextPath}/company/getCompantById.do?id=${company.id}">
 									${company.name}
 								</a>
 							</td>

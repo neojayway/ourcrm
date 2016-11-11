@@ -48,7 +48,7 @@ $(function(){
 function name2pinyin() {
 	var cityName = $("#name").val();
 	$.ajax({
-		url:'${pageContext.request.contextPath}/company/doPinYin/'+cityName,
+		url:'${pageContext.request.contextPath}/company/doPinYin.do?companyName='+cityName,
 		type:'get',
 		dataType:'text',
 		success:function(data){

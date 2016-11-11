@@ -1,23 +1,14 @@
 package org.zhiqiang.lzw.web;
 
 import java.text.SimpleDateFormat;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -182,8 +173,8 @@ public class CompanyController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/getCompantById/{id}", method = RequestMethod.GET)
-	protected String getCompanyById(Model model, @PathVariable("id") Integer id)
+	@RequestMapping(value = "/getCompantById", method = RequestMethod.GET)
+	protected String getCompanyById(Model model, Integer id)
 		throws Exception{
 		Company company = companyService.getCompanyById(id);
 		model.addAttribute("company", company);
@@ -206,8 +197,7 @@ public class CompanyController {
 		List<City> cityList = cityService.getCitysByPid(pid);
 		model.addAttribute("cityList", cityList);
 		
-		if (company != null) return "/page/newPagePlan/crm/customer/base/edit";
-		else return "/error";
+		return "/page/newPagePlan/crm/customer/base/edit";
 	}
 
 	/**
@@ -230,21 +220,6 @@ public class CompanyController {
 		return "redirect:/company/selectCompanyByPage";
 	}
 	
-	/**
-	 * 删除单个客户
-	 * 
-	 * @param id
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping(value = "/deleteCompanyById/{id}", method = RequestMethod.GET)
-	protected String deleteCompanyById(@PathVariable("id") Integer id) 
-		throws Exception{
-		int deleteById = companyService.deleteById(id);
-		if (deleteById > 0) return "redirect:/company/selectCompanyByPage";
-		else return "/error";
-	}
-
 	/**
 	 * 批量删除客户
 	 * 
@@ -325,9 +300,9 @@ public class CompanyController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/doPinYin/{companyName}", method=RequestMethod.GET)
+	@RequestMapping(value="/doPinYin", method=RequestMethod.GET)
 	protected @ResponseBody String doPinYin(Model model, 
-		@PathVariable("companyName")String companyName) throws Exception{
+		String companyName) throws Exception{
 		companyName = new String(companyName.getBytes("iso-8859-1"),"utf-8");
 		String firstSpell = PinYinUtil.converterToFirstSpell(companyName);
 		return firstSpell;
@@ -340,9 +315,9 @@ public class CompanyController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/doGetCitysByPid/{pid}", method=RequestMethod.GET)
+	@RequestMapping(value="/doGetCitysByPid", method=RequestMethod.GET)
 	protected @ResponseBody List<City> doGetCitysByPid(Model model, 
-		@PathVariable("pid") Integer pid)throws Exception{
+		Integer pid)throws Exception{
 		List<City> cityList = cityService.getCitysByPid(pid);
 		if(cityList.size()>0) return cityList;
 		else return null;

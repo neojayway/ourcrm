@@ -161,7 +161,7 @@
 								class="checkbox" onClick="changeCheckCount();">
 						</td>
 						<td>
-							<a href="${pageContext.request.contextPath}/codeRule/getCodeRuleById/${codeRule.id }">
+							<a href="${pageContext.request.contextPath}/codeRule/getCodeRuleById.do?id=${codeRule.id }">
 								${codeRule.module}
 							</a>
 						</td>

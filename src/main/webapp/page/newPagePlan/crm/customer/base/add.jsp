@@ -30,7 +30,7 @@
 	function name2pinyin() {
 		var companyName = $("#name").val();
 		$.ajax({
-			url:'${pageContext.request.contextPath}/company/doPinYin/'+companyName,
+			url:'${pageContext.request.contextPath}/company/doPinYin.do?companyName='+companyName,
 			type:'get',
 			dataType:'text',
 			success:function(data){
@@ -43,7 +43,7 @@
 	function showCity() {
 		var pid = $("#province").val();
 		$.ajax({
-			url:'${pageContext.request.contextPath}/company/doGetCitysByPid/'+pid,
+			url:'${pageContext.request.contextPath}/company/doGetCitysByPid.do?pid='+pid,
 			type:'get',
 			dataType:'json',
 			success:function(data){
@@ -106,8 +106,7 @@
 </script>
 </head>
 <body>
-	<form name="companyForm" method="post" action="${pageContext.request.contextPath}/company/saveCompany.do"
-		onsubmit="return check();">
+	<form name="companyForm" method="post" action="${pageContext.request.contextPath}/company/saveCompany.do">
 		<div class="mtitle">
 			<div class="mtitle-row">&nbsp;</div>
 			客户-新建

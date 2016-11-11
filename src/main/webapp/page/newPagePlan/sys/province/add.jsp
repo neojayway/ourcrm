@@ -19,7 +19,7 @@ body {
 function name2pinyin() {
 	var provinceName = $("#name").val();
 	$.ajax({
-		url:'${pageContext.request.contextPath}/company/doPinYin/'+provinceName,
+		url:'${pageContext.request.contextPath}/company/doPinYin.do?companyName='+provinceName,
 		type:'get',
 		dataType:'text',
 		success:function(data){

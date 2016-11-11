@@ -97,7 +97,7 @@ function lastPageOnclick(){
 						$td21.appendTo($tr21);
 						var $td22 = $("<td>"+id+"</td>");
 						$td22.appendTo($tr21);
-						var $td23 = $("<td><a href='${pageContext.request.contextPath}/province/getProvinceById/"+id+"'>"+name+"</a></td>");
+						var $td23 = $("<td><a href='${pageContext.request.contextPath}/province/getProvinceById.do?id="+id+"'>"+name+"</a></td>");
 						$td23.appendTo($tr21);
 						var $td24 = $("<td>"+pycode+"</td>");
 						$td24.appendTo($tr21);
@@ -284,7 +284,7 @@ function lastPageOnclick(){
 						</td>
 						<td>${province.id}</td>
 						<td>
-							<a href="${pageContext.request.contextPath}/province/getProvinceById/${province.id}">${province.name }</a>
+							<a href="${pageContext.request.contextPath}/province/getProvinceById.do?id=${province.id}">${province.name }</a>
 						</td>
 						<td>${province.pycode }</td>
 					</tr>

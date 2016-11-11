@@ -2,14 +2,10 @@ package org.zhiqiang.lzw.web;
 
 import java.util.List;
 import java.util.Map;
-
-import javax.management.RuntimeErrorException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -75,8 +71,8 @@ public class CityController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/getCityById/{id}",method=RequestMethod.GET)
-	protected String getCityById(Model model,@PathVariable("id")Integer id) 
+	@RequestMapping(value="/getCityById",method=RequestMethod.GET)
+	protected String getCityById(Model model,Integer id) 
 		throws Exception{
 		System.out.println(id);
 		City city = cityService.getCityById(id);
