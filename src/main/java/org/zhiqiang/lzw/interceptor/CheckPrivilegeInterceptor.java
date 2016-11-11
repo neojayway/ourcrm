@@ -12,6 +12,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.zhiqiang.lzw.entity.Privilege;
 import org.zhiqiang.lzw.entity.custom.UserCustom;
+import org.zhiqiang.lzw.exception.CustomException;
 import org.zhiqiang.lzw.exception.NoOwnPrivilegeException;
 
 /**
@@ -68,6 +69,9 @@ public class CheckPrivilegeInterceptor implements HandlerInterceptor{
 					}else {//没有权限
 						throw new NoOwnPrivilegeException("很遗憾，您不具备‘"+privilege.getPrivilegename()+"’的权限!!!");
 					}
+				}else {
+					//当前没有登录
+					throw new CustomException("当前未登录！");
 				}
 			}else {//公共资源直接放行
 				return true;
@@ -76,7 +80,6 @@ public class CheckPrivilegeInterceptor implements HandlerInterceptor{
 			//当前请求在application域中没有找到匹配的权限
 			throw new NoOwnPrivilegeException("当前权限未被创建!!!");
 		}
-		return true;
 	}
 	
 	/**
