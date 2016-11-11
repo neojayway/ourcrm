@@ -234,7 +234,12 @@ function lastPageOnclick(){
 	function addCity(url){
 		window.location.href=url;
 	}
-	
+	function deleteIds() {
+		var flag = confirm("确定删除吗？");
+		if(flag){
+			document.ActionForm.submit();
+		}
+	}
 </script>
 </head>
 
@@ -306,7 +311,7 @@ function lastPageOnclick(){
 		<button type='button' class='button' 
 			onMouseOver="this.className='button_over';" 
 			onMouseOut="this.className='button';"  
-			onClick="document.ActionForm.submit();">
+			onClick="deleteIds()">
 			<img src="${pageContext.request.contextPath}/ui/images/button/shanchu.png" 
 				border='0' align='absmiddle'>
 			&nbsp;删除

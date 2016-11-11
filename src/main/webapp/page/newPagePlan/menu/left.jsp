@@ -131,7 +131,7 @@
 						<li>
 							<img src="${pageContext.request.contextPath}/ui/images/menu/cszl.png"
 								width="17" height="17"> 
-							<a href="${pageContext.request.contextPath}/page/newPagePlan/sys/city/list.jsp"
+							<a href="${pageContext.request.contextPath}/city/selectCityByPage.do"
 								target="rightFrame">
 								城市资料
 							</a>
@@ -139,7 +139,7 @@
 						<li>
 							<img src="${pageContext.request.contextPath}/ui/images/menu/bmzj.png"
 								width="17" height="17"> 
-							<a href="${pageContext.request.contextPath}/page/newPagePlan/sys/code/list.jsp"
+							<a href="${pageContext.request.contextPath}/codeRule/selectCodeRuleByPage.do"
 								target="rightFrame">
 								编码规则
 							</a>
@@ -151,7 +151,7 @@
 					<img src="${pageContext.request.contextPath}/ui/images/menu/bbyfx.png"
 						width="17" height="17"> 
 					<strong>报表与分析</strong>
-					<ul>
+					<%-- <ul>
 						<li>
 							<img src="${pageContext.request.contextPath}/ui/images/menu/khflfx.png"
 								width="17" height="17"> 
@@ -171,7 +171,7 @@
 					</ul>
 				</li>
 			</ul>
-
+ --%>
 		</div>
 
 	</div>

@@ -209,7 +209,12 @@ public class CompanyServiceImplTest {
 				.getBean("companyService");
 		ICodeRuleService codeRuleService = (ICodeRuleService) context
 				.getBean("codeRuleService");
-		CodeRule codeRule = codeRuleService.selectCodeRuleByTable(tabName);
+		CodeRule codeRule = null;
+		try {
+			codeRule = codeRuleService.selectCodeRuleByTable(tabName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		Integer glidebit = codeRule.getGlidebit();
 		System.out.println(codeRule);
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");

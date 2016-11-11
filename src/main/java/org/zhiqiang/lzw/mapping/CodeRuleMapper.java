@@ -1,24 +1,44 @@
 package org.zhiqiang.lzw.mapping;
 
+import java.util.List;
 import java.util.Map;
 
 import org.zhiqiang.lzw.entity.CodeRule;
+import org.zhiqiang.lzw.entity.Company;
 
 public interface CodeRuleMapper {
 	
-	CodeRule selectCodeRuleByTable(String tabName);
-	
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(CodeRule record);
-
-    int insertSelective(CodeRule record);
-
-    CodeRule selectByPrimaryKey(Integer id);
-
-    int updateSerialNumberByTable(Map map);
+	 /**
+     * 带条件分页查询
+     * @param 
+     * @return
+     */
+    List<CodeRule> selectByPage(Map<String, Object> map) throws Exception;
     
-    int updateByPrimaryKeySelective(CodeRule record);
+    /**
+     * 查询记录数
+     * @param 
+     * @return
+     */
+    int selectTotalRecords(String module) throws Exception;
+    
+    List<CodeRule> getAllCodeRules() throws Exception;
+    
+    void deleteMoreByIds(Integer[] ids) throws Exception;
+    
+	CodeRule selectCodeRuleByTable(String tabName) throws Exception;
+	
+    int deleteByPrimaryKey(Integer id) throws Exception;
 
-    int updateByPrimaryKey(CodeRule record);
+    int insert(CodeRule record) throws Exception;
+
+    int insertSelective(CodeRule record) throws Exception;
+
+    CodeRule selectByPrimaryKey(Integer id) throws Exception;
+
+    int updateSerialNumberByTable(Map map) throws Exception;
+    
+    int updateByPrimaryKeySelective(CodeRule record) throws Exception;
+
+    int updateByPrimaryKey(CodeRule record) throws Exception;
 }

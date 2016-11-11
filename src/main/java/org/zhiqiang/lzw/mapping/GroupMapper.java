@@ -8,6 +8,7 @@ import org.zhiqiang.lzw.entity.Group;
 import org.zhiqiang.lzw.entity.custom.GroupCustom;
 
 public interface GroupMapper {
+	
     void deleteByPrimaryKey(Integer id) throws Exception;
     
     void insert(Group record) throws Exception;

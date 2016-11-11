@@ -19,7 +19,7 @@ public class CodeRule {
     //生成的编码的日期位
     private String areatime;
 
-    //生成的编码的后缀序号
+    //流水号
     private Integer glidebit;
 
     //提供预览的编码

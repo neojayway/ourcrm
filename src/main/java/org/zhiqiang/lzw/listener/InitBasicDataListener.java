@@ -91,5 +91,11 @@ public class InitBasicDataListener implements ApplicationListener<ContextRefresh
 			selectDictionaryTypesByCode("kind");
 		application.setAttribute("kindList", kindList);
 		
+		List<DictionaryType> glidebitList = 
+			dictionaryTypeService.selectDictionaryTypesByCode("glidebit");
+		application.setAttribute("glidebitList", glidebitList);
+		List<DictionaryType> areatimeList = 
+				dictionaryTypeService.selectDictionaryTypesByCode("areatime");
+			application.setAttribute("areatimeList", areatimeList);
 	}
 }

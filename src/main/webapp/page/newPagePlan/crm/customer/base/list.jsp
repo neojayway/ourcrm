@@ -182,6 +182,12 @@ function lastPageOnclick(){
 	function getAllData(url){
 		window.location.href=url;
 	}
+	function deleteIds() {
+		var flag = confirm("确定删除吗？");
+		if(flag){
+			document.forms[1].submit();
+		}
+	}
 	
 </script>
 <body>
@@ -276,7 +282,7 @@ function lastPageOnclick(){
 		<button type='button' class='button'
 			onMouseOver="this.className='button_over';"
 			onMouseOut="this.className='button';"
-			onClick="document.forms[1].submit()">
+			onClick="deleteIds()">
 			<img src="${pageContext.request.contextPath}/ui/images/button/shanchu.png"
 				border='0' align='absmiddle'>
 			&nbsp;删除
@@ -288,11 +294,11 @@ function lastPageOnclick(){
 			<table width="100%" border="0" cellspacing="0" cellpadding="0"
 				id="PowerTable" class="PowerTable">
 				<tr>
-					<td width="3%" class="listViewThS1">
+					<td width="7%" class="listViewThS1">
 						<input type="checkbox" name="checkall" id="checkall" 
-							class="checkbox" onclick="checkAll()" />
+							class="checkbox" onclick="checkAll()"/>全选
 					</td>
-					<td width="30%" class="listViewThS1">客户名称</td>
+					<td width="26%" class="listViewThS1">客户名称</td>
 					<td width="10%" class="listViewThS1">客户性质</td>
 					<td width="10%" class="listViewThS1">客户等级</td>
 					<td width="10%" class="listViewThS1">电话一</td>
