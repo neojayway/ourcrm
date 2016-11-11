@@ -38,7 +38,7 @@ public class CompanyServiceImpl implements ICompanyService{
 	/**
 	 * 分页获取数据
 	 */
-	public List<Company> selectByPage(PageBean pageBean){
+	public List<Company> selectByPage(PageBean pageBean) throws Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pageBean", pageBean);
 		return companyMapper.selectByPage(map);
@@ -47,7 +47,7 @@ public class CompanyServiceImpl implements ICompanyService{
 	/**
 	 * 获取总记录数
 	 */
-    public int selectTotalRecords(){
+    public int selectTotalRecords() throws Exception{
     	return companyMapper.selectTotalRecords();
     }
 	
@@ -55,7 +55,7 @@ public class CompanyServiceImpl implements ICompanyService{
 	 * 获取到所有数据
 	 */
 	@Override
-	public List<Company> getAllCompany()  throws Exception{
+	public List<Company> getAllCompany() throws Exception{
 		return companyMapper.getAllCompany();
 	}
 	

@@ -48,6 +48,11 @@ public class CityController {
 		else return "error";
 	}
 	
+	@RequestMapping(value="/selectCityByPage",method=RequestMethod.GET)
+	protected String selectCityByPage()throws Exception{
+		return "/page/newPagePlan/sys/city/list";
+	}
+	
 	/**
 	 * 根据省份获取对应的城市
 	 * @param model

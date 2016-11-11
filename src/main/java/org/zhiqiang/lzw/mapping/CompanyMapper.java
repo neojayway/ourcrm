@@ -16,14 +16,14 @@ public interface CompanyMapper {
      * @param 
      * @return
      */
-    List<Company> selectByPage(Map<String, Object> map);
+    List<Company> selectByPage(Map<String, Object> map) throws Exception;
     
     /**
      * 查询总记录数
      * @param 
      * @return
      */
-    int selectTotalRecords();
+    int selectTotalRecords() throws Exception;
 
 	
 	List<Company> getAllCompany() throws Exception;

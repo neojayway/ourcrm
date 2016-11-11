@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"
 	contentType="text/html; charset=utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
 <head>
@@ -11,29 +12,17 @@
 	type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/ui/js/popshow.js"
 	type="text/javascript"></script>
-
-<script language="javascript">
-	function check() {
-		var f = document.ActionForm;
-		var msgs = "" + checkNull(f.module, "模块名称")
-				+ checkNull(f.area_prefix, "编码前缀")
-				+ checkNull(f.tab_name, "数据库表名");
-		_first_check_col = "";
-		if (msgs == "")
-			return true;
-		else {
-			alert(msgs);
-			return false;
-		}
-	}
+<script src="${pageContext.request.contextPath}/ui/js/jquery-1.4.2.js"
+	type="text/javascript"></script>
+<script type="text/javascript">
 	function preview() {
-		var prefix = encodeURI(document.ActionForm.area_prefix.value);
+		var prefix = encodeURI(document.ActionForm.areaprefix.value);
 		if (prefix == "") {
 			alert("请输入编码前缀!");
-			document.ActionForm.area_prefix.focus();
+			document.ActionForm.areaprefix.focus();
 			return false;
 		}
-		var timeForm = document.ActionForm.area_time;
+		var timeForm = document.ActionForm.areatime;
 		var time = "";
 		for (var i = 0; i < timeForm.length; i++) {
 			var temp = timeForm[i];
@@ -41,19 +30,17 @@
 				time = temp.value;
 			}
 		}
-		var glide = document.ActionForm.glide_bit.value;
-		var url = "preview.jsp?area_prefix=" + prefix + "&area_time=" + time
-				+ "&glide_bit=" + glide;
-		OpenWin(url, '', 500, 200);
+		var glide = document.ActionForm.glidebit.value;
+		
+		window.location.href='${pageContext.request.contextPath}/codeRule/previewCode.do?areaprefix='
+			+prefix+"&areatime="+time+"&glidebit="+glide;
 	}
 </script>
 </head>
 
 <body>
-	<form name="ActionForm" method="post" action="rule.do"
-		onSubmit="return check();">
-		<input type="hidden" name="method" value="add"> 
-		<input type="hidden" name="current_code" value="">
+	<form name="ActionForm" method="post" 
+		action="${pageContext.request.contextPath}/codeRule/insertCodeRule.do">
 		<div class="mtitle">
 			<div class="mtitle-row">&nbsp;</div>
 			编码规则-新建
@@ -63,7 +50,7 @@
 			<button type='button' class='button'
 				onMouseOver="this.className='button_over';"
 				onMouseOut="this.className='button';"
-				onClick="if(check()) document.ActionForm.submit();">
+				onClick="document.ActionForm.submit();">
 				<img src="${pageContext.request.contextPath}/ui/images/button/baocun.png"
 					border='0' align='absmiddle'>
 					&nbsp;保存
@@ -78,7 +65,7 @@
 			<button type='button' class='button'
 				onMouseOver="this.className='button_over';"
 				onMouseOut="this.className='button';"
-				onClick="forward('rule.do?method=list')">
+				onClick="history.go(-1)">
 				<img src="${pageContext.request.contextPath}/ui/images/button/fanhui.png"
 					border='0' align='absmiddle'>
 					&nbsp;返回
@@ -113,47 +100,41 @@
 								</td>
 								<td class="red">数据库表名：</td>
 								<td>
-									<input name="tab_name" type="text" class="input"
-										id="tab_name" style="width: 90%">
+									<input name="tabname" type="text" class="input"
+										id="tabname" style="width: 90%">
 								</td>
 							</tr>
 							<tr>
 								<td class="red">编码前缀：</td>
 								<td>
-									<input name="area_prefix" type="text" class="input"
-										id="area_prefix" style="width: 90%">
+									<input name="areaprefix" type="text" class="input"
+										id="areaprefix" style="width: 90%">
 								</td>
 								<td class="red">流水位：</td>
 								<td>
-									<select name='glide_bit' id='glide_bit'
+									<select name='glidebit' id='glidebit'
 										style='width: 90%'>
 										<option value=''>------</option>
-										<option value='3' selected>3</option>
-										<option value='4'>4</option>
-										<option value='5'>5</option>
-										<option value='6'>6</option>
-										<option value='7'>7</option>
-										<option value='8'>8</option>
-										<option value='9'>9</option>
-										<option value='10'>10</option>
+										<c:if test="${applicationScope.glidebitList!=null}">
+											<c:forEach var="dictionaryType" varStatus="s" items="${applicationScope.glidebitList}">
+												<option value="${dictionaryType.value}">${dictionaryType.value}</option>		
+											</c:forEach>
+										</c:if>
 									</select>
 								</td>
 							</tr>
 							<tr>
 								<td class="red">日期位：</td>
 								<td colspan="3">
-									<input type="radio" name="area_time" value="yyyyMMdd" class="radio" checked> 
-									yyyyMMdd 
-									<input type="radio" name="area_time" value="yyyy-MM-dd" class="radio">
-									yyyy-MM-dd 
-									<input type="radio" name="area_time" value="yyyyMM" class="radio"> 
-									yyyyMM 
-									<input type="radio" name="area_time" value="yyyy-MM" class="radio"> 
-									yyyy-MM
-									<input type="radio" name="area_time" value="yyyy" class="radio">
-									yyyy 
-									<input type="radio" name="area_time" value="NULL" class="radio"> 
-									无
+									<c:if test="${applicationScope.areatimeList!=null}">
+										<c:forEach var="dictionaryType" varStatus="s" items="${applicationScope.areatimeList}">
+											<input type='radio' name='areatime' id='areatime' 
+												value='${dictionaryType.value}' class='radio'>
+												${dictionaryType.value}		
+										</c:forEach>
+									</c:if>
+									<input type='radio' name='areatime' id='areatime' 
+										value='' class='radio'>无
 								</td>
 							</tr>
 						</table>

@@ -18,6 +18,42 @@
     curDate
   </sql>
   
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="map">
+  	select 
+  	<include refid="Base_Column_List" />
+    from sys_code_rule
+    <where>
+    	<if test="module != null">
+    		module like #{module}
+    	</if>
+    </where>
+  	limit ${pageBean.pageIndex},${pageBean.pageSize}
+  </select>
+  
+  <select id="selectTotalRecords" resultType="Integer" parameterType="String">
+  	select count(1)
+  	from sys_code_rule
+  	<where>
+  		<if test="value != null">
+  			module like #{value}
+  		</if>
+  	</where>
+  </select>
+  
+  <select id="getAllCodeRules" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+    from sys_code_rule
+  </select>
+  
+  <!-- 批量删除 -->
+  <delete id="deleteMoreByIds" parameterType="Integer[]">
+  	DELETE FROM SYS_CODE_RULE where ID IN
+  	<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+  		#{item}
+  	</foreach>
+  </delete>
+  
   <select id="selectCodeRuleByTable" parameterType="string" resultMap="BaseResultMap">
   	select 
     <include refid="Base_Column_List" />

@@ -155,7 +155,12 @@ function lastPageOnclick(){
 	function addProvince(url){
 		window.location.href=url;
 	}
-	
+	function deleteIds() {
+		var flag = confirm("确定删除吗？");
+		if(flag){
+			document.ActionForm.submit();
+		}
+	}
 </script>
 </head>
 
@@ -206,7 +211,7 @@ function lastPageOnclick(){
 	<table width="100%" border="0" cellspacing="0" cellpadding="0"
 		class="tabForm" id="base">
 		<tr>
-			<td width="38%" height="45" nowrap>省份名称：
+			<td width="38%" height="45" nowrap>省份查询：
 				<input name="name" type="text" id="name" value="" 
 					style="width: 140px" onchange="getData()"/>
 			</td>
@@ -247,7 +252,7 @@ function lastPageOnclick(){
 		</button>
 		<button class='button' onMouseOver="this.className='button_over';"
 			onMouseOut="this.className='button';"
-			onClick="document.ActionForm.submit();">
+			onClick="deleteIds()">
 			<img src="${pageContext.request.contextPath}/ui/images//button/shanchu.png"
 				border='0' align="middle">
 			&nbsp;删除

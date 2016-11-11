@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"
 	contentType="text/html; charset=utf-8"%>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -21,7 +21,7 @@
 					<tr>
 						<td height="60">
 							<li>
-								<font color="#FF0000">C-20100819-001</font>
+								<font color="#FF0000">${requestScope.code}</font>
 							</li>
 						</td>
 					</tr>
@@ -29,10 +29,11 @@
 						<td style="text-align: center">
 							<button type='button' class='button'
 								onMouseOver="this.className='button_over';"
-								onMouseOut="this.className='button';" onClick="self.close()">
-								<img src="/ui/def/images/button/guanbi.png" border='0'
-									align='absmiddle'>
-								&nbsp;关闭
+								onMouseOut="this.className='button';" 
+								onClick="history.go(-1)">
+								<img src="${pageContext.request.contextPath}/ui/def/images/button/guanbi.png" 
+								border='0' align='absmiddle'>
+								&nbsp;返回
 							</button>
 						</td>
 					</tr>
@@ -40,6 +41,5 @@
 			</td>
 		</tr>
 	</table>
-
 </body>
 </html>
